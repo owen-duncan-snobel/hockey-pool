@@ -1,0 +1,40 @@
+version: '3.9'
+# docker-compose --project-name hockey-pool -f docker-compose.prod.yml up -d 
+
+# provide a docker-compose file for a node.js application with nginx, postgres and redis
+services:
+  # the node.js application
+  backend_1:
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./mount/src:/app/src
+    environment:
+      - REDIS_URL=${REDIS_URL}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - DATABASE_URL=${DATABASE_URL}
+  backend_2:
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "4001:4000"
+    volumes:
+      - ./mount/src:/app/src
+    environment:
+      - REDIS_URL=${REDIS_URL}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - DATABASE_URL=${DATABASE_URL}
+  # the nginx reverse proxy
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - backend_1
+      - backend_2
