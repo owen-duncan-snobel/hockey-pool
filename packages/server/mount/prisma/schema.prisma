@@ -17,3 +17,59 @@ model User {
   clerk_id  String @unique()
   email     String @unique
 }
+
+// NHL Models
+model Team {
+  id              Int @id
+  name            String
+  link            String
+  abbreviation    String
+  teamName        String
+  franchise       Franchise?
+  conference      Conference? @relation(fields: [conferenceId], references: [id])
+  conferenceId    Int?
+  division        Division?  @relation(fields: [divisionId], references: [id])
+  divisionId      Int?
+  // venue           Venue @relation(fields: [venueId], references: [id])
+  // venueId        Int
+  officialSiteUrl String
+  active          Boolean
+}
+
+model Conference {
+  id              Int @id
+  name            String
+  link            String
+  abbreviation    String
+  shortName       String
+  active          Boolean
+  division        Division[]
+  teams           Team[]
+}
+
+model Division { 
+  id              Int @id
+  name            String
+  nameShort       String
+  link            String
+  abbreviation    String
+  conference      Conference @relation(fields: [conferenceId], references: [id])
+  conferenceId    Int
+  teams           Team[]
+}
+
+model Franchise {
+  id                  Int @id
+  firstSeasonId       Int
+  lastSeasonId        Int?
+  team                Team? @relation(fields: [mostRecentTeamId], references: [id])
+  mostRecentTeamId    Int @unique
+  link                String
+}
+
+// model Venue {
+//   id        Int @id
+//   name      String
+//   link      String
+//   teams     Team[]     
+// }
