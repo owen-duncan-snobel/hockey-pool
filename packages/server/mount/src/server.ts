@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 4000
 
 const app = express()
 
-// Middleware 
+// Middleware
 app.use(cors())
 app.use(helmet())
 app.use(logger)

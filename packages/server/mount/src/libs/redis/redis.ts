@@ -11,7 +11,7 @@ const client = redis.createClient({
 client.connect()
 
 client.on('error', (err) => {
-  console.log('Error connecting to redis: ', err)
+  console.error('Error connecting to redis: ', err)
 })
 
 export default client

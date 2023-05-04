@@ -19,16 +19,16 @@ type NHLConference = Prisma.ConferenceCreateManyInput & {
 }
 
 type NHLDivision = {
-	id: number
-	name: string
-	nameShort: string
-	link: string
-	abbreviation: string
-	conference: {
-		id: number
-		name: string
-		link: string
-	}
+  id: number
+  name: string
+  nameShort: string
+  link: string
+  abbreviation: string
+  conference: {
+    id: number
+    name: string
+    link: string
+  }
   active: boolean
 }
 
@@ -83,77 +83,71 @@ type NHLTeam = {
   active: boolean
 }
 
-const getData = async ({url}: {url: string }) => {
+const getData = async ({ url }: { url: string }) => {
   const response = await axios.get(url)
-  const data = response.data
+  const { data } = response
   return data
 }
 
 const handleConferences = async (): Promise<Prisma.ConferenceCreateManyInput[]> => {
   const data = await getData({ url: NHL_CONFERENCES_URL })
-  const conferences: NHLConference[] = data.conferences
+  const { conferences } = data
   return conferences
 }
 
 const handleDivisions = async (): Promise<Prisma.DivisionCreateManyInput[]> => {
   const data = await getData({ url: NHL_DIVISIONS_URL })
   const divisons: NHLDivision[] = data.divisions
-  const divisionsCreateManyInput: Prisma.DivisionCreateManyInput[] = divisons.map(d => {
-    return {
-      abbreviation: d.abbreviation,
-      conferenceId: d.conference.id,
-      id: d.id,
-      link: d.link,
-      name: d.name,
-      nameShort: d.nameShort
-    }
-  })
+  const divisionsCreateManyInput: Prisma.DivisionCreateManyInput[] = divisons.map((d) => ({
+    abbreviation: d.abbreviation,
+    conferenceId: d.conference.id,
+    id: d.id,
+    link: d.link,
+    name: d.name,
+    nameShort: d.nameShort,
+  }))
   return divisionsCreateManyInput
 }
 
 const handleFranchises = async (): Promise<Prisma.FranchiseCreateManyInput[]> => {
-	const data = await getData({ url: NHL_FRANCHISES_URL })
-	const franchises: NHLFranchise[] = data.franchises
-  const franchisesCreateManyInput: Prisma.FranchiseCreateManyInput[] = franchises.map(f => {
-    return {
-      firstSeasonId: f.firstSeasonId,
-      id: f.franchiseId,
-      link: f.link,
-      mostRecentTeamId: f.mostRecentTeamId
-    }
-  })
+  const data = await getData({ url: NHL_FRANCHISES_URL })
+  const { franchises } = data
+  const franchisesCreateManyInput: Prisma.FranchiseCreateManyInput[] = franchises.map((f) => ({
+    firstSeasonId: f.firstSeasonId,
+    id: f.franchiseId,
+    link: f.link,
+    mostRecentTeamId: f.mostRecentTeamId,
+  }))
   return franchisesCreateManyInput
 }
 
 const handleTeams = async () => {
   const data = await getData({ url: NHL_TEAMS_URL })
-	const teams: NHLTeam[] = data.teams
-  const teamsCreateInput: Prisma.TeamCreateInput[] = teams.map(t => {
-    return {
-      abbreviation: t.abbreviation,
-      active: t.active,
-      conference: {
-        connect: {
-          id: t.conference.id
-        }
+  const { teams } = data
+  const teamsCreateInput: Prisma.TeamCreateInput[] = teams.map((t) => ({
+    abbreviation: t.abbreviation,
+    active: t.active,
+    conference: {
+      connect: {
+        id: t.conference.id,
       },
-      division: {
-        connect: {
-          id: t.division.id
-        }
+    },
+    division: {
+      connect: {
+        id: t.division.id,
       },
-      // franchise: {
-      //   connect: {
-      //     mostRecentTeamId: t.id
-      //   }
-      // },
-      id: t.id,
-      link: t.link,
-      name: t.name,
-      officialSiteUrl: t.officialSiteUrl,
-      teamName: t.teamName
-    }
-  })
+    },
+    // franchise: {
+    //   connect: {
+    //     mostRecentTeamId: t.id
+    //   }
+    // },
+    id: t.id,
+    link: t.link,
+    name: t.name,
+    officialSiteUrl: t.officialSiteUrl,
+    teamName: t.teamName,
+  }))
   return teamsCreateInput
 }
 
@@ -164,50 +158,48 @@ async function main() {
   const teams = await handleTeams()
 
   await prisma.conference.createMany({
-    data: conferences
+    data: conferences,
   })
   await prisma.division.createMany({
-    data: divisions
+    data: divisions,
   })
   await prisma.$transaction(
-		teams.map((t) => prisma.team.create({ data: t }))
+    teams.map((t) => prisma.team.create({ data: t })),
   )
   await prisma.$transaction(
-		franchises.map((f) =>
-			prisma.franchise.create({
-				data: {
-					firstSeasonId: f.firstSeasonId,
-					id: f.id,
-					link: f.link,
-					team: {
-						connectOrCreate: {
-							create: {
-								abbreviation: '',
-								active: false,
-								id: f.mostRecentTeamId,
-								link: '',
-								name: '',
-								officialSiteUrl: '',
-								teamName: '',
-							},
-              where: {
-                id: f.mostRecentTeamId
-              }
-						},
-					},
-				},
-			})
-		)
+    franchises.map((f) => prisma.franchise.create({
+      data: {
+        firstSeasonId: f.firstSeasonId,
+        id: f.id,
+        link: f.link,
+        team: {
+          connectOrCreate: {
+            create: {
+              abbreviation: '',
+              active: false,
+              id: f.mostRecentTeamId,
+              link: '',
+              name: '',
+              officialSiteUrl: '',
+              teamName: '',
+            },
+            where: {
+              id: f.mostRecentTeamId,
+            },
+          },
+        },
+      },
+    })),
   )
 }
 
 main()
-	.then(async () => {
-		await prisma.$disconnect()
-	})
+  .then(async () => {
+    await prisma.$disconnect()
+  })
 
-	.catch(async (e) => {
-		console.error(e)
-		await prisma.$disconnect()
-		process.exit(1)
-	})
+  .catch(async (e) => {
+    console.error(e)
+    await prisma.$disconnect()
+    process.exit(1)
+  })
