@@ -1,6 +1,6 @@
 import express from 'express'
-import clerk from '../../libs/clerk/clerk'
 import bodyParser from 'body-parser';
+import clerk from '../../libs/clerk/clerk'
 
 const router = express.Router()
 
