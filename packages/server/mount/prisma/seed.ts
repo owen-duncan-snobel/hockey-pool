@@ -83,7 +83,7 @@ type NHLTeam = {
   active: boolean
 }
 
-const getData = async ({ url }: { url: string }) => {
+export const getData = async ({ url }: { url: string }) => {
   const response = await axios.get(url)
   const { data } = response
   return data
