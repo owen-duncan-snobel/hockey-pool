@@ -1,4 +1,4 @@
-interface IPlayoff {
+export interface IPlayoff {
 	id: number
 	name: string
 	season: string
@@ -6,7 +6,7 @@ interface IPlayoff {
 	rounds: IPlayoffRound[]
 }
 
-interface IPlayoffRound {
+export interface IPlayoffRound {
 	number: number
 	code: number
 	names: {
@@ -17,14 +17,14 @@ interface IPlayoffRound {
 	series: IPlayoffSeries[]
 }
 
-interface IRoundFormat {
+export interface IRoundFormat {
 	name: string
 	description: string
 	numberOfGames: number
 	numberOfWins: number
 }
 
-interface IPlayoffSeries {
+export interface IPlayoffSeries {
 	seriesNumber: number
 	seriesCode: string
 	names: {
@@ -54,10 +54,10 @@ interface IPlayoffSeries {
 	round: {
 		number: number
 	}
-	matchUpTeams: IPlayoffMatchupTeam[]
+	matchupTeams: IPlayoffMatchupTeam[]
 }
 
-interface IPlayoffMatchupTeam {
+export interface IPlayoffMatchupTeam {
 	team: {
 		id: number
 		name: string

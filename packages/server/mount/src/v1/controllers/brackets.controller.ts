@@ -4,7 +4,6 @@ import { StatusCodes, getReasonPhrase } from 'http-status-codes'
 import redis from '../../libs/redis/redis'
 
 
-
 export async function getBrackets(req: Request, res: Response, next: NextFunction){
   try {
     const cachedBrackets = await redis.get('brackets')
@@ -19,7 +18,6 @@ export async function getBrackets(req: Request, res: Response, next: NextFunctio
     }
 
     const data = await brackets.getBrackets()
-
     res.status(StatusCodes.OK).json({
       message: getReasonPhrase(StatusCodes.OK),
       status: StatusCodes.OK,

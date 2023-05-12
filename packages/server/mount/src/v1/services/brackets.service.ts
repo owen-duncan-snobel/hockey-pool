@@ -1,7 +1,6 @@
-import express from 'express'
 import axios from 'axios'
 import HttpException from '../../exceptions/http-exception'
-import redis from '../../libs/redis/redis'
+import { IPlayoff } from '../../types/playoffs'
 
 const TOURNAMENT_PLAYOFFS_URL =
 	'https://statsapi.web.nhl.com/api/v1/tournaments/playoffs?expand=round.series'

@@ -1,32 +1,951 @@
 "use client"
+import { NHLSeriesNodes } from '@/utils/playoffs'
+import { IPlayoff, IPlayoffMatchupTeam, IPlayoffSeries } from '@backend/types/playoffs'
 import Image from 'next/image'
 import ReactFlow, { Background, Controls, addEdge, useEdgesState, useNodesState, Node, Edge, Handle, Position } from 'reactflow'
 //import 'reactflow/dist/style.css'
 import 'reactflow/dist/base.css'
-import { playoffNodePosition } from '../utils/playoffs'
-const data = require('playoffs_may-11.json')
 
-console.log(playoffNodePosition(data))
+const playoffData = {
+  "copyright" : "NHL and the NHL Shield are registered trademarks of the National Hockey League. NHL and NHL team marks are the property of the NHL and its teams. © NHL 2023. All Rights Reserved.",
+  "id" : 1,
+  "name" : "Playoffs",
+  "season" : "20222023",
+  "defaultRound" : 2,
+  "rounds" : [ {
+    "number" : 1,
+    "code" : 1,
+    "names" : {
+      "name" : "First Round",
+      "shortName" : "R1"
+    },
+    "format" : {
+      "name" : "BO7",
+      "description" : "Best of 7",
+      "numberOfGames" : 7,
+      "numberOfWins" : 4
+    },
+    "series" : [ {
+      "seriesNumber" : 1,
+      "seriesCode" : "A",
+      "names" : {
+        "matchupName" : "Bruins (1) vs. Panthers (WC2)",
+        "matchupShortName" : "BOS v FLA",
+        "teamAbbreviationA" : "BOS",
+        "teamAbbreviationB" : "FLA",
+        "seriesSlug" : "bruins-vs-panthers-series-a"
+      },
+      "currentGame" : {
+        "seriesSummary" : {
+          "gamePk" : 2022030117,
+          "gameNumber" : 7,
+          "gameLabel" : "Game 7",
+          "necessary" : true,
+          "gameCode" : 117,
+          "gameTime" : "2023-04-30T22:30:00Z",
+          "seriesStatus" : "Panthers win 4-3",
+          "seriesStatusShort" : "FLA wins 4-3"
+        }
+      },
+      "conference" : {
+        "id" : 6,
+        "name" : "Eastern",
+        "link" : "/api/v1/conferences/6"
+      },
+      "round" : {
+        "number" : 1
+      },
+      "matchupTeams" : [ {
+        "team" : {
+          "id" : 6,
+          "name" : "Boston Bruins",
+          "link" : "/api/v1/teams/6"
+        },
+        "seed" : {
+          "type" : "1",
+          "rank" : 1,
+          "isTop" : true
+        },
+        "seriesRecord" : {
+          "wins" : 3,
+          "losses" : 4
+        }
+      }, {
+        "team" : {
+          "id" : 13,
+          "name" : "Florida Panthers",
+          "link" : "/api/v1/teams/13"
+        },
+        "seed" : {
+          "type" : "WC2",
+          "rank" : 4,
+          "isTop" : false
+        },
+        "seriesRecord" : {
+          "wins" : 4,
+          "losses" : 3
+        }
+      } ]
+    }, {
+      "seriesNumber" : 2,
+      "seriesCode" : "B",
+      "names" : {
+        "matchupName" : "Maple Leafs (2) vs. Lightning (3)",
+        "matchupShortName" : "TOR v TBL",
+        "teamAbbreviationA" : "TOR",
+        "teamAbbreviationB" : "TBL",
+        "seriesSlug" : "maple-leafs-vs-lightning-series-b"
+      },
+      "currentGame" : {
+        "seriesSummary" : {
+          "gamePk" : 2022030126,
+          "gameNumber" : 6,
+          "gameLabel" : "Game 6",
+          "necessary" : true,
+          "gameCode" : 126,
+          "gameTime" : "2023-04-29T23:00:00Z",
+          "seriesStatus" : "Maple Leafs win 4-2",
+          "seriesStatusShort" : "TOR wins 4-2"
+        }
+      },
+      "conference" : {
+        "id" : 6,
+        "name" : "Eastern",
+        "link" : "/api/v1/conferences/6"
+      },
+      "round" : {
+        "number" : 1
+      },
+      "matchupTeams" : [ {
+        "team" : {
+          "id" : 10,
+          "name" : "Toronto Maple Leafs",
+          "link" : "/api/v1/teams/10"
+        },
+        "seed" : {
+          "type" : "2",
+          "rank" : 2,
+          "isTop" : true
+        },
+        "seriesRecord" : {
+          "wins" : 4,
+          "losses" : 2
+        }
+      }, {
+        "team" : {
+          "id" : 14,
+          "name" : "Tampa Bay Lightning",
+          "link" : "/api/v1/teams/14"
+        },
+        "seed" : {
+          "type" : "3",
+          "rank" : 3,
+          "isTop" : false
+        },
+        "seriesRecord" : {
+          "wins" : 2,
+          "losses" : 4
+        }
+      } ]
+    }, {
+      "seriesNumber" : 3,
+      "seriesCode" : "C",
+      "names" : {
+        "matchupName" : "Hurricanes (1) vs. Islanders (WC1)",
+        "matchupShortName" : "CAR v NYI",
+        "teamAbbreviationA" : "CAR",
+        "teamAbbreviationB" : "NYI",
+        "seriesSlug" : "hurricanes-vs-islanders-series-c"
+      },
+      "currentGame" : {
+        "seriesSummary" : {
+          "gamePk" : 2022030136,
+          "gameNumber" : 6,
+          "gameLabel" : "Game 6",
+          "necessary" : true,
+          "gameCode" : 136,
+          "gameTime" : "2023-04-28T23:00:00Z",
+          "seriesStatus" : "Hurricanes win 4-2",
+          "seriesStatusShort" : "CAR wins 4-2"
+        }
+      },
+      "conference" : {
+        "id" : 6,
+        "name" : "Eastern",
+        "link" : "/api/v1/conferences/6"
+      },
+      "round" : {
+        "number" : 1
+      },
+      "matchupTeams" : [ {
+        "team" : {
+          "id" : 12,
+          "name" : "Carolina Hurricanes",
+          "link" : "/api/v1/teams/12"
+        },
+        "seed" : {
+          "type" : "1",
+          "rank" : 1,
+          "isTop" : true
+        },
+        "seriesRecord" : {
+          "wins" : 4,
+          "losses" : 2
+        }
+      }, {
+        "team" : {
+          "id" : 2,
+          "name" : "New York Islanders",
+          "link" : "/api/v1/teams/2"
+        },
+        "seed" : {
+          "type" : "WC1",
+          "rank" : 4,
+          "isTop" : false
+        },
+        "seriesRecord" : {
+          "wins" : 2,
+          "losses" : 4
+        }
+      } ]
+    }, {
+      "seriesNumber" : 4,
+      "seriesCode" : "D",
+      "names" : {
+        "matchupName" : "Devils (2) vs. Rangers (3)",
+        "matchupShortName" : "NJD v NYR",
+        "teamAbbreviationA" : "NJD",
+        "teamAbbreviationB" : "NYR",
+        "seriesSlug" : "devils-vs-rangers-series-d"
+      },
+      "currentGame" : {
+        "seriesSummary" : {
+          "gamePk" : 2022030147,
+          "gameNumber" : 7,
+          "gameLabel" : "Game 7",
+          "necessary" : true,
+          "gameCode" : 147,
+          "gameTime" : "2023-05-02T00:00:00Z",
+          "seriesStatus" : "Devils win 4-3",
+          "seriesStatusShort" : "NJD wins 4-3"
+        }
+      },
+      "conference" : {
+        "id" : 6,
+        "name" : "Eastern",
+        "link" : "/api/v1/conferences/6"
+      },
+      "round" : {
+        "number" : 1
+      },
+      "matchupTeams" : [ {
+        "team" : {
+          "id" : 1,
+          "name" : "New Jersey Devils",
+          "link" : "/api/v1/teams/1"
+        },
+        "seed" : {
+          "type" : "2",
+          "rank" : 2,
+          "isTop" : true
+        },
+        "seriesRecord" : {
+          "wins" : 4,
+          "losses" : 3
+        }
+      }, {
+        "team" : {
+          "id" : 3,
+          "name" : "New York Rangers",
+          "link" : "/api/v1/teams/3"
+        },
+        "seed" : {
+          "type" : "3",
+          "rank" : 3,
+          "isTop" : false
+        },
+        "seriesRecord" : {
+          "wins" : 3,
+          "losses" : 4
+        }
+      } ]
+    }, {
+      "seriesNumber" : 5,
+      "seriesCode" : "E",
+      "names" : {
+        "matchupName" : "Avalanche (1) vs. Kraken (WC1)",
+        "matchupShortName" : "COL v SEA",
+        "teamAbbreviationA" : "COL",
+        "teamAbbreviationB" : "SEA",
+        "seriesSlug" : "avalanche-vs-kraken-series-e"
+      },
+      "currentGame" : {
+        "seriesSummary" : {
+          "gamePk" : 2022030157,
+          "gameNumber" : 7,
+          "gameLabel" : "Game 7",
+          "necessary" : true,
+          "gameCode" : 157,
+          "gameTime" : "2023-05-01T01:30:00Z",
+          "seriesStatus" : "Kraken win 4-3",
+          "seriesStatusShort" : "SEA wins 4-3"
+        }
+      },
+      "conference" : {
+        "id" : 5,
+        "name" : "Western",
+        "link" : "/api/v1/conferences/5"
+      },
+      "round" : {
+        "number" : 1
+      },
+      "matchupTeams" : [ {
+        "team" : {
+          "id" : 21,
+          "name" : "Colorado Avalanche",
+          "link" : "/api/v1/teams/21"
+        },
+        "seed" : {
+          "type" : "1",
+          "rank" : 1,
+          "isTop" : true
+        },
+        "seriesRecord" : {
+          "wins" : 3,
+          "losses" : 4
+        }
+      }, {
+        "team" : {
+          "id" : 55,
+          "name" : "Seattle Kraken",
+          "link" : "/api/v1/teams/55"
+        },
+        "seed" : {
+          "type" : "WC1",
+          "rank" : 4,
+          "isTop" : false
+        },
+        "seriesRecord" : {
+          "wins" : 4,
+          "losses" : 3
+        }
+      } ]
+    }, {
+      "seriesNumber" : 6,
+      "seriesCode" : "F",
+      "names" : {
+        "matchupName" : "Stars (2) vs. Wild (3)",
+        "matchupShortName" : "DAL v MIN",
+        "teamAbbreviationA" : "DAL",
+        "teamAbbreviationB" : "MIN",
+        "seriesSlug" : "stars-vs-wild-series-f"
+      },
+      "currentGame" : {
+        "seriesSummary" : {
+          "gamePk" : 2022030166,
+          "gameNumber" : 6,
+          "gameLabel" : "Game 6",
+          "necessary" : true,
+          "gameCode" : 166,
+          "gameTime" : "2023-04-29T01:30:00Z",
+          "seriesStatus" : "Stars win 4-2",
+          "seriesStatusShort" : "DAL wins 4-2"
+        }
+      },
+      "conference" : {
+        "id" : 5,
+        "name" : "Western",
+        "link" : "/api/v1/conferences/5"
+      },
+      "round" : {
+        "number" : 1
+      },
+      "matchupTeams" : [ {
+        "team" : {
+          "id" : 25,
+          "name" : "Dallas Stars",
+          "link" : "/api/v1/teams/25"
+        },
+        "seed" : {
+          "type" : "2",
+          "rank" : 2,
+          "isTop" : true
+        },
+        "seriesRecord" : {
+          "wins" : 4,
+          "losses" : 2
+        }
+      }, {
+        "team" : {
+          "id" : 30,
+          "name" : "Minnesota Wild",
+          "link" : "/api/v1/teams/30"
+        },
+        "seed" : {
+          "type" : "3",
+          "rank" : 3,
+          "isTop" : false
+        },
+        "seriesRecord" : {
+          "wins" : 2,
+          "losses" : 4
+        }
+      } ]
+    }, {
+      "seriesNumber" : 7,
+      "seriesCode" : "G",
+      "names" : {
+        "matchupName" : "Golden Knights (1) vs. Jets (WC2)",
+        "matchupShortName" : "VGK v WPG",
+        "teamAbbreviationA" : "VGK",
+        "teamAbbreviationB" : "WPG",
+        "seriesSlug" : "golden-knights-vs-jets-series-g"
+      },
+      "currentGame" : {
+        "seriesSummary" : {
+          "gamePk" : 2022030175,
+          "gameNumber" : 5,
+          "gameLabel" : "Game 5",
+          "necessary" : true,
+          "gameCode" : 175,
+          "gameTime" : "2023-04-28T02:00:00Z",
+          "seriesStatus" : "Golden Knights win 4-1",
+          "seriesStatusShort" : "VGK wins 4-1"
+        }
+      },
+      "conference" : {
+        "id" : 5,
+        "name" : "Western",
+        "link" : "/api/v1/conferences/5"
+      },
+      "round" : {
+        "number" : 1
+      },
+      "matchupTeams" : [ {
+        "team" : {
+          "id" : 54,
+          "name" : "Vegas Golden Knights",
+          "link" : "/api/v1/teams/54"
+        },
+        "seed" : {
+          "type" : "1",
+          "rank" : 1,
+          "isTop" : true
+        },
+        "seriesRecord" : {
+          "wins" : 4,
+          "losses" : 1
+        }
+      }, {
+        "team" : {
+          "id" : 52,
+          "name" : "Winnipeg Jets",
+          "link" : "/api/v1/teams/52"
+        },
+        "seed" : {
+          "type" : "WC2",
+          "rank" : 4,
+          "isTop" : false
+        },
+        "seriesRecord" : {
+          "wins" : 1,
+          "losses" : 4
+        }
+      } ]
+    }, {
+      "seriesNumber" : 8,
+      "seriesCode" : "H",
+      "names" : {
+        "matchupName" : "Oilers (2) vs. Kings (3)",
+        "matchupShortName" : "EDM v LAK",
+        "teamAbbreviationA" : "EDM",
+        "teamAbbreviationB" : "LAK",
+        "seriesSlug" : "oilers-vs-kings-series-h"
+      },
+      "currentGame" : {
+        "seriesSummary" : {
+          "gamePk" : 2022030186,
+          "gameNumber" : 6,
+          "gameLabel" : "Game 6",
+          "necessary" : true,
+          "gameCode" : 186,
+          "gameTime" : "2023-04-30T02:00:00Z",
+          "seriesStatus" : "Oilers win 4-2",
+          "seriesStatusShort" : "EDM wins 4-2"
+        }
+      },
+      "conference" : {
+        "id" : 5,
+        "name" : "Western",
+        "link" : "/api/v1/conferences/5"
+      },
+      "round" : {
+        "number" : 1
+      },
+      "matchupTeams" : [ {
+        "team" : {
+          "id" : 22,
+          "name" : "Edmonton Oilers",
+          "link" : "/api/v1/teams/22"
+        },
+        "seed" : {
+          "type" : "2",
+          "rank" : 2,
+          "isTop" : true
+        },
+        "seriesRecord" : {
+          "wins" : 4,
+          "losses" : 2
+        }
+      }, {
+        "team" : {
+          "id" : 26,
+          "name" : "Los Angeles Kings",
+          "link" : "/api/v1/teams/26"
+        },
+        "seed" : {
+          "type" : "3",
+          "rank" : 3,
+          "isTop" : false
+        },
+        "seriesRecord" : {
+          "wins" : 2,
+          "losses" : 4
+        }
+      } ]
+    } ]
+  }, {
+    "number" : 2,
+    "code" : 2,
+    "names" : {
+      "name" : "Second Round",
+      "shortName" : "R2"
+    },
+    "format" : {
+      "name" : "BO7",
+      "description" : "Best of 7",
+      "numberOfGames" : 7,
+      "numberOfWins" : 4
+    },
+    "series" : [ {
+      "seriesNumber" : 1,
+      "seriesCode" : "I",
+      "names" : {
+        "matchupName" : "Maple Leafs (2) vs. Panthers (WC2)",
+        "matchupShortName" : "TOR v FLA",
+        "teamAbbreviationA" : "TOR",
+        "teamAbbreviationB" : "FLA",
+        "seriesSlug" : "maple-leafs-vs-panthers-series-i"
+      },
+      "currentGame" : {
+        "seriesSummary" : {
+          "gamePk" : 2022030215,
+          "gameNumber" : 5,
+          "gameLabel" : "Game 5",
+          "necessary" : true,
+          "gameCode" : 215,
+          "gameTime" : "2023-05-12T23:00:00Z",
+          "seriesStatus" : "Panthers lead 3-1",
+          "seriesStatusShort" : "FLA leads 3-1"
+        }
+      },
+      "conference" : {
+        "id" : 6,
+        "name" : "Eastern",
+        "link" : "/api/v1/conferences/6"
+      },
+      "round" : {
+        "number" : 2
+      },
+      "matchupTeams" : [ {
+        "team" : {
+          "id" : 10,
+          "name" : "Toronto Maple Leafs",
+          "link" : "/api/v1/teams/10"
+        },
+        "seed" : {
+          "type" : "2",
+          "rank" : 2,
+          "isTop" : true
+        },
+        "seriesRecord" : {
+          "wins" : 1,
+          "losses" : 3
+        }
+      }, {
+        "team" : {
+          "id" : 13,
+          "name" : "Florida Panthers",
+          "link" : "/api/v1/teams/13"
+        },
+        "seed" : {
+          "type" : "WC2",
+          "rank" : 4,
+          "isTop" : false
+        },
+        "seriesRecord" : {
+          "wins" : 3,
+          "losses" : 1
+        }
+      } ]
+    }, {
+      "seriesNumber" : 2,
+      "seriesCode" : "J",
+      "names" : {
+        "matchupName" : "Hurricanes (1) vs. Devils (2)",
+        "matchupShortName" : "CAR v NJD",
+        "teamAbbreviationA" : "CAR",
+        "teamAbbreviationB" : "NJD",
+        "seriesSlug" : "hurricanes-vs-devils-series-j"
+      },
+      "currentGame" : {
+        "seriesSummary" : {
+          "gamePk" : 2022030225,
+          "gameNumber" : 5,
+          "gameLabel" : "Game 5",
+          "necessary" : true,
+          "gameCode" : 225,
+          "gameTime" : "2023-05-11T23:00:00Z",
+          "seriesStatus" : "Hurricanes lead 3-1",
+          "seriesStatusShort" : "CAR leads 3-1"
+        }
+      },
+      "conference" : {
+        "id" : 6,
+        "name" : "Eastern",
+        "link" : "/api/v1/conferences/6"
+      },
+      "round" : {
+        "number" : 2
+      },
+      "matchupTeams" : [ {
+        "team" : {
+          "id" : 12,
+          "name" : "Carolina Hurricanes",
+          "link" : "/api/v1/teams/12"
+        },
+        "seed" : {
+          "type" : "1",
+          "rank" : 1,
+          "isTop" : true
+        },
+        "seriesRecord" : {
+          "wins" : 3,
+          "losses" : 1
+        }
+      }, {
+        "team" : {
+          "id" : 1,
+          "name" : "New Jersey Devils",
+          "link" : "/api/v1/teams/1"
+        },
+        "seed" : {
+          "type" : "2",
+          "rank" : 2,
+          "isTop" : false
+        },
+        "seriesRecord" : {
+          "wins" : 1,
+          "losses" : 3
+        }
+      } ]
+    }, {
+      "seriesNumber" : 3,
+      "seriesCode" : "K",
+      "names" : {
+        "matchupName" : "Stars (2) vs. Kraken (WC1)",
+        "matchupShortName" : "DAL v SEA",
+        "teamAbbreviationA" : "DAL",
+        "teamAbbreviationB" : "SEA",
+        "seriesSlug" : "stars-vs-kraken-series-k"
+      },
+      "currentGame" : {
+        "seriesSummary" : {
+          "gamePk" : 2022030235,
+          "gameNumber" : 5,
+          "gameLabel" : "Game 5",
+          "necessary" : true,
+          "gameCode" : 235,
+          "gameTime" : "2023-05-12T01:30:00Z",
+          "seriesStatus" : "Series tied 2-2",
+          "seriesStatusShort" : "Tied 2-2"
+        }
+      },
+      "conference" : {
+        "id" : 5,
+        "name" : "Western",
+        "link" : "/api/v1/conferences/5"
+      },
+      "round" : {
+        "number" : 2
+      },
+      "matchupTeams" : [ {
+        "team" : {
+          "id" : 25,
+          "name" : "Dallas Stars",
+          "link" : "/api/v1/teams/25"
+        },
+        "seed" : {
+          "type" : "2",
+          "rank" : 2,
+          "isTop" : true
+        },
+        "seriesRecord" : {
+          "wins" : 2,
+          "losses" : 2
+        }
+      }, {
+        "team" : {
+          "id" : 55,
+          "name" : "Seattle Kraken",
+          "link" : "/api/v1/teams/55"
+        },
+        "seed" : {
+          "type" : "WC1",
+          "rank" : 4,
+          "isTop" : false
+        },
+        "seriesRecord" : {
+          "wins" : 2,
+          "losses" : 2
+        }
+      } ]
+    }, {
+      "seriesNumber" : 4,
+      "seriesCode" : "L",
+      "names" : {
+        "matchupName" : "Golden Knights (1) vs. Oilers (2)",
+        "matchupShortName" : "VGK v EDM",
+        "teamAbbreviationA" : "VGK",
+        "teamAbbreviationB" : "EDM",
+        "seriesSlug" : "golden-knights-vs-oilers-series-l"
+      },
+      "currentGame" : {
+        "seriesSummary" : {
+          "gamePk" : 2022030245,
+          "gameNumber" : 5,
+          "gameLabel" : "Game 5",
+          "necessary" : true,
+          "gameCode" : 245,
+          "gameTime" : "2023-05-13T02:00:00Z",
+          "seriesStatus" : "Series tied 2-2",
+          "seriesStatusShort" : "Tied 2-2"
+        }
+      },
+      "conference" : {
+        "id" : 5,
+        "name" : "Western",
+        "link" : "/api/v1/conferences/5"
+      },
+      "round" : {
+        "number" : 2
+      },
+      "matchupTeams" : [ {
+        "team" : {
+          "id" : 54,
+          "name" : "Vegas Golden Knights",
+          "link" : "/api/v1/teams/54"
+        },
+        "seed" : {
+          "type" : "1",
+          "rank" : 1,
+          "isTop" : true
+        },
+        "seriesRecord" : {
+          "wins" : 2,
+          "losses" : 2
+        }
+      }, {
+        "team" : {
+          "id" : 22,
+          "name" : "Edmonton Oilers",
+          "link" : "/api/v1/teams/22"
+        },
+        "seed" : {
+          "type" : "2",
+          "rank" : 2,
+          "isTop" : false
+        },
+        "seriesRecord" : {
+          "wins" : 2,
+          "losses" : 2
+        }
+      } ]
+    } ]
+  }, {
+    "number" : 3,
+    "code" : 3,
+    "names" : {
+      "name" : "Conference Finals",
+      "shortName" : "CF"
+    },
+    "format" : {
+      "name" : "BO7",
+      "description" : "Best of 7",
+      "numberOfGames" : 7,
+      "numberOfWins" : 4
+    },
+    "series" : [ {
+      "seriesCode" : "M",
+      "names" : {
+        "matchupName" : "",
+        "matchupShortName" : "",
+        "teamAbbreviationA" : "",
+        "teamAbbreviationB" : ""
+      },
+      "currentGame" : {
+        "seriesSummary" : {
+          "gameLabel" : ""
+        }
+      },
+      "conference" : {
+        "id" : 6,
+        "name" : "Eastern",
+        "link" : "/api/v1/conferences/6"
+      },
+      "round" : {
+        "number" : 3
+      }
+    }, {
+      "seriesCode" : "N",
+      "names" : {
+        "matchupName" : "",
+        "matchupShortName" : "",
+        "teamAbbreviationA" : "",
+        "teamAbbreviationB" : ""
+      },
+      "currentGame" : {
+        "seriesSummary" : {
+          "gameLabel" : ""
+        }
+      },
+      "conference" : {
+        "id" : 5,
+        "name" : "Western",
+        "link" : "/api/v1/conferences/5"
+      },
+      "round" : {
+        "number" : 3
+      }
+    } ]
+  }, {
+    "number" : 4,
+    "code" : 4,
+    "names" : {
+      "name" : "Stanley Cup Final",
+      "shortName" : "SCF"
+    },
+    "format" : {
+      "name" : "BO7",
+      "description" : "Best of 7",
+      "numberOfGames" : 7,
+      "numberOfWins" : 4
+    },
+    "series" : [ {
+      "seriesCode" : "O",
+      "names" : {
+        "matchupName" : "",
+        "matchupShortName" : "",
+        "teamAbbreviationA" : "",
+        "teamAbbreviationB" : ""
+      },
+      "currentGame" : {
+        "seriesSummary" : {
+          "gameLabel" : ""
+        }
+      },
+      "conference" : {
+        "link" : "/api/v1/conferences/null"
+      },
+      "round" : {
+        "number" : 4
+      }
+    } ]
+  } ]
+}
 
 interface IPlayoffNode {
   data: {
-    location?: string
     teamName?: string
     logo: string
   }
 }
 
-function PlayoffNode({ data }: IPlayoffNode){
-  return (
+interface ISeriesNode {
+  data: IPlayoffSeries
+}
 
-    <div className="px-4 py-2 shadow-md rounded-md bg-white border-2 border-stone-400 w-[200px]">
+function SeriesNode({ data }: ISeriesNode){
+  const teams = data.matchupTeams
+
+  if (!teams) return (
+    <div>
+      <div className="flex justify-center items-center">
+        <div>
+          <PlayoffNode data={{
+            teamName: 'TBA',
+            logo: '',
+          }} />
+          <PlayoffNode data={{
+            teamName: 'TBA',
+            logo: '',
+          }} />
+        </div>
+      </div>
+    </div>
+  )
+  return (
+    <div>
+      <div className="flex justify-center items-center">
+        <div>
+          {teams.map((team, i) => <PlayoffNode key={i} data={{
+            teamName: team.team.name,
+            logo: '',
+          }} />)}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function FinalsNode({ data }: ISeriesNode){
+  const teams = data.matchupTeams
+  if (!teams) return (
+    <div>
+      <div className="flex justify-center items-center gap-x-2">
+          <PlayoffNode data={{
+            teamName: 'TBA',
+            logo: '',
+          }} />
+          <PlayoffNode data={{
+            teamName: 'TBA',
+            logo: '',
+          }} />
+      </div>
+    </div>
+  )
+  return (
+    <div>
+      <div className="flex justify-center items-center gap-x-2">
+        {teams.map((team, i) => <PlayoffNode key={i} data={{
+          teamName: team.team.name,
+          logo: '',
+        }} />
+      )}
+      </div>
+    </div>
+  )
+}
+
+function PlayoffNode({data}: IPlayoffNode){
+  return (
+    <div className="px-4 py-2 shadow-md rounded-md bg-white border-2 border-stone-400 w-[200px] my-2">
       <div className="flex">
         <div className="rounded-full w-12 h-12 flex justify-center items-center bg-gray-100">
-          <Image src={data.logo} alt="logo" width={50} height={50} />
+          <Image src={''} alt="" width={50} height={50} />
         </div>
         <div className="ml-2">
-          <div className="text-gray-500">{data.location}</div>
-          <div className="text-lg font-bold">{data.teamName}</div>
+          <div className="text-sm font-bold">{data.teamName}</div>
         </div>
       </div>
     </div>
@@ -34,355 +953,34 @@ function PlayoffNode({ data }: IPlayoffNode){
 }
 
 const nodeTypes = {
-  custom: PlayoffNode,
+  seriesNode: SeriesNode,
+  finalsNode: FinalsNode,
 };
 
-const position = { x: 0, y: 0 }
-const edgeType = 'smoothstep'
+const initialNodes: Node[] = NHLSeriesNodes({
+  data: playoffData as unknown as IPlayoff
+})
 
-const initialNodes: Node[] = [
-  {
-    id: 'team-1-2-round-1',
-    data: { label: ''},
-    position: { x: 0, y: 0 },
-    type: 'group'
-  },
-
-    {
-    id: 'team-3-4-round-1',
-    data: { label: ''},
-    position: { x: 0, y: 0 },
-    type: 'group'
-  },
-
-
-  {
-    id: '1',
-    data: { location: 'Toronto', teamName: 'Maple Leafs', logo: '/toronto-maple-leafs-logo.png' },
-    type: 'custom',
-    position: { x: 10, y: 20},
-    parentNode: 'team-1-2-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-  
-  {
-    id: '2',
-    data: { location: 'Tampa Bay', teamName: 'Lightning', logo:"tampa-bay-lightning.svg" },
-    type: 'custom',
-    position: { x: 10, y: 100},
-    parentNode: 'team-1-2-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-
-    {
-    id: '3',
-    data: { location: 'Toronto', teamName: 'Maple Leafs', logo: '/toronto-maple-leafs-logo.png' },
-    type: 'custom',
-    position: { x: 10, y: 220},
-    parentNode: 'team-1-2-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-  {
-    id: '4',
-    data: { location: 'Tampa Bay', teamName: 'Lightning', logo:"tampa-bay-lightning.svg" },
-    type: 'custom',
-    position: { x: 10, y: 300},
-    parentNode: 'team-1-2-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-   
-  {
-    id: '5',
-    data: { location: 'Toronto', teamName: 'Maple Leafs', logo: '/toronto-maple-leafs-logo.png' },
-    type: 'custom',
-    position: { x: 10, y: 420},
-    parentNode: 'team-3-4-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-  {
-    id: '6',
-    data: { location: 'Tampa Bay', teamName: 'Lightning', logo:"tampa-bay-lightning.svg" },
-    type: 'custom',
-    position: { x: 10, y: 500},
-    parentNode: 'team-3-4-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-   {
-    id: '7',
-    data: { location: 'Toronto', teamName: 'Maple Leafs', logo: '/toronto-maple-leafs-logo.png' },
-    type: 'custom',
-    position: { x: 10, y: 620},
-    parentNode: 'team-3-4-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-  {
-    id: '8',
-    data: { location: 'Tampa Bay', teamName: 'Lightning', logo:"tampa-bay-lightning.svg" },
-    type: 'custom',
-    position: { x: 10, y: 700},
-    parentNode: 'team-3-4-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-
-
-   {
-    id: '100',
-    data: { location: 'Toronto', teamName: 'Maple Leafs', logo: '/toronto-maple-leafs-logo.png' },
-    type: 'custom',
-    position: { x: 250, y: 120},
-    parentNode: 'team-3-4-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-  {
-    id: '101',
-    data: { location: 'Tampa Bay', teamName: 'Lightning', logo:"tampa-bay-lightning.svg" },
-    type: 'custom',
-    position: { x: 250, y: 200},
-    parentNode: 'team-3-4-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-   {
-    id: '102',
-    data: { location: 'Toronto', teamName: 'Maple Leafs', logo: '/toronto-maple-leafs-logo.png' },
-    type: 'custom',
-    position: { x: 250, y: 520},
-    parentNode: 'team-3-4-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-  {
-    id: '103',
-    data: { location: 'Tampa Bay', teamName: 'Lightning', logo:"tampa-bay-lightning.svg" },
-    type: 'custom',
-    position: { x: 250, y: 600},
-    parentNode: 'team-3-4-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-
-  // semi
-  {
-    id: '107',
-    data: { location: 'Tampa Bay', teamName: 'Lightning', logo:"tampa-bay-lightning.svg" },
-    type: 'custom',
-    position: { x: 490, y: 320},
-    parentNode: 'team-3-4-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-  {
-    id: '108',
-    data: { location: 'Tampa Bay', teamName: 'Lightning', logo:"tampa-bay-lightning.svg" },
-    type: 'custom',
-    position: { x: 490, y: 400},
-    parentNode: 'team-3-4-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-  // finals
-   {
-    id: '109',
-    data: { location: 'Tampa Bay', teamName: 'Lightning', logo:"tampa-bay-lightning.svg" },
-    type: 'custom',
-    position: { x: 730, y: 360},
-    parentNode: 'team-3-4-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-
-   {
-    id: '110',
-    data: { location: 'Tampa Bay', teamName: 'Lightning', logo:"tampa-bay-lightning.svg" },
-    type: 'custom',
-    position: { x: 940, y: 360},
-    parentNode: 'team-3-4-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-
-  // champion
-  {
-    id: 'champion',
-    data: { location: 'Tampa Bay', teamName: 'Lightning', logo:"tampa-bay-lightning.svg" },
-    type: 'custom',
-    position: { x: 830, y: 260},
-    parentNode: 'team-3-4-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-
-  // semis
-  {
-    id: '111',
-    data: { location: 'Tampa Bay', teamName: 'Lightning', logo:"tampa-bay-lightning.svg" },
-    type: 'custom',
-    position: { x: 1180, y: 320},
-    parentNode: 'team-3-4-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-  {
-    id: '112',
-    data: { location: 'Tampa Bay', teamName: 'Lightning', logo:"tampa-bay-lightning.svg" },
-    type: 'custom',
-    position: { x: 1180, y: 400},
-    parentNode: 'team-3-4-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-
-   {
-    id: '113',
-    data: { location: 'Toronto', teamName: 'Maple Leafs', logo: '/toronto-maple-leafs-logo.png' },
-    type: 'custom',
-    position: { x: 1420, y: 120},
-    parentNode: 'team-3-4-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-  {
-    id: '114',
-    data: { location: 'Tampa Bay', teamName: 'Lightning', logo:"tampa-bay-lightning.svg" },
-    type: 'custom',
-    position: { x: 1420, y: 200},
-    parentNode: 'team-3-4-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-   {
-    id: '115',
-    data: { location: 'Toronto', teamName: 'Maple Leafs', logo: '/toronto-maple-leafs-logo.png' },
-    type: 'custom',
-    position: { x: 1420, y: 520},
-    parentNode: 'team-3-4-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-  {
-    id: '116',
-    data: { location: 'Tampa Bay', teamName: 'Lightning', logo:"tampa-bay-lightning.svg" },
-    type: 'custom',
-    position: { x: 1420, y: 600},
-    parentNode: 'team-3-4-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-
-
-
-  {
-    id: '9',
-    data: { location: 'Toronto', teamName: 'Maple Leafs', logo: '/toronto-maple-leafs-logo.png' },
-    type: 'custom',
-    position: { x: 1660, y: 20},
-    parentNode: 'team-1-2-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-  
-  {
-    id: '10',
-    data: { location: 'Tampa Bay', teamName: 'Lightning', logo:"tampa-bay-lightning.svg" },
-    type: 'custom',
-    position: { x: 1660, y: 100},
-    parentNode: 'team-1-2-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-
-    {
-    id: '11',
-    data: { location: 'Toronto', teamName: 'Maple Leafs', logo: '/toronto-maple-leafs-logo.png' },
-    type: 'custom',
-    position: { x: 1660, y: 220},
-    parentNode: 'team-1-2-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-  {
-    id: '12',
-    data: { location: 'Tampa Bay', teamName: 'Lightning', logo:"tampa-bay-lightning.svg" },
-    type: 'custom',
-    position: { x: 1660, y: 300},
-    parentNode: 'team-1-2-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-   
-  {
-    id: '13',
-    data: { location: 'Toronto', teamName: 'Maple Leafs', logo: '/toronto-maple-leafs-logo.png' },
-    type: 'custom',
-    position: { x: 1660, y: 420},
-    parentNode: 'team-3-4-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-  {
-    id: '14',
-    data: { location: 'Tampa Bay', teamName: 'Lightning', logo:"tampa-bay-lightning.svg" },
-    type: 'custom',
-    position: { x: 1660, y: 500},
-    parentNode: 'team-3-4-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-   {
-    id: '15',
-    data: { location: 'Toronto', teamName: 'Maple Leafs', logo: '/toronto-maple-leafs-logo.png' },
-    type: 'custom',
-    position: { x: 1660, y: 620},
-    parentNode: 'team-3-4-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-  {
-    id: '16',
-    data: { location: 'Tampa Bay', teamName: 'Lightning', logo:"tampa-bay-lightning.svg" },
-    type: 'custom',
-    position: { x: 1660, y: 700},
-    parentNode: 'team-3-4-round-1',
-    extent: 'parent',
-    draggable: false
-  },
-
-
-]
-
-const initialEdges: Edge[] = [
-  // {
-  //   id: 'e',
-  //   source: '1',
-  //   target: '2',
-  // },
-
-]
 
 export default function Home() {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [nodes] = useNodesState(initialNodes);
 
   return (
-    <main className="flex h-screen">
-      <ReactFlow 
-        nodes={nodes} 
-        edges={edges}
-        onNodesChange={onNodesChange}
-        nodeTypes={nodeTypes}
-        // onEdgesChange={onEdgesChange}
-      >
-        <Background />
-      </ReactFlow>
+    <main className="flex justify-center h-screen">
+      <div className='w-5/6 h-full'>
+        <ReactFlow 
+          nodes={nodes} 
+          nodeTypes={nodeTypes}
+          minZoom={0.1}
+          zoomOnPinch={true}
+          fitView
+          fitViewOptions={{
+            padding: 0.1
+          }}
+        >
+          <Background />
+        </ReactFlow>
+      </div>
     </main>
   )
 }

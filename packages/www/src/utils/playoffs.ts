@@ -1,59 +1,88 @@
 import { Node, XYPosition } from 'reactflow'
-
+import { v4 as uuid } from 'uuid'
 import { IPlayoff, IPlayoffMatchupTeam } from '@backend/types/playoffs'
+import PlayoffBrackets from '../config/playoff_brackets.json'
 
-const HEIGHT_OFFSET = 80
-const WIDTH_OFFSET = 240
+type NHL_PLAYOFF_ROUND = 1 | 2 | 3 | 4 | 5
 
-type NHL_ROUND = 1 | 2 | 3 | 4
-
-const TEAMS_PER_NHL_PLAYOFF_ROUNDS: {[key in NHL_ROUND]: number} = {
-  1: 16,
-  2: 8,
-  3: 4,
-  4: 2
-}
-
-
-export function NHLTeamsInRound({
-  data,
-  round
-}: {
+export function NHLSeriesByPlayoffRound(
   data: IPlayoff,
-  round: NHL_ROUND
+  round: NHL_PLAYOFF_ROUND
+){
+  const NHL_PLAYOFF_ROUND_INDEX = round - 1
+  if (!(NHL_PLAYOFF_ROUND_INDEX in data.rounds)) return []
+  return data.rounds[NHL_PLAYOFF_ROUND_INDEX].series
+}
+
+export function NHLSeriesNodes({
+  data
+}: {
+  data: IPlayoff
 }){
-  const teams: IPlayoffMatchupTeam[] = []
-  const ROUND_INDEX = round - 1
-  
-  if (!(ROUND_INDEX in data.rounds)) return teams
+  const round1Series = NHLSeriesByPlayoffRound(data, 1)
+  const round2Series = NHLSeriesByPlayoffRound(data, 2)
+  const round3Series = NHLSeriesByPlayoffRound(data, 3)
+  const round4Series = NHLSeriesByPlayoffRound(data, 4)
 
-  data.rounds[ROUND_INDEX].series.forEach(series => {
-    if ('matchupTeams' in series){
-      teams.push(...series.matchupTeams)
+  const round1SeriesNodes = round1Series.map((series, seriesIndex) => {
+    const seriesNode: Node = {
+      id: uuid(),
+      data: {
+        ...series,
+      },
+      type: 'seriesNode',
+      position: PlayoffBrackets.brackets.NHL.rounds['1'][seriesIndex].position
     }
+    return seriesNode
   })
-  return teams
-}
 
-export const playoffBracketPosition = ({ round, teamIndex}: {
-  round: NHL_ROUND
-  teamIndex: number
-}): XYPosition => {
+  const round2SeriesNodes = round2Series.map((series, seriesIndex) => {
+    const seriesNode: Node = {
+      id: uuid(),
+      data: {
+        ...series,
+      },
+      type: 'seriesNode',
+      position: PlayoffBrackets.brackets.NHL.rounds['2'][seriesIndex].position
+    }
+    return seriesNode
+  })
 
-  const NUMBER_OF_TEAMS = TEAMS_PER_NHL_PLAYOFF_ROUNDS[round]
-  const NUMBER_OF_SERIES = TEAMS_PER_NHL_PLAYOFF_ROUNDS[round] / 2  
+  const round3SeriesNodes = round3Series.map((series, seriesIndex) => {
+    const seriesNode: Node = {
+      id: uuid(),
+      data: {
+        ...series,
+      },
+      type: 'seriesNode',
+      position: PlayoffBrackets.brackets.NHL.rounds['3'][seriesIndex].position
+    }
+    return seriesNode
+  })
 
-  return {
-    x: 0,
-    y: 0
-  }
-}
+  const round4SeriesNodes = round4Series.map((series, seriesIndex) => {
+    const seriesNode: Node = {
+      id: uuid(),
+      data: {
+        ...series,
+      },
+      type: 'finalsNode',
+      position: PlayoffBrackets.brackets.NHL.rounds['4'][seriesIndex].position
+    }
+    return seriesNode
+  })
 
-export const playoffNodePosition = (data: IPlayoff): {x: number, y: number} => {
-  const numberOfRounds = data.rounds.length
+  const round5SeriesNodes = [{
+    id: uuid(),
+    data: {},
+    type: 'seriesNode',
+    position: PlayoffBrackets.brackets.NHL.rounds['5'][0].position
+  }]
 
-  return {
-    x: 0,
-    y: 0
-  }
+  return [
+    ...round1SeriesNodes,
+    ...round2SeriesNodes, 
+    ...round3SeriesNodes,
+    ...round4SeriesNodes,
+  ]
 }
