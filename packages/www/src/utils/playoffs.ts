@@ -10,6 +10,7 @@ export function NHLSeriesByPlayoffRound(
   round: NHL_PLAYOFF_ROUND
 ){
   const NHL_PLAYOFF_ROUND_INDEX = round - 1
+  if (!data.rounds) return []
   if (!(NHL_PLAYOFF_ROUND_INDEX in data.rounds)) return []
   return data.rounds[NHL_PLAYOFF_ROUND_INDEX].series
 }
