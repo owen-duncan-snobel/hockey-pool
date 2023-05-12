@@ -28,12 +28,15 @@ model Team {
   franchise       Franchise?
   conference      Conference? @relation(fields: [conferenceId], references: [id])
   conferenceId    Int?
-  division        Division?  @relation(fields: [divisionId], references: [id])
+  division        Division?  @relation(fields: [divisionId], references: [id] )
   divisionId      Int?
   // venue           Venue @relation(fields: [venueId], references: [id])
   // venueId        Int
+  locationName    String
+  firstYearOfPlay String
   officialSiteUrl String
   active          Boolean
+  playoffSeries   TeamsInSeries[]
 }
 
 model Conference {
@@ -65,6 +68,24 @@ model Franchise {
   team                Team? @relation(fields: [mostRecentTeamId], references: [id])
   mostRecentTeamId    Int @unique
   link                String
+}
+
+model Series {
+  round       Int
+  season      String
+  seriesCode  String
+  teams       TeamsInSeries[]
+  @@id([season, round, seriesCode])
+}
+
+model TeamsInSeries {
+  team Team? @relation(fields: [teamId], references: [id])
+  teamId Int
+  series Series? @relation(fields: [round, season, seriesCode], references: [round, season, seriesCode])
+  round Int
+  season String
+  seriesCode String
+  @@id([teamId, round, season, seriesCode])
 }
 
 // model Venue {

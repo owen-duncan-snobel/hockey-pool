@@ -98,7 +98,7 @@ const handleConferences = async (): Promise<Prisma.ConferenceCreateManyInput[]> 
 const handleDivisions = async (): Promise<Prisma.DivisionCreateManyInput[]> => {
   const data = await getData({ url: NHL_DIVISIONS_URL })
   const divisons: NHLDivision[] = data.divisions
-  const divisionsCreateManyInput: Prisma.DivisionCreateManyInput[] = divisons.map((d) => ({
+  const divisionsCreateManyInput: Prisma.DivisionCreateManyInput[] = divisons.map((d: any) => ({
     abbreviation: d.abbreviation,
     conferenceId: d.conference.id,
     id: d.id,
@@ -112,7 +112,7 @@ const handleDivisions = async (): Promise<Prisma.DivisionCreateManyInput[]> => {
 const handleFranchises = async (): Promise<Prisma.FranchiseCreateManyInput[]> => {
   const data = await getData({ url: NHL_FRANCHISES_URL })
   const { franchises } = data
-  const franchisesCreateManyInput: Prisma.FranchiseCreateManyInput[] = franchises.map((f) => ({
+  const franchisesCreateManyInput: Prisma.FranchiseCreateManyInput[] = franchises.map((f: any) => ({
     firstSeasonId: f.firstSeasonId,
     id: f.franchiseId,
     link: f.link,
@@ -124,7 +124,7 @@ const handleFranchises = async (): Promise<Prisma.FranchiseCreateManyInput[]> =>
 const handleTeams = async () => {
   const data = await getData({ url: NHL_TEAMS_URL })
   const { teams } = data
-  const teamsCreateInput: Prisma.TeamCreateInput[] = teams.map((t) => ({
+  const teamsCreateInput: Prisma.TeamCreateInput[] = teams.map((t: any) => ({
     abbreviation: t.abbreviation,
     active: t.active,
     conference: {
@@ -135,8 +135,11 @@ const handleTeams = async () => {
     division: {
       connect: {
         id: t.division.id,
-      },
+      }
     },
+    firstYearOfPlay: t.firstYearOfPlay,
+    locationName: t.locationName,
+
     // franchise: {
     //   connect: {
     //     mostRecentTeamId: t.id
@@ -182,6 +185,8 @@ async function main() {
               name: '',
               officialSiteUrl: '',
               teamName: '',
+              firstYearOfPlay: '',
+              locationName: '',
             },
             where: {
               id: f.mostRecentTeamId,
