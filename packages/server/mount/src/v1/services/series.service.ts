@@ -4,7 +4,6 @@ import { IPlayoff, IPlayoffMatchupTeam, IPlayoffSeries } from "../../types/playo
 import prisma from "../../libs/prisma/prisma"
 import HttpException from "../../exceptions/http-exception"
 
-
 interface IPlayoffSeriesWithSeason extends IPlayoffSeries {
   season: string
 }
