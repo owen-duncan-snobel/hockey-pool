@@ -1,23 +1,17 @@
 "use client"
 import { useFetch } from 'usehooks-ts'
-import { NHLBrackets } from '@/libs/react-flow/custom-nodes'
-import { IPlayoff } from '@backend/types/playoffs'
+import NHLBrackets from '@/libs/react-flow/flow'
+import { useBrackets } from '@/hooks/hooks'
 
-const url = `${process.env.NEXT_PUBLIC_API_URL}/brackets`  
 
-interface BracketsResponse {
-  message: string
-  status: number
-  data: {
-    brackets: IPlayoff
-  }
-}
 
 export default function Home() {
-  const { data, error } = useFetch<BracketsResponse>(url)
+  const { brackets, error, isLoading } = useBrackets()
 
   if (error) return <p>There is an error.</p>
-  if (!data) return <div>Loading...</div>
+  if (isLoading) return <div>Loading...</div>
+  if (!brackets) return <div></div>
+
   return (
     <div className='h-screen'>
       <div className=''>
@@ -32,7 +26,7 @@ export default function Home() {
       <div className='md:h-20' />
 
       <div className='h-5/6 md:h:3/4'>     
-        <NHLBrackets data={data.data.brackets} />
+        <NHLBrackets data={brackets} />
        </div>
 
       {/* <div className='grid grid-cols-1 md:grid-cols-3'>
