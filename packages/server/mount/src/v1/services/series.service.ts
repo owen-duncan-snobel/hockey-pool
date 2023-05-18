@@ -54,6 +54,7 @@ export const createOrUpdateSeries = async () => {
   )
 }
 
+// TODO should rename the function
 export const updateSeriesToTeams = async () => {
   const response = await axios.get(TOURNAMENT_PLAYOFFS_URL)
   if (response.status !== 200) throw new HttpException({
