@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-        domains: ['https://en.wikipedia.org'],
+        domains: ['hockey-pool.nyc3.digitaloceanspaces.com'],
     },
 }
 

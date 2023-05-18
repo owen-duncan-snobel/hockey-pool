@@ -1,0 +1,1 @@
+export const TEAM_LOGO_BASE_URL = 'https://hockey-pool.nyc3.digitaloceanspaces.com/nhl-logos'
