@@ -25,6 +25,7 @@ export async function getBrackets(req: Request, res: Response, next: NextFunctio
         brackets: data,
       }
     })
+    
     return await redis.set('brackets', JSON.stringify(data), {
       EX: 3600
     })
