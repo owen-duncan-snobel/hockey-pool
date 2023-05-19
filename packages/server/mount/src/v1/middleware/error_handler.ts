@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes, getReasonPhrase } from 'http-status-codes'
-import { 
-  PrismaClientKnownRequestError, 
-  PrismaClientValidationError 
+import {
+  PrismaClientKnownRequestError,
+  PrismaClientValidationError,
 } from '@prisma/client/runtime/library'
-import HttpException  from '../../exceptions/http-exception'
+import HttpException from '../../exceptions/http-exception'
+import { z } from 'zod'
 
 const ErrorHandler = (
   err: Error,
@@ -12,7 +13,13 @@ const ErrorHandler = (
   res: Response,
   next: NextFunction,
 ) => {
-  if (err instanceof PrismaClientKnownRequestError) {
+  if (err instanceof z.ZodError) {
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      message: getReasonPhrase(StatusCodes.BAD_REQUEST),
+      status: StatusCodes.BAD_REQUEST,
+      errors: err.issues.map((e) => ({ path: e.path[0], message: e.message }))
+    })
+  } else if (err instanceof PrismaClientKnownRequestError) {
     switch (err.code) {
       case 'P2002':
       case 'P2003':

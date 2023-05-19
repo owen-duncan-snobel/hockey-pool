@@ -1,1 +1,1 @@
-export const TEAM_LOGO_BASE_URL = 'https://hockey-pool.nyc3.digitaloceanspaces.com/nhl-logos'
+export const NHL_TEAM_LOGO_URL = 'https://hockey-pool.nyc3.digitaloceanspaces.com/nhl-logos'

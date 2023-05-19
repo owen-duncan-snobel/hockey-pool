@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import 'reactflow/dist/base.css'
-import { TEAM_LOGO_BASE_URL } from '@/constants'
+import { NHL_TEAM_LOGO_URL } from '@/constants'
 import { IPlayoffSeries } from '@backend/types/playoffs'
 
 interface IPlayoffNode {
@@ -61,7 +61,7 @@ export function SeriesNode({ data }: ISeriesNode){
         <div>
           {teams.map((team, i) => <PlayoffNode key={i} data={{
             teamName: team.team.name,
-            logo: `${TEAM_LOGO_BASE_URL}/${team.team.name}.png`,
+            logo: `${NHL_TEAM_LOGO_URL}/${team.team.name}.png`,
           }} />)}
         </div>
       </div>
@@ -91,7 +91,7 @@ export function FinalsNode({ data }: ISeriesNode){
       <div className="flex justify-center items-center gap-x-2">
         {teams.map((team, i) => <PlayoffNode key={i} data={{
           teamName: team.team.name,
-          logo: `${TEAM_LOGO_BASE_URL}/${team.team.name}.png`,
+          logo: `${NHL_TEAM_LOGO_URL}/${team.team.name}.png`,
         }} />
       )}
       </div>
