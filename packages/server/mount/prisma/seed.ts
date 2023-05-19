@@ -1,7 +1,7 @@
 import { PrismaClient, Prisma } from '@prisma/client'
 import axios from 'axios'
 import {
-  NHL_CONFERENCES_URL, NHL_DIVISIONS_URL, NHL_FRANCHISES_URL, NHL_TEAMS_URL,
+  NHL_CONFERENCES_URL, NHL_DIVISIONS_URL, NHL_FRANCHISES_URL, NHL_TEAMS_URL, NHL_TEAM_LOGOS_URL,
 } from '../src/constants/playoffs'
 
 const prisma = new PrismaClient()
@@ -136,7 +136,6 @@ const handleTeams = async () => {
     },
     firstYearOfPlay: t.firstYearOfPlay,
     locationName: t.locationName,
-
     // franchise: {
     //   connect: {
     //     mostRecentTeamId: t.id
@@ -147,6 +146,7 @@ const handleTeams = async () => {
     name: t.name,
     officialSiteUrl: t.officialSiteUrl,
     teamName: t.teamName,
+    logo: `${NHL_TEAM_LOGOS_URL}/${encodeURIComponent(t.team.name)}.png`
   }))
   return teamsCreateInput
 }
