@@ -3,3 +3,4 @@ node_modules/
 postgres-data/
 redis-data/
 .next
+.env*

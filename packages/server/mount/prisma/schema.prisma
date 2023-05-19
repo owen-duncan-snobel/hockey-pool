@@ -12,22 +12,38 @@ datasource db {
 }
 
 model User {
-  id        Int @id @default(autoincrement())
-  clerk_id  String @unique()
-  username  String?
+  id                  Int @id @default(autoincrement())
+  clerk_id            String @unique()
+  username            String?
+  nhlBracketPicks     NhlBracketPick[]
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+}
+
+model NhlBracketPick {
+  id          Int @id @default(autoincrement())
+  user        User    @relation(fields: [userId], references: [id])
+  userId      Int
+  pick        NhlTeamInSeries @relation(fields: [teamId, round, season, seriesCode], references: [teamId, round, season, seriesCode])
+  teamId      Int
+  round       Int
+  season      String
+  seriesCode  String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 // NHL Models
-model Team {
+model NhlTeam {
   id              Int @id
   name            String
   link            String
   abbreviation    String
   teamName        String
-  franchise       Franchise?
-  conference      Conference? @relation(fields: [conferenceId], references: [id])
+  franchise       NhlFranchise?
+  conference      NhlConference? @relation(fields: [conferenceId], references: [id])
   conferenceId    Int?
-  division        Division?  @relation(fields: [divisionId], references: [id] )
+  division        NhlDivision?  @relation(fields: [divisionId], references: [id] )
   divisionId      Int?
   // venue           Venue @relation(fields: [venueId], references: [id])
   // venueId        Int
@@ -35,56 +51,67 @@ model Team {
   firstYearOfPlay String
   officialSiteUrl String
   active          Boolean
-  playoffSeries   TeamsInSeries[]
+  playoffSeries   NhlTeamInSeries[]
   logo            String?
 }
 
-model Conference {
+model NhlConference {
   id              Int @id
   name            String
   link            String
   abbreviation    String
   shortName       String
   active          Boolean
-  division        Division[]
-  teams           Team[]
+  division        NhlDivision[]
+  teams           NhlTeam[]
 }
 
-model Division { 
+model NhlDivision { 
   id              Int @id
   name            String
   nameShort       String
   link            String
   abbreviation    String
-  conference      Conference @relation(fields: [conferenceId], references: [id])
+  conference      NhlConference @relation(fields: [conferenceId], references: [id])
   conferenceId    Int
-  teams           Team[]
+  teams           NhlTeam[]
 }
 
-model Franchise {
+model NhlFranchise {
   id                  Int @id
   firstSeasonId       Int
   lastSeasonId        Int?
-  team                Team? @relation(fields: [mostRecentTeamId], references: [id])
+  team                NhlTeam? @relation(fields: [mostRecentTeamId], references: [id])
   mostRecentTeamId    Int @unique
   link                String
 }
 
-model Series {
-  round       Int
-  season      String
-  seriesCode  String
-  teams       TeamsInSeries[]
+model NhlSeries {
+  round           Int
+  season          String
+  seriesCode      String
+  teams           NhlTeamInSeries[]
+  currentGameId   Int?
+  gameNumber      Int?
+  gameLabel       String?
+  gameTime        DateTime?
+  seriesStatus    String?
+  seriesStatusShort String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
   @@id([season, round, seriesCode])
 }
 
-model TeamsInSeries {
-  team Team? @relation(fields: [teamId], references: [id])
-  teamId Int
-  series Series? @relation(fields: [round, season, seriesCode], references: [round, season, seriesCode])
-  round Int
-  season String
-  seriesCode String
+model NhlTeamInSeries {
+  team          NhlTeam? @relation(fields: [teamId], references: [id])
+  teamId        Int
+  series        NhlSeries? @relation(fields: [round, season, seriesCode], references: [round, season, seriesCode])
+  round         Int
+  season        String
+  seriesCode    String
+  picks         NhlBracketPick[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
   @@id([teamId, round, season, seriesCode])
 }
 
