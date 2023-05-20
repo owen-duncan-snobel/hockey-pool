@@ -1,3 +1,5 @@
+import { Prisma } from "@prisma/client"
+
 export interface IPlayoff {
   id: number
   name: string
@@ -72,4 +74,78 @@ export interface IPlayoffMatchupTeam {
     wins: number
     losses: number
   }
+}
+
+export type NHLConference = Prisma.NhlConferenceCreateManyInput & {
+  id: number
+  name: string
+  link: string
+  abbreviation: string
+  shortName: string
+  active: boolean
+}
+
+export interface NHLDivision {
+  id: number
+  name: string
+  nameShort: string
+  link: string
+  abbreviation: string
+  conference: {
+    id: number
+    name: string
+    link: string
+  }
+  active: boolean
+}
+
+export interface NHLFranchise {
+  franchiseId: number
+  firstSeasonId: number
+  lastSeasonId?: number
+  mostRecentTeamId: number
+  teamName: string
+  locationName: string
+  link: string
+}
+
+export interface NHLTeam {
+  id: number
+  name: string
+  link: string
+  venue: {
+    name: string
+    link: string
+    city: string
+    timeZone: {
+      id: string
+      offset: number
+      tz: string
+    }
+  },
+  abbreviation: string
+  teamName: string
+  locationName: string
+  firstYearOfPlay: string
+  division: {
+    id: number
+    name: string
+    nameShort: string
+    link: string
+    abbreviation: string
+  }
+  conference: {
+    id: number
+    name: string
+    link: string
+  }
+  franchise: {
+    franchiseId: string
+    teamName: string
+    link: string
+  }
+  shortName: string
+  officialSiteUrl: string
+  franchiseId: number
+  active: boolean
 }

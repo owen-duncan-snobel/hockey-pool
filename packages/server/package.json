@@ -1,0 +1,14 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "docker:build": "docker-compose --project-name hockey-pool up --build",
+    "docker:up": "docker-compose --project-name hockey-pool up",
+    "docker:down": "docker-compose --project-name hockey-pool down"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

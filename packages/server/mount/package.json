@@ -9,7 +9,7 @@
     "start": "node dist/index.js",
     "lint": "npx eslint . --ext .ts,.tsx",
     "lint:fix": "npx eslint . --ext .ts,.tsx --fix",
-    "test": "jest"
+    "test": "npx prisma migrate reset -f && jest"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"

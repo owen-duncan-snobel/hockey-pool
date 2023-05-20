@@ -3,7 +3,6 @@ import { TOURNAMENT_PLAYOFFS_URL } from '../../constants/playoffs'
 import { IPlayoff, IPlayoffMatchupTeam, IPlayoffSeries } from '../../types/playoffs'
 import prisma from '../../libs/prisma/prisma'
 import HttpException from '../../exceptions/http-exception'
-import { NHLSeason } from '../schemas/nhlseries.schema'
 
 interface IPlayoffSeriesWithSeason extends IPlayoffSeries {
   season: string
