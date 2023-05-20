@@ -12,7 +12,7 @@ services:
     ports:
       - "4000:4000"
     volumes:
-      - ./mount/src:/app/src
+      - ./src:/app/src
     environment:
       - REDIS_URL=${REDIS_URL}
       - REDIS_PASSWORD=${REDIS_PASSWORD}
@@ -25,7 +25,7 @@ services:
     ports:
       - "4001:4000"
     volumes:
-      - ./mount/src:/app/src
+      - ./src:/app/src
     environment:
       - REDIS_URL=${REDIS_URL}
       - REDIS_PASSWORD=${REDIS_PASSWORD}

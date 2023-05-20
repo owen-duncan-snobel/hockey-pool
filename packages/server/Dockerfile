@@ -3,13 +3,16 @@ FROM node:18
 WORKDIR /app
 
 # Copy the package.json file
-COPY ./mount/package*.json ./
+COPY ./package*.json ./
 
 # install the package.json dependencies
 RUN npm install
 
-# copy the entire contents of mount over
-COPY mount/ ./
+# copy the contents over
+COPY prisma ./prisma/
+COPY src ./src/
+COPY .env ./
+COPY tsconfig.json ./
 
 RUN npx prisma generate
 

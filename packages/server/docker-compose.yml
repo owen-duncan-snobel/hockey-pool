@@ -18,7 +18,7 @@ services:
     depends_on:
       - db
     volumes:
-      - ./mount:/app
+      - ./:/app
     environment:
       - REDIS_URL=${REDIS_URL}
       - REDIS_PASSWORD=${REDIS_PASSWORD}
