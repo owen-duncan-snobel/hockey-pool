@@ -21,7 +21,6 @@ model User {
 }
 
 model NhlBracketPick {
-  id          Int @id @default(autoincrement())
   user        User    @relation(fields: [userId], references: [id])
   userId      Int
   pick        NhlTeamInSeries @relation(fields: [teamId, round, season, seriesCode], references: [teamId, round, season, seriesCode], onUpdate: Cascade)
@@ -31,6 +30,7 @@ model NhlBracketPick {
   seriesCode  String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  @@id([userId, round, season, seriesCode])
 }
 
 // NHL Models
