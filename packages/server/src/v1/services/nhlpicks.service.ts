@@ -1,15 +1,27 @@
 import prisma from "../../libs/prisma/prisma"
-import { NHLBracketPicksDto } from "../schemas/nhlpicks.schema"
+import { NHLBracketPicksDto } from "../../types/playoffs"
 
+export const getNhlBracketPicks = async () => {
+  return await prisma.nhlBracketPick.findMany({
+    include: {
+      pick: true,
+      user: {
+        select: {
+          id: true,
+          username: true,
+        }
+      }
+    },
+  })
+}
 
-export const createNhlBracketPick = async (createNhlBracketPickDto: NHLBracketPicksDto) => {
-  await prisma.nhlBracketPick.create({
-    data: {
-      userId: createNhlBracketPickDto.userId,
-      round: createNhlBracketPickDto.round,
-      season: createNhlBracketPickDto.season,
-      seriesCode: createNhlBracketPickDto.seriesCode,
-      teamId: createNhlBracketPickDto.teamId
-    }
+export const createNhlBracketPicks = async (createNhlBracketPicksDto: NHLBracketPicksDto, userId: number) => {
+  await prisma.nhlBracketPick.createMany({
+    data: createNhlBracketPicksDto.map((p) => {
+      return {
+        ...p,
+        userId: userId
+      }
+    }),
   })
 }

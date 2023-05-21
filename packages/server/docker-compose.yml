@@ -24,6 +24,7 @@ services:
       - REDIS_PASSWORD=${REDIS_PASSWORD}
       - DATABASE_URL=${DATABASE_URL}
       - CLERK_WEBHOOK_SECRET=${CLERK_WEBHOOK_SECRET}
+      - CLERK_API_KEY=${CLERK_API_KEY}
   # the nginx reverse proxy
   nginx:
     build: ./nginx

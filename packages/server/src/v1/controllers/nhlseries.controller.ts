@@ -42,4 +42,3 @@ export async function getActiveSeries(req: Request, res: Response, next: NextFun
     return
   }
 } 
-

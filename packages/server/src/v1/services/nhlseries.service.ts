@@ -95,8 +95,9 @@ export const syncPlayoffSeriesWithTeams = async () => {
       series.push(...slots)
     })
   })
+  
 
-  await prisma.nhlTeamInSeries.createMany({
+  const synced = await prisma.nhlTeamInSeries.createMany({
     data: series.map((s) => ({
       season: s.season,
       teamId: s.team.team.id,
@@ -105,6 +106,8 @@ export const syncPlayoffSeriesWithTeams = async () => {
     })),
     skipDuplicates: true,
   })
+
+  console.log('synced: ', synced.count)
 }
 
 export const getSeries = async ({

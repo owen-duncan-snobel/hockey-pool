@@ -17,5 +17,3 @@ export const NhlSeriesQuerySchema = z.object({
     round: NHLRoundSchema.optional(),
   })
 })
-
-export type NHLSeason = z.infer<typeof NHLSeasonSchema>;

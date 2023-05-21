@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import setup from '../src/__tests__/setup'
-
-const prisma = new PrismaClient()
+import prisma from '../src/libs/prisma/prisma'
 
 async function main() {
   await setup(prisma)

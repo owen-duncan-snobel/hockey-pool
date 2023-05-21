@@ -1,4 +1,7 @@
 import { Prisma } from "@prisma/client"
+import { NHLBracketPicksSchema } from "../v1/schemas/nhlpicks.schema"
+import { z } from "zod"
+import { NHLSeasonSchema } from "../v1/schemas/nhlseries.schema"
 
 export interface IPlayoff {
   id: number
@@ -149,3 +152,7 @@ export interface NHLTeam {
   franchiseId: number
   active: boolean
 }
+
+export type NHLBracketPicksDto = z.infer<typeof NHLBracketPicksSchema>
+
+export type NHLSeason = z.infer<typeof NHLSeasonSchema>

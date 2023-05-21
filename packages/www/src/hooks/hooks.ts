@@ -10,8 +10,11 @@ interface BracketsResponse {
     brackets: IPlayoff
   }
 }
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL
+
 export function useBrackets () {
-  const { data, error, isLoading } = useSWR<BracketsResponse>(`${process.env.NEXT_PUBLIC_API_URL}/brackets`, fetcher)
+  const { data, error, isLoading } = useSWR<BracketsResponse>(`${API_URL}/NHLBrackets`, fetcher)
   
   return {
     brackets: data?.data.brackets,
