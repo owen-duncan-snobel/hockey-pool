@@ -1,8 +1,6 @@
 import { IPlayoff, PrismaNhlSeries, PrismaNhlTeam } from '@backend/types/playoffs'
 import useSWR from 'swr'
 
-
-
 const fetcher = (url: string) => fetch(url).then(r => r.json())
 
 interface Response<T> {
