@@ -8,12 +8,10 @@ import {
 } from '../v1/services/nhlseries.service'
 import { playoffSeriesHaveNotStarted } from '../utils/playoffs'
 import { setNhlBracketPicksActive } from '../v1/services/nhlpicks.service'
+import redisClient from '../libs/ioredis/redis'
 
 const queue = new Queue('series-queue', {
-  connection: {
-    host: 'redis',
-    port: 6379,
-  },
+  connection: redisClient
 })
 
 const worker = new Worker('series-queue', async (job) => {
@@ -37,10 +35,7 @@ const worker = new Worker('series-queue', async (job) => {
     })
   }
 }, {
-  connection: {
-    host: 'redis',
-    port: 6379,
-  },
+  connection: redisClient
 })
 
 worker.on('completed', (job) => {
