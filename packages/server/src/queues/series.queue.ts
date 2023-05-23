@@ -39,24 +39,28 @@ const worker = new Worker('series-queue', async (job) => {
 })
 
 worker.on('completed', (job) => {
-  console.log(`${job.id} has completed!`)
+  console.log(`${job.name}: ${job.id} has completed!`)
+})
+
+worker.on('active', (job) => {
+  console.log(`${job.name}: ${job.id} has started!`)
 })
 
 worker.on('failed', (job, err) => {
-  console.error(`${job ? job.id : job} has failed with ${err.message}`);
+  console.error(`${job?.name}: ${job ? job.id : job} has failed with ${err.message}`);
 });
 
-export const updateSeries = async () => {
+const updateSeries = async () => {
   await queue.add('series', {}, {
     repeat: {
-      pattern: '0 30 * * * *', // repeat every 30 mins
+      pattern: '0 * * * *', // repeat every hour at the top of the hour
       tz: 'america/toronto',
       limit: 1
     },
   })
 }
 
-export const setPicksToActive = async () => {
+const setPicksToActive = async () => {
   await queue.add('activatePicks', {}, {
     repeat: {
       pattern: '0 0 0 * * *', // repeat every day at midnight
@@ -64,4 +68,16 @@ export const setPicksToActive = async () => {
       limit: 1
     }
   })
+}
+
+export const addJobs = async () => {
+  const repeatableJobs = await queue.getRepeatableJobs()
+  repeatableJobs.forEach(async job => {
+    await queue.removeRepeatableByKey(job.key)
+  })
+  await updateSeries()
+  await setPicksToActive()
+
+  const repeatableJobsAfter = await queue.getRepeatableJobs()
+  console.log('repeatableJobsAfter', repeatableJobsAfter)
 }

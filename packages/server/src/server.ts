@@ -7,11 +7,7 @@ import webhooks from './v1/routes/webhooks'
 import v1 from './v1'
 import ErrorHandler from './v1/middleware/error_handler'
 import { errorLogger, logger } from './v1/middleware/logger'
-import { setPicksToActive, updateSeries } from './queues/series.queue'
-
-import { createOrUpdateSeries, syncPlayoffSeriesWithTeams } from './v1/services/nhlseries.service'
-import { ClerkExpressWithAuth } from '@clerk/clerk-sdk-node'
-import { clerkClient } from './libs/clerk/clerk'
+import { addJobs } from './queues/series.queue'
 
 const PORT = process.env.PORT || 4000
 
@@ -46,7 +42,6 @@ app.use(ErrorHandler)
 app.listen(PORT, async () => {
   console.log(`🚀 App listening on port ${PORT}`)
   // initialize queue functions
-  updateSeries()
-  setPicksToActive()
+  await addJobs()
   // TODO need to check if it is the start of a new round and if so, send out the notification to get the picks in
 })
