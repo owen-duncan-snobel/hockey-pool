@@ -1,8 +1,13 @@
 import prisma from "../../libs/prisma/prisma"
 import { NHLBracketPicksDto } from "../../types/playoffs"
+import { NHLPicksQuery } from "../schemas/nhlpicks.schema"
 
-export const getNhlBracketPicks = async () => {
+export const getNhlBracketPicks = async (query?: NHLPicksQuery) => {
   return await prisma.nhlBracketPick.findMany({
+    where: {
+      ...query,
+      active: true
+    },
     include: {
       pick: true,
       user: {
@@ -44,4 +49,24 @@ export const createNhlBracketPicks = async (createNhlBracketPicksDto: NHLBracket
       }
     }))
   )
+}
+
+export const setNhlBracketPicksActive = async ({
+  season,
+  round,
+}: {
+  season: string,
+  round: number
+}) => {
+  await prisma.nhlBracketPick.updateMany({
+    where: {
+      season,
+      round: {
+        lte: round
+      }
+    },
+    data: {
+      active: true
+    }
+  })
 }

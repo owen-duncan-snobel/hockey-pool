@@ -1,13 +1,15 @@
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes, getReasonPhrase } from 'http-status-codes'
 import * as services from '../services/nhlpicks.service'
-import { NHLBracketPicksSchema } from '../schemas/nhlpicks.schema'
+import { NHLBracketPicksSchema, NHLPicksQuerySchema } from '../schemas/nhlpicks.schema'
 import { getUserId } from '../services/users.service'
 import { getActiveRound, getActiveSeason, getActiveSeries } from '../services/nhlseries.service'
+import { playoffSeriesHaveNotStarted, validPlayoffRounds, validPlayoffSeasons } from '../../utils/playoffs'
 
 export async function getNhlBracketPicks(req: Request, res: Response, next: NextFunction){
   try {
-    const data = await services.getNhlBracketPicks()
+    const query = NHLPicksQuerySchema.parse(req.query)
+    const data = await services.getNhlBracketPicks(query)
     return res.status(StatusCodes.OK).json({
       message: getReasonPhrase(StatusCodes.OK),
       status: StatusCodes.OK,
@@ -37,11 +39,9 @@ export async function createNhlBracketPicks(req: Request, res: Response, next: N
     const input = NHLBracketPicksSchema.parse(picks)
     const season = await getActiveSeason()
     const round = await getActiveRound(season?.season)
-    // check that the round has not started yet (
-    // aka. all game numbers are 1 and the start date for each series is in the future)
-    const validRounds = input.every(pick => pick.round === round?.round)
-    const validSeaons = input.every(pick => pick.season === season?.season)
-    if (!validRounds || !validSeaons) return res.status(StatusCodes.BAD_REQUEST).json({
+    const validRounds = validPlayoffRounds({picksDto: input, round: round?.round})
+    const validSeasons = validPlayoffSeasons({picksDto: input, season: season?.season})
+    if (!validRounds || !validSeasons) return res.status(StatusCodes.BAD_REQUEST).json({
       message: getReasonPhrase(StatusCodes.BAD_REQUEST),
       status: StatusCodes.BAD_REQUEST
     })
@@ -49,16 +49,12 @@ export async function createNhlBracketPicks(req: Request, res: Response, next: N
       round: round!.round,
       season: season!.season
     })
-    const seriesHaveNotStarted = activeSeries.every(series => series.gameNumber === 1 
-      && series.gameTime
-      && series.gameTime > new Date())
-
-    if (!seriesHaveNotStarted) return res.status(StatusCodes.BAD_REQUEST).json({
+    const seriesNotStarted = playoffSeriesHaveNotStarted(activeSeries)
+    if (!seriesNotStarted) return res.status(StatusCodes.BAD_REQUEST).json({
       message: getReasonPhrase(StatusCodes.BAD_REQUEST),
       status: StatusCodes.BAD_REQUEST,
       errors: "Series have already started."
     })
-
     await services.createNhlBracketPicks(input, userId.id)
     return res.status(201).json({
       message: getReasonPhrase(StatusCodes.CREATED),

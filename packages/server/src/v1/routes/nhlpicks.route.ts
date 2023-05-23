@@ -11,7 +11,7 @@ import {
  * @access Public
  * @returns {Array} 200 - An array of picks
  */
-router.get('/', controller.getNhlBracketPicks)
+router.get('/', ClerkExpressWithAuth(), controller.getNhlBracketPicks)
 
 /**
  * @route POST /api/v1/NHLPicks
@@ -19,6 +19,6 @@ router.get('/', controller.getNhlBracketPicks)
  * @access Public
  * @returns {Object} 201 
  */
-router.post('/', ClerkExpressWithAuth({}), controller.createNhlBracketPicks)
+router.post('/', ClerkExpressWithAuth(), controller.createNhlBracketPicks)
 
 export default router

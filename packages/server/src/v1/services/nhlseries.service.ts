@@ -95,7 +95,6 @@ export const syncPlayoffSeriesWithTeams = async () => {
       series.push(...slots)
     })
   })
-  
 
   const synced = await prisma.nhlTeamInSeries.createMany({
     data: series.map((s) => ({
@@ -171,5 +170,8 @@ export const getActiveSeries = async ({
         team: true
       }
     }
+  },
+  orderBy: {
+    gameTime: 'asc'
   }
 })

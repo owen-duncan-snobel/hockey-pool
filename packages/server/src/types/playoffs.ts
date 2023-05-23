@@ -1,10 +1,13 @@
-import { Prisma, NhlTeam, NhlSeries } from "@prisma/client"
+import { Prisma, NhlTeam, NhlSeries, NhlBracketPick, NhlTeamInSeries } from "@prisma/client"
 import { NHLBracketPicksSchema } from "../v1/schemas/nhlpicks.schema"
 import { z } from "zod"
 import { NHLSeasonSchema } from "../v1/schemas/nhlseries.schema"
 
 export type PrismaNhlSeries = NhlSeries
 export type PrismaNhlTeam = NhlTeam
+export type PrismaNhlBracketPick = NhlBracketPick
+export type PrismaNhlTeamInSeries = NhlTeamInSeries
+
 export interface IPlayoff {
   id: number
   name: string
