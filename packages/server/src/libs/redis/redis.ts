@@ -1,11 +1,9 @@
 import * as redis from 'redis'
 
 const { REDIS_URL } = process.env
-const { REDIS_PASSWORD } = process.env
 
 const client = redis.createClient({
-  url: REDIS_URL,
-  password: REDIS_PASSWORD,
+  url: REDIS_URL
 })
 
 client.connect()
