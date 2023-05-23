@@ -1,5 +1,4 @@
 "use client"
-import { useFetch } from 'usehooks-ts'
 import NHLBrackets from '@/libs/react-flow/flow'
 import { useBrackets } from '@/hooks/hooks'
 import MainMenu from '@/components/menu'
