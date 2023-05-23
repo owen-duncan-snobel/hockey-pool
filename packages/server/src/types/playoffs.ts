@@ -198,6 +198,11 @@ export interface NHLTeam {
   active: boolean
 }
 
-export type NHLBracketPicksDto = z.infer<typeof NHLBracketPicksSchema>
+export type NHLBracketPicksDto = {
+    teamId: number;
+    round: number;
+    season: string;
+    seriesCode: string;
+}[]   //z.infer<typeof NHLBracketPicksSchema>
 
-export type NHLSeason = z.infer<typeof NHLSeasonSchema>
+export type NHLSeason = string //z.infer<typeof NHLSeasonSchema>
