@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes, getReasonPhrase } from 'http-status-codes'
 import * as brackets from '../services/nhlbrackets.service'
-import redis from '../../libs/redis/redis'
+import redis from '../../libs/ioredis/redis'
 
 export async function getNhlBrackets(req: Request, res: Response, next: NextFunction) {
   try {
@@ -25,9 +25,7 @@ export async function getNhlBrackets(req: Request, res: Response, next: NextFunc
       },
     })
 
-    return await redis.set('brackets', JSON.stringify(data), {
-      EX: 3600,
-    })
+    return await redis.set('brackets', JSON.stringify(data), 'EX', 60 * 60)
   } catch (err) {
     next(err)
     return

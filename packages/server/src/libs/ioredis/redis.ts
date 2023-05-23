@@ -1,12 +1,8 @@
-import * as redis from 'redis'
+import Redis from 'ioredis'
 
 const { REDIS_URL } = process.env
 
-const client = redis.createClient({
-  url: REDIS_URL
-})
-
-client.connect()
+const client = new Redis(REDIS_URL!)
 
 client.on('error', (err) => {
   console.error('Error connecting to redis: ', err)

@@ -15,7 +15,6 @@ services:
       - ./src:/app/src
     environment:
       - REDIS_URL=${REDIS_URL}
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
       - DATABASE_URL=${DATABASE_URL}
   backend_2:
     restart: on-failure
@@ -28,7 +27,6 @@ services:
       - ./src:/app/src
     environment:
       - REDIS_URL=${REDIS_URL}
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
       - DATABASE_URL=${DATABASE_URL}
   # the nginx reverse proxy
   nginx:
