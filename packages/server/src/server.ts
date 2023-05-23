@@ -29,7 +29,7 @@ app.use('/api/webhooks', webhooks)
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
-app.use(clerkClient.expressWithAuth())
+// app.use(clerkClient.expressWithAuth())
 
 app.use('/api/v1', v1)
 
