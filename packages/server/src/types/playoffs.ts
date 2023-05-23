@@ -3,10 +3,51 @@ import { NHLBracketPicksSchema } from "../v1/schemas/nhlpicks.schema"
 import { z } from "zod"
 import { NHLSeasonSchema } from "../v1/schemas/nhlseries.schema"
 
-export type PrismaNhlSeries = NhlSeries
-export type PrismaNhlTeam = NhlTeam
-export type PrismaNhlBracketPick = NhlBracketPick
-export type PrismaNhlTeamInSeries = NhlTeamInSeries
+export type PrismaNhlSeries =  {
+  round: number;
+  season: string;
+  seriesCode: string;
+  currentGameId: number | null;
+  gameNumber: number | null;
+  gameLabel: string | null;
+  gameTime: Date | null;
+  seriesStatus: string | null;
+  seriesStatusShort: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+export type PrismaNhlTeam = {
+  id: number;
+  name: string;
+  link: string;
+  abbreviation: string;
+  teamName: string;
+  conferenceId: number | null;
+  divisionId: number | null;
+  locationName: string;
+  firstYearOfPlay: string;
+  officialSiteUrl: string;
+  active: boolean;
+  logo: string | null;
+}
+export type PrismaNhlBracketPick = {
+  userId: number;
+  teamId: number;
+  round: number;
+  season: string;
+  seriesCode: string;
+  createdAt: Date;
+  updatedAt: Date;
+  active: boolean;
+}
+export type PrismaNhlTeamInSeries = {
+  teamId: number;
+  round: number;
+  season: string;
+  seriesCode: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 export interface IPlayoff {
   id: number
