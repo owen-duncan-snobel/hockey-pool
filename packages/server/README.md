@@ -50,3 +50,14 @@ to open prisma studio run ```npx prisma studio``` from the root of the /server f
 
 ## Jest
 Run ```npm run test``` from within the docker container
+
+
+## Digital Ocean Deployment
+
+Ensure the Dockerfille path is set in the spec file ex. ```- dockerfile_path: packages/server/Dockerfile```
+
+After deployment, ensure to add the environment variables.
+
+For the managed db create the db "hockeypool"
+
+From the console run, ```npx prisma migrate deploy``` and ```npx prisma db seed```

@@ -1,7 +1,7 @@
 import express from 'express'
 import * as controller from '../controllers/nhlpicks.controller'
 const router = express.Router()
-import {
+import clerkClient, {
   ClerkExpressWithAuth,
 } from '@clerk/clerk-sdk-node'
 
@@ -11,7 +11,7 @@ import {
  * @access Public
  * @returns {Array} 200 - An array of picks
  */
-router.get('/', ClerkExpressWithAuth(), controller.getNhlBracketPicks)
+router.get('/', clerkClient.expressWithAuth(), controller.getNhlBracketPicks)
 
 /**
  * @route POST /api/v1/NHLPicks
@@ -19,6 +19,6 @@ router.get('/', ClerkExpressWithAuth(), controller.getNhlBracketPicks)
  * @access Public
  * @returns {Object} 201 
  */
-router.post('/', ClerkExpressWithAuth(), controller.createNhlBracketPicks)
+router.post('/', clerkClient.expressWithAuth(), controller.createNhlBracketPicks)
 
 export default router

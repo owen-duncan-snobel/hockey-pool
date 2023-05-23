@@ -8,7 +8,7 @@
     "docker:up": "docker-compose --project-name hockey-pool up",
     "docker:down": "docker-compose --project-name hockey-pool down",
     "watch": "nodemon --files src/server.ts",
-    "build": "tsc",
+    "build": "tsc && npm run watch",
     "start": "node dist/index.js",
     "lint": "npx eslint . --ext .ts,.tsx",
     "lint:fix": "npx eslint . --ext .ts,.tsx --fix",
