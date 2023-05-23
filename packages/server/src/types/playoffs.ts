@@ -1,4 +1,3 @@
-import { Prisma, NhlTeam, NhlSeries, NhlBracketPick, NhlTeamInSeries } from "@prisma/client"
 import { NHLBracketPicksSchema } from "../v1/schemas/nhlpicks.schema"
 import { z } from "zod"
 import { NHLSeasonSchema } from "../v1/schemas/nhlseries.schema"
@@ -125,7 +124,7 @@ export interface IPlayoffMatchupTeam {
   }
 }
 
-export type NHLConference = Prisma.NhlConferenceCreateManyInput & {
+export type NHLConference = {
   id: number
   name: string
   link: string
