@@ -96,17 +96,65 @@ export const syncPlayoffSeriesWithTeams = async () => {
     })
   })
 
-  const synced = await prisma.nhlTeamInSeries.createMany({
-    data: series.map((s) => ({
-      season: s.season,
-      teamId: s.team.team.id,
-      round: s.round.number,
-      seriesCode: s.seriesCode,
-    })),
-    skipDuplicates: true,
-  })
+  const synced = await prisma.$transaction(
+    series.map((s) => prisma.nhlTeamInSeries.upsert({
+      where: {
+        teamId_round_season_seriesCode: {
+          round: s.round.number,
+          season: s.season,
+          seriesCode: s.seriesCode,
+          teamId: s.team.team.id
+        }
+      },
+      update: {
+        seriesWins: s.team.seriesRecord.wins,
+        seriesLosses: s.team.seriesRecord.losses
+      },
+      create: { 
+        team: {
+          connect: {
+            id: s.team.team.id
+          }
+        },
+        series: {
+          connect: {
+            season_round_seriesCode: {
+              season: s.season,
+              round: s.round.number,
+              seriesCode: s.seriesCode
+            }
+          }
+        }
+      }
+    }))
+  )
 
-  console.log('synced: ', synced.count)
+  console.log('synced: ', synced.length)
+
+  // ! DEPRECATED
+  // const synced = await prisma.nhlTeamInSeries.createMany({
+  //   data: series.map((s) => ({
+  //     season: s.season,
+  //     teamId: s.team.team.id,
+  //     round: s.round.number,
+  //     seriesCode: s.seriesCode,
+  //     team: {
+  //       connect: {
+  //         id: s.team.team.id,
+  //       },
+  //     },
+  //     series: {
+  //       connect: {
+  //         season_round_seriesCode: {
+  //           season: s.season,
+  //           round: s.round.number,
+  //           seriesCode: s.seriesCode,
+  //         },
+  //       },
+  //     },
+  //   })),
+  //   skipDuplicates: true,
+  // })
 }
 
 export const getSeries = async ({

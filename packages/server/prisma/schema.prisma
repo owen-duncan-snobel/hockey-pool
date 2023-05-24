@@ -113,6 +113,8 @@ model NhlTeamInSeries {
   picks         NhlBracketPick[]
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+  seriesWins    Int @default(0)
+  seriesLosses  Int @default(0)
   @@id([teamId, round, season, seriesCode])
 }
 

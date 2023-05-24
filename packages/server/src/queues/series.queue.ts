@@ -70,6 +70,16 @@ const setPicksToActive = async () => {
   })
 }
 
+const setNhlSeriesWinners = async () => {
+  await queue.add('setNhlSeriesWinners', {}, {
+    repeat: {
+      pattern: '0 10 0 * * *', // repeat every day at midnight + 10 minutes
+      tz: 'america/toronto',
+      limit: 1
+    }
+  })
+}
+
 export const addJobs = async () => {
   const repeatableJobs = await queue.getRepeatableJobs()
   repeatableJobs.forEach(async job => {
