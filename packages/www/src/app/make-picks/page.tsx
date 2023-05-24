@@ -7,12 +7,12 @@ import { useAuth } from '@clerk/nextjs'
 import { API_URL } from '@/constants'
 import { Response } from '@/hooks/hooks'
 import { PrismaNhlBracketPick, PrismaNhlSeries, PrismaNhlTeam, PrismaNhlTeamInSeries } from '@backend/types/playoffs'
-import { FormEventHandler, use, useState } from 'react'
+import { useState } from 'react'
 import { RadioGroup } from '@headlessui/react'
 import Error from 'next/error'
 import { LockClosedIcon, LockOpenIcon } from '@heroicons/react/20/solid'
 import { format } from 'date-fns'
-
+ 
 function useUserPicks(url: string) {
   const { getToken } = useAuth();
   const fetcher = async (...args: [RequestInfo]) => {
@@ -68,7 +68,7 @@ export default function MakePicks() {
 
           <div className='flex w-full justify-center mt-4'>
             <div className='rounded-full w-[350px]'>
-              {seriesStarted && (
+              {!seriesStarted ? (
                 <div className='flex justify-center items-center flex-col'>
                   <h1 className='text-md font-medium uppercase text-center'>
                     PICKS DUE: {format(new Date(seriesStartTime), 'MMMM do, yyyy h:mm a')}
@@ -78,7 +78,15 @@ export default function MakePicks() {
                     SELECT YOUR PICKS*
                   </h1>
                 </div>
-              )}
+              ) : (
+                <div className='flex justify-center items-center flex-col'>
+                  <h1 className='text-md font-medium uppercase text-center'>
+                    PICKS DUE: {' '}
+                    <span className='font-bold'>SERIES HAS BEGUN</span>
+                  </h1>
+                </div>
+              )
+            }
             </div>
           </div>
 
