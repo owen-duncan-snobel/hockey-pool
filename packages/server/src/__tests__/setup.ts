@@ -1,3 +1,4 @@
+// DEPRECATED: This file is no longer used. It was used to populate the database with the NHL data.
 import axios from 'axios'
 import {
   NHL_CONFERENCES_URL, NHL_DIVISIONS_URL, NHL_FRANCHISES_URL, NHL_TEAMS_URL, NHL_TEAM_LOGOS_URL,

@@ -1,4 +1,3 @@
-import prisma from '../../libs/prisma/prisma'
 import * as service from '../../v1/services/nhlbrackets.service'
 
 describe('Brackets service', () => {

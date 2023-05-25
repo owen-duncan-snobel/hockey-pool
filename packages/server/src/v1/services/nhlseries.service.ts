@@ -163,7 +163,7 @@ export const getSeries = async ({
 } : {
   season?: string,
   round?: number
-}) => prisma.nhlSeries.findMany({
+}) => await prisma.nhlSeries.findMany({
   where: {
     season: season,
     round: round
@@ -177,7 +177,7 @@ export const getSeries = async ({
   },
 })
 
-export const getActiveSeason = async () => prisma.nhlSeries.findFirst({
+export const getActiveSeason = async () => await prisma.nhlSeries.findFirst({
   orderBy: {
     season: 'desc'
   },
@@ -186,7 +186,7 @@ export const getActiveSeason = async () => prisma.nhlSeries.findFirst({
   }
 }) 
 
-export const getActiveRound = async (season?: string) => prisma.nhlSeries.findFirst({
+export const getActiveRound = async (season?: string) => await prisma.nhlSeries.findFirst({
   where: {
     season,
     currentGameId: {
@@ -207,7 +207,7 @@ export const getActiveSeries = async ({
 }: {
   round: number
   season: string
-}) => prisma.nhlSeries.findMany({
+}) => await prisma.nhlSeries.findMany({
   where: {
     round,
     season

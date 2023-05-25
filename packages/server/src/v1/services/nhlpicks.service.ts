@@ -1,6 +1,8 @@
 import prisma from "../../libs/prisma/prisma"
 import { NHLBracketPicksDto } from "../../types/playoffs"
+import { playoffSeriesHaveNotStarted } from "../../utils/playoffs"
 import { NHLPicksQuery } from "../schemas/nhlpicks.schema"
+import { getActiveRound, getActiveSeason, getActiveSeries } from "./nhlseries.service"
 
 export const getNhlBracketPicks = async (query?: NHLPicksQuery) => {
   return await prisma.nhlBracketPick.findMany({
@@ -27,7 +29,7 @@ export const createNhlBracketPicks = async (createNhlBracketPicksDto: NHLBracket
       userId: userId
     }
   })
-  await prisma.$transaction(
+  return await prisma.$transaction(
     picks.map((p) => prisma.nhlBracketPick.upsert({
       where: {
         userId_round_season_seriesCode: {
@@ -58,7 +60,7 @@ export const setNhlBracketPicksActive = async ({
   season: string,
   round: number
 }) => {
-  await prisma.nhlBracketPick.updateMany({
+  return await prisma.nhlBracketPick.updateMany({
     where: {
       season,
       round: {
@@ -68,5 +70,20 @@ export const setNhlBracketPicksActive = async ({
     data: {
       active: true
     }
+  })
+}
+
+export const activateNhlBracketPicks = async () => {
+  const currentSeason = await getActiveSeason()
+  const currentRound = await getActiveRound(currentSeason?.season)
+  const activeSeries = await getActiveSeries({
+    round: currentRound?.round || 1,
+    season: currentSeason?.season || 'undefined'
+  })
+  const seriesNotStarted = playoffSeriesHaveNotStarted(activeSeries)
+  if (seriesNotStarted) return
+  await setNhlBracketPicksActive({
+    season: currentSeason?.season || 'undefined',
+    round: currentRound?.round || -1
   })
 }

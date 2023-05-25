@@ -8,6 +8,7 @@ import v1 from './v1'
 import ErrorHandler from './v1/middleware/error_handler'
 import { errorLogger, logger } from './v1/middleware/logger'
 import { addJobs } from './queues/series.queue'
+import { activateNhlBracketPicks, setNhlBracketPicksActive } from './v1/services/nhlpicks.service'
 
 const PORT = process.env.PORT || 4000
 
@@ -43,5 +44,4 @@ app.listen(PORT, async () => {
   console.log(`🚀 App listening on port ${PORT}`)
   // initialize queue functions
   await addJobs()
-  // TODO need to check if it is the start of a new round and if so, send out the notification to get the picks in
 })

@@ -1,6 +1,5 @@
 import prisma from "../../libs/prisma/prisma"
 
-
 export const getUser = async (clerk_id: string) => {
   return await prisma.user.findUnique({
     where: {
