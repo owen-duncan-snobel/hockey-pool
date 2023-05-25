@@ -12,19 +12,6 @@ describe('nhlpicks services', () => {
       }
 
       prismaMock.$transaction.mockResolvedValue([
-        prismaMock.nhlBracketPick.upsert.mockResolvedValue({
-          round: 1,
-          season: '20202021',
-          seriesCode: 'A',
-          teamId: 1,
-          userId: 1,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          active: true,
-        })
-      ])
-
-      await expect(createNhlBracketPicks([ pick ], 1)).toEqual([
         {
           round: 1,
           season: '20202021',
@@ -36,11 +23,19 @@ describe('nhlpicks services', () => {
           active: true,
         }
       ])
+
+      const data = await createNhlBracketPicks([ pick ], 1)
+      expect(data[0]).toEqual(expect.objectContaining({
+        round: 1,
+        season: '20202021',
+        seriesCode: 'A',
+        teamId: 1,
+        userId: 1,
+        active: true,
+      }))
     })
   })
     
-
-
   describe('activateNhlBracketPicks', () => {
     it('should set all picks to active', () => {
       // need to mock prisma
