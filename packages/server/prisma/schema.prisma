@@ -15,6 +15,8 @@ model User {
   id                  Int @id @default(autoincrement())
   clerk_id            String @unique()
   username            String?
+  firstName           String?
+  lastName            String?
   nhlBracketPicks     NhlBracketPick[]
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt
