@@ -52,7 +52,7 @@
     "eslint": "^8.40.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.0.0",
-    "jest-mock-extended": "2.0.4",
+    "jest-mock-extended": "3.0.4",
     "nodemon": "^2.0.22",
     "prisma": "^4.14.1",
     "supertest": "^6.3.3",
