@@ -238,7 +238,7 @@ function StandingsDialog({
         {/* Container to center the panel */}
         <div className="flex min-h-full items-center justify-center">
           {/* The actual dialog panel  */}
-          <Dialog.Panel className="mx-auto w-5/6 max-w-[600px] rounded bg-white min-h-[300px]">
+          <Dialog.Panel className="mx-auto w-5/6 max-w-[600px] rounded bg-white">
             {/* <div className='flex justify-center bg-gray-900 rounded-t text-white'>
               Season
             </div> */}
