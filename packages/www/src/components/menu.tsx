@@ -83,7 +83,7 @@ export default function MainMenu() {
           <div className="px-1 py-1">
             <Menu.Item>
               {({ active }) => (
-                <Link href={user ? '/dashboard' : '/login'}>
+                <Link href={user ? 'https://accounts.hockeypool.xyz/user' : '/'}>
                   <button
                     className={`${
                       active ? ' bg-gray-100' : ''
