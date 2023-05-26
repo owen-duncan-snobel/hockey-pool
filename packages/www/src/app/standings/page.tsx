@@ -18,7 +18,7 @@ function useUserStandings(url: string) {
   }>>(url, fetcher)
 
   return {
-    standings: data?.data.standings,
+    standings: data ? data.data.standings : undefined,
     error,
     isLoading
   }
@@ -73,7 +73,7 @@ function StandingsTable({standings}: {standings: IPlayoffUserStanding[]}){
         <tbody className="divide-y divide-gray-200">
 
           {
-            standings.map((user, index) => {
+            standings && (standings.map((user, index) => {
               return (
                 <tr key={user.id}>
                   <td className="whitespace-nowrap px-10 py-2 font-medium text-gray-900">
@@ -84,7 +84,7 @@ function StandingsTable({standings}: {standings: IPlayoffUserStanding[]}){
                 </tr>
               )
             })
-          }
+          )}
           {/* <tr>
             <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900"></td>
             <td className="whitespace-nowrap px-4 py-2 text-gray-900"></td>
