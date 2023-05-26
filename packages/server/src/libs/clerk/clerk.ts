@@ -32,6 +32,8 @@ const handleClerkWebhooks = async (req: Request, res: Response, next: NextFuncti
       await prisma.user.update({
         data: {
           username: msg.data.username,
+          firstName: msg.data.firstName,
+          lastName: msg.data.lastName,
         },
         where: {
           clerk_id: msg.data.id,
