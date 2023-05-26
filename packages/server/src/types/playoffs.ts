@@ -133,8 +133,10 @@ export interface IPlayoffUserStanding {
           team: { 
             teamName: string, 
             logo: string | null
-          } | null
-          seriesWins: number
+          } | null,
+          seriesWins: number,
+          season: string,
+          round: number
         }
     }[]
   points: number

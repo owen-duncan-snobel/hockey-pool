@@ -30,13 +30,15 @@ export const getCurrentSeasonPlayoffStandingsForAllUsers = async () => {
                 select: {
                   teamName: true,
                   logo: true
-                }
-              }
+                },
+              },
+              round: true,
+              season: true,
             }
           }
         }
       }
-    }
+    },
   })
   const standings: IPlayoffUserStanding[] = []
   users.forEach((user) => {

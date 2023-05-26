@@ -18,8 +18,10 @@ describe('nhlstandings services', () => {
                 team: {
                   teamName: 'team1',
                   logo: 'logo1'
-                }
-              }
+                },
+                season: '20222023',
+                round: 2 
+              },
             }
           ],
           points: 10,
@@ -35,7 +37,9 @@ describe('nhlstandings services', () => {
                 team: {
                   teamName: 'team1',
                   logo: 'logo1'
-                }
+                },
+                season: '20222023',
+                round: 1 
               }     
             },
             {
@@ -45,7 +49,9 @@ describe('nhlstandings services', () => {
                 team: {
                   teamName: 'team1',
                   logo: 'logo1'
-                }
+                },
+                season: '20222023',
+                round: 2 
               }     
             }
           ],
@@ -81,7 +87,9 @@ describe('nhlstandings services', () => {
                 team: {
                   teamName: 'team1',
                   logo: 'logo1'
-                }
+                },
+                season: '20222023',
+                round: 2 
             }
           }]
         },
@@ -96,7 +104,9 @@ describe('nhlstandings services', () => {
                 team: {
                   teamName: 'team1',
                   logo: 'logo1'
-                }
+                },
+                season: '20222023',
+                round: 1 
             }
           },
           {
@@ -106,7 +116,9 @@ describe('nhlstandings services', () => {
                 team: {
                   teamName: 'team1',
                   logo: 'logo1'
-                }
+                },
+                season: '20222023',
+                round: 2
             }
           }
         ]
