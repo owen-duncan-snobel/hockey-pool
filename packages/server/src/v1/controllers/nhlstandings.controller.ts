@@ -29,7 +29,7 @@ export const getCurrentSeasonPlayoffStandings = async (req: Request, res: Respon
         standings: standings,
       },
     })
-    return await redis.set('standings', JSON.stringify(standings), 'EX', 60 * 60 * 3)
+    return await redis.set('standings', JSON.stringify(standings), 'EX', 60 * 60)
   } catch (err) {
     next(err)
     return

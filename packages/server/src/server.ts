@@ -41,7 +41,6 @@ app.get('/health', (req: Request, res: Response) => {
 app.use(errorLogger)
 app.use(ErrorHandler)
 
-
 if (process.env.NODE_ENV !== 'test') {
   app.listen(PORT, async () => {
     console.log(`🚀 App listening on port ${PORT}`)

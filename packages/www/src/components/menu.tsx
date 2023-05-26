@@ -2,13 +2,17 @@ import { Menu, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 import Link from 'next/link'
 import { Bars2Icon } from '@heroicons/react/20/solid'
-import { useUser } from '@clerk/nextjs'
+import { UserButton, useUser } from '@clerk/nextjs'
+
+const SIGN_IN = process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL
+const SIGN_UP = process.env.NEXT_PUBLIC_CLERK_SIGN_UP_URL
+const USER_PROFILE = process.env.NEXT_PUBLIC_CLERK_USER_PROFILE_URL
 
 export default function MainMenu() {
   const { user } = useUser()
   return (
     <Menu as="div" className="relative inline-block text-left">
-      <div>
+      <div className='flex gap-x-1 px-2 items-center'>
         <Menu.Button 
           className="inline-flex w-full justify-center rounded-md px-4 py-2 text-sm font-medium text-white bg-white bg-opacity-5 backdrop-blur-2xl">
           <Bars2Icon
@@ -16,6 +20,12 @@ export default function MainMenu() {
             aria-hidden="true"
           />
         </Menu.Button>
+        {user && (
+          <div className='border rounded-full'>
+            <UserButton />
+          </div>
+        )}
+        
       </div>
       <Transition
         as={Fragment}
@@ -55,6 +65,19 @@ export default function MainMenu() {
                 </Link>
               )}
             </Menu.Item>
+            <Menu.Item>
+              {({ active }) => (
+                <Link href="/">
+                  <button
+                    className={`${
+                      active ? ' bg-gray-100' : ''
+                    } group flex w-full items-center rounded-md px-2 py-2 text-lg text-gray-900`}
+                  >
+                    Brackets
+                  </button>
+                </Link>
+              )}
+            </Menu.Item>
           </div>
           <div className="px-1 py-1">
             <Menu.Item>
@@ -80,20 +103,26 @@ export default function MainMenu() {
               )}
             </Menu.Item>
           </div>
-          <div className="px-1 py-1">
-            <Menu.Item>
-              {({ active }) => (
-                <Link href={user ? 'https://accounts.hockeypool.xyz/user' : '/'}>
-                  <button
-                    className={`${
-                      active ? ' bg-gray-100' : ''
-                    } group flex w-full items-center rounded-md px-2 py-2 text-lg text-gray-900`}
-                  >
-                    {user ? 'Dashboard' : 'Login'}
-                  </button>
-                </Link>
-              )}
-            </Menu.Item>
+          <div>
+            {!user && (
+              <div className="px-1 py-1">
+                <Menu.Item>
+                {({ active }) => (
+                  <div>
+                      <Link href={user ? USER_PROFILE! : SIGN_IN! }>
+                        <button
+                          className={`${
+                            active ? ' bg-black-100' : ''
+                          } group flex w-full items-center rounded-md px-2 py-2 text-lg text-gray-900`}
+                        >
+                          {user ? "Dashboard" : "Login"}
+                        </button>
+                      </Link>
+                  </div>
+                )}
+              </Menu.Item>
+            </div>
+            )}
           </div>
         </Menu.Items>
       </Transition>
