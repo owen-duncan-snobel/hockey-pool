@@ -8,6 +8,7 @@ import v1 from './v1'
 import ErrorHandler from './v1/middleware/error_handler'
 import { errorLogger, logger } from './v1/middleware/logger'
 import { addJobs } from './queues/series.queue'
+import rateLimit from 'express-rate-limit'
 
 const PORT = process.env.NODE_ENV === 'test' 
   ? 8005 
@@ -20,6 +21,14 @@ app.use(cors())
 app.options('*', cors())
 app.use(helmet())
 app.use(logger)
+
+app.use('/api', rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 1000, // limit each IP to 1000 requests per windowMs
+  message: 'Too many requests from this IP, please try again later',
+  standardHeaders: true,
+  legacyHeaders: false
+}))
 
 app.use('/api/webhooks', webhooks)
 
