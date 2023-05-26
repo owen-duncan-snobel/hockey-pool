@@ -290,9 +290,9 @@ function StandingsDialog({
                       )
                     })}
                     <tr>
-                      <td className="whitespace-nowrap px-5 font-medium text-gray-900">Total Points</td>
+                      <td className="whitespace-nowrap px-5 font-bold text-gray-900">Total Points</td>
                       <td className="whitespace-nowrap px-10 py-2 text-gray-900"></td>
-                      <td className="whitespace-nowrap px-10 py-2 text-gray-900">{standings[openDialog.standingsIndex].points}</td>
+                      <td className="whitespace-nowrap px-10 py-2 text-gray-900 font-bold">{standings[openDialog.standingsIndex].points}</td>
                     </tr>
                   </>
                 )}
