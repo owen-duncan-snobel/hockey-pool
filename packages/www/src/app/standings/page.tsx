@@ -1,13 +1,35 @@
 "use client"
 import MainMenu from '@/components/menu'
-import { useActiveSeries } from '@/hooks/hooks'
+import { Response } from '@/hooks/hooks'
+import { useAuth } from '@clerk/nextjs'
+import { API_URL } from '@/constants'
+import { IPlayoffUserStanding } from '@backend/types/playoffs'
+import useSWR from 'swr'
+
+function useUserStandings(url: string) {
+  const { getToken } = useAuth();
+  const fetcher = async (...args: [RequestInfo]) => {
+    return fetch(...args, {
+      headers: { Authorization: `Bearer ${await getToken()}` }
+    }).then(res => res.json());
+  };
+  const { data, error, isLoading } = useSWR<Response<{
+    standings: IPlayoffUserStanding[]
+  }>>(url, fetcher)
+
+  return {
+    standings: data?.data.standings,
+    error,
+    isLoading
+  }
+}
 
 export default function Standings() {
-  const { series, error, isLoading } = useActiveSeries()
+  const { standings, error, isLoading } = useUserStandings(`${API_URL}/NHLStandings`)
 
   if (error) return <p>There is an error.</p>
   if (isLoading) return <div>Loading...</div>
-  if (!series) return <div></div>
+  if (!standings) return <div></div>
 
   return (
     <div>
@@ -24,36 +46,50 @@ export default function Standings() {
       </div>
 
       <div className='flex justify-center w-full px-5 mt-10'>
-        <StandingsTable />
+        <StandingsTable standings={standings} />
       </div>
     </div>
   )
 }
 
-function StandingsTable(){
+function StandingsTable({standings}: {standings: IPlayoffUserStanding[]}){
   return (
     <div className="overflow-x-auto rounded-md border shadow-lg">
       <table className="min-w-full divide-y-2 bg-white text-sm">
         <thead className="ltr:text-left rtl:text-right">
           <tr>
-            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+            <th className="whitespace-nowrap px-10 py-2 font-medium text-gray-900">
               Rank
             </th>
-            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+            <th className="whitespace-nowrap px-10 py-2 font-medium text-gray-900">
               Name
             </th>
-            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+            <th className="whitespace-nowrap px-10 py-2 font-medium text-gray-900">
               Points
             </th>
           </tr>
         </thead>
 
         <tbody className="divide-y divide-gray-200">
-          <tr>
+
+          {
+            standings.map((user, index) => {
+              return (
+                <tr key={user.id}>
+                  <td className="whitespace-nowrap px-10 py-2 font-medium text-gray-900">
+                    {index + 1}
+                  </td>
+                  <td className="whitespace-nowrap px-10 py-2 text-gray-900">{user.username}</td>
+                  <td className="whitespace-nowrap px-10 py-2 text-gray-900">{user.points}</td>
+                </tr>
+              )
+            })
+          }
+          {/* <tr>
             <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900"></td>
             <td className="whitespace-nowrap px-4 py-2 text-gray-900"></td>
             <td className="whitespace-nowrap px-4 py-2 text-gray-900"></td>
-          </tr>
+          </tr> */}
 
           {/* <tr>
             <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">

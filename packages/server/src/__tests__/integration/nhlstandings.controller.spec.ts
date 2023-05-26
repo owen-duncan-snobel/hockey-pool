@@ -24,7 +24,6 @@ describe('nhlstandings controller', () => {
       expect(response.body.data).toHaveProperty('standings')  
     })
 
-
     it('should return a 401 if no token is provided', async () => {
       const response = await request.get('/api/v1/NHLStandings')
       expect(response.status).toBe(401)
