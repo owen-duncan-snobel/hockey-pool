@@ -8,13 +8,14 @@ import v1 from './v1'
 import ErrorHandler from './v1/middleware/error_handler'
 import { errorLogger, logger } from './v1/middleware/logger'
 import { addJobs } from './queues/series.queue'
-import { activateNhlBracketPicks, setNhlBracketPicksActive } from './v1/services/nhlpicks.service'
 
-const PORT = process.env.PORT || 4000
+const PORT = process.env.NODE_ENV === 'test' 
+  ? 8005 
+  : process.env.PORT || 4000
 
 const app: Application = express()
 
-// // Middleware
+// Middleware
 app.use(cors())
 app.options('*', cors())
 app.use(helmet())
@@ -40,8 +41,13 @@ app.get('/health', (req: Request, res: Response) => {
 app.use(errorLogger)
 app.use(ErrorHandler)
 
-app.listen(PORT, async () => {
-  console.log(`🚀 App listening on port ${PORT}`)
-  // initialize queue functions
-  await addJobs()
-})
+
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, async () => {
+    console.log(`🚀 App listening on port ${PORT}`)
+    // initialize queue functions
+    await addJobs()
+  })
+}
+
+export default app

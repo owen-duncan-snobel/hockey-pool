@@ -1,7 +1,6 @@
 import { NhlSeries, NhlTeam } from '@prisma/client'
 import * as playoffs from '../../utils/playoffs'
 
-
 describe('Playoffs utils', () => {
   describe('validPlayoffRounds', () => {
     it('should return the valid playoff rounds', () => {

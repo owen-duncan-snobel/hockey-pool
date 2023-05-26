@@ -2,7 +2,7 @@
 // import { z } from "zod"
 // import { NHLSeasonSchema } from "../v1/schemas/nhlseries.schema"
 
-export type PrismaNhlSeries =  {
+export interface PrismaNhlSeries {
   round: number;
   season: string;
   seriesCode: string;
@@ -15,7 +15,7 @@ export type PrismaNhlSeries =  {
   createdAt: Date;
   updatedAt: Date;
 }
-export type PrismaNhlTeam = {
+export interface PrismaNhlTeam {
   id: number;
   name: string;
   link: string;
@@ -29,7 +29,7 @@ export type PrismaNhlTeam = {
   active: boolean;
   logo: string | null;
 }
-export type PrismaNhlBracketPick = {
+export interface PrismaNhlBracketPick {
   userId: number;
   teamId: number;
   round: number;
@@ -39,7 +39,7 @@ export type PrismaNhlBracketPick = {
   updatedAt: Date;
   active: boolean;
 }
-export type PrismaNhlTeamInSeries = {
+export interface PrismaNhlTeamInSeries {
   teamId: number;
   round: number;
   season: string;
@@ -124,7 +124,23 @@ export interface IPlayoffMatchupTeam {
   }
 }
 
-export type NHLConference = {
+export interface IPlayoffUserStanding {
+  id: number,
+  username: string | null,
+  picks: {
+        value: number;
+        pick: {
+          team: { 
+            teamName: string, 
+            logo: string | null
+          } | null
+          seriesWins: number
+        }
+    }[]
+  points: number
+}
+
+export interface NHLConference {
   id: number
   name: string
   link: string

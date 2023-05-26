@@ -44,13 +44,15 @@ export default function MainMenu() {
             </Menu.Item>
             <Menu.Item>
               {({ active }) => (
-                <button
-                  className={`${
-                    active ? ' bg-gray-100' : ''
-                  } group flex w-full items-center rounded-md px-2 py-2 text-lg text-gray-900`}
-                >
-                  Standings
-                </button>
+                <Link href="/standings">
+                  <button
+                    className={`${
+                      active ? ' bg-gray-100' : ''
+                    } group flex w-full items-center rounded-md px-2 py-2 text-lg text-gray-900`}
+                  >
+                    Standings
+                  </button>
+                </Link>
               )}
             </Menu.Item>
           </div>

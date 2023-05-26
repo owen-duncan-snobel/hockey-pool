@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes, getReasonPhrase } from 'http-status-codes'
-import * as brackets from '../services/nhlbrackets.service'
+import * as services from '../services/nhlbrackets.service'
 import redis from '../../libs/ioredis/redis'
 
 export async function getNhlBrackets(req: Request, res: Response, next: NextFunction) {
@@ -16,7 +16,7 @@ export async function getNhlBrackets(req: Request, res: Response, next: NextFunc
       })
     }
 
-    const data = await brackets.getNhlBrackets()
+    const data = await services.getNhlBrackets()
     res.status(StatusCodes.OK).json({
       message: getReasonPhrase(StatusCodes.OK),
       status: StatusCodes.OK,

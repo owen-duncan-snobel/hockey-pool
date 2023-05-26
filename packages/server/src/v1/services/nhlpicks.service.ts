@@ -1,3 +1,4 @@
+import { NHL_BRACKET_VALUES } from "../../constants/playoffs"
 import prisma from "../../libs/prisma/prisma"
 import { NHLBracketPicksDto } from "../../types/playoffs"
 import { playoffSeriesHaveNotStarted } from "../../utils/playoffs"
@@ -29,6 +30,7 @@ export const createNhlBracketPicks = async (createNhlBracketPicksDto: NHLBracket
       userId: userId
     }
   })
+
   return await prisma.$transaction(
     picks.map((p) => prisma.nhlBracketPick.upsert({
       where: {
@@ -47,7 +49,8 @@ export const createNhlBracketPicks = async (createNhlBracketPicksDto: NHLBracket
         round: p.round,
         season: p.season,
         seriesCode: p.seriesCode,
-        userId: p.userId
+        userId: p.userId,
+        value: NHL_BRACKET_VALUES[p.round] || 0
       }
     }))
   )

@@ -1,6 +1,7 @@
-// DEPRECATED: This file is no longer used. It was used to populate the database with the NHL data.
 import axios from 'axios'
+
 import {
+  NHL_BRACKET_VALUES,
   NHL_CONFERENCES_URL, NHL_DIVISIONS_URL, NHL_FRANCHISES_URL, NHL_TEAMS_URL, NHL_TEAM_LOGOS_URL,
 } from '../constants/playoffs'
 import { NHLDivision } from '../types/playoffs'
@@ -79,17 +80,6 @@ export const handleTeams = async () => {
   return teamsCreateInput
 }
 
-export const dummyUser = {
-  clerk_id: '-1',
-  id: -1,
-  username: 'test-user',
-}
-export const handleUser = async () => {
-  await prisma.user.create({
-    data: dummyUser
-  })
-}
-
 async function setup(prismaClient: PrismaClient){
   const conferences = await handleConferences()
   const divisions = await handleDivisions()
@@ -97,9 +87,11 @@ async function setup(prismaClient: PrismaClient){
   const teams = await handleTeams()
   await prismaClient.nhlConference.createMany({
     data: conferences,
+    skipDuplicates: true,
   })
   await prismaClient.nhlDivision.createMany({
     data: divisions,
+    skipDuplicates: true,
   })
   await prismaClient.$transaction(
     teams.map((t) => prismaClient.nhlTeam.create({ data: t })),
@@ -131,6 +123,7 @@ async function setup(prismaClient: PrismaClient){
       },
     })),
   )
+
   // populates the most current year's playoff series
   await createOrUpdateSeries()
   // populates the playoff series with teams

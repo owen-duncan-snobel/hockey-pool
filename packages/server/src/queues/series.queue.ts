@@ -52,7 +52,7 @@ export const addJobs = async () => {
   console.log('repeatableJobsAfter', repeatableJobsAfter)
 }
 
-const worker = new Worker('series-queue', async (job) => {
+export const worker = new Worker('series-queue', async (job) => {
   if (job.name === 'series') {
     await createOrUpdateSeries()
     await syncPlayoffSeriesWithTeams()

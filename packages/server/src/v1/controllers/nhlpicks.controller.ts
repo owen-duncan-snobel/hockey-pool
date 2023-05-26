@@ -8,8 +8,14 @@ import { playoffSeriesHaveNotStarted, validPlayoffRounds, validPlayoffSeasons } 
 
 export async function getNhlBracketPicks(req: Request, res: Response, next: NextFunction){
   try {
+    const auth = req.auth
+    if (!auth || !auth.userId) return res.status(StatusCodes.UNAUTHORIZED).json({
+      message: getReasonPhrase(StatusCodes.UNAUTHORIZED),
+      status: StatusCodes.UNAUTHORIZED
+    })
     const query = NHLPicksQuerySchema.parse(req.query)
     const data = await services.getNhlBracketPicks(query)
+    console.log('NHL BRACKET PICKS', data)
     return res.status(StatusCodes.OK).json({
       message: getReasonPhrase(StatusCodes.OK),
       status: StatusCodes.OK,

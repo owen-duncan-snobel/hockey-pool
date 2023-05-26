@@ -165,7 +165,7 @@ function SeriesGroup({seriesStarted, series }: {
             <RadioGroup 
               value={allPicks[i].teamId} 
               onChange={(teamId) => handleInputChange(i, teamId)} 
-              className=' mb-5 border rounded-md shadow-lg text-gray-900'
+              className='mb-5 border rounded-md shadow-lg text-gray-900'
             >
               {
                 s.teams.map((t, i) => {

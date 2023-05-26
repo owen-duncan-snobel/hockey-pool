@@ -24,6 +24,7 @@ services:
       - DATABASE_URL=${DATABASE_URL}
       - CLERK_WEBHOOK_SECRET=${CLERK_WEBHOOK_SECRET}
       - CLERK_API_KEY=${CLERK_API_KEY}
+      - PORT=4000
   # the nginx reverse proxy
   nginx:
     build: ./nginx

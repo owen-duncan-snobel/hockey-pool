@@ -1,4 +1,3 @@
-import { PrismaClient } from '@prisma/client'
 import setup from '../src/__tests__/setup'
 import prisma from '../src/libs/prisma/prisma'
 
