@@ -67,7 +67,7 @@ export default function MainMenu() {
             </Menu.Item>
             <Menu.Item>
               {({ active }) => (
-                <Link href="/">
+                <Link href="/brackets">
                   <button
                     className={`${
                       active ? ' bg-gray-100' : ''

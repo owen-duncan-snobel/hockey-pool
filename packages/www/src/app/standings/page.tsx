@@ -84,7 +84,7 @@ function StandingsTable({standings}: {standings: IPlayoffUserStanding[]}) {
   )
 
   return (
-    <div>
+    <div className='p-5'>
       <TableLayout
         thead={(
           <tr>
