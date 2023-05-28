@@ -61,3 +61,7 @@ After deployment, ensure to add the environment variables.
 For the managed db create the db "hockeypool"
 
 From the console run, ```npx prisma migrate deploy``` and ```npx prisma db seed```
+
+
+### Redis
+To connect to the redis server run ```redis-cli -h``` and the ip address of the redis server.
