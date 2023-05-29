@@ -1,5 +1,5 @@
 import type { Meta } from '@storybook/react'
-import { SeriesGroup, SeriesStartedButton } from '@/app/make-picks/page'
+import { SeriesGroup, SeriesStartedButton } from '@/components/picks'
 
 const meta: Meta = {
   title: "Picks",
