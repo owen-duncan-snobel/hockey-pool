@@ -1,4 +1,3 @@
-import MakePicks from '@/app/make-picks/page'
 import type { Meta } from '@storybook/react'
 import { SeriesGroup, SeriesStartedButton } from '@/app/make-picks/page'
 
@@ -8,7 +7,7 @@ const meta: Meta = {
 }
 
 
-const SeriesGroupStartedStory = {
+export const SeriesGroupStartedStory = {
   title: "Series Group Started",
   render: () => (
     <div className='flex justify-center h-5/6 md:h:3/4'>
@@ -22,7 +21,7 @@ const SeriesGroupStartedStory = {
   )
 }
 
-const SeriesGroupNotStartedStory = {
+export const SeriesGroupNotStartedStory = {
   title: "Series Group Started",
   render: () => (
     <div className='flex justify-center h-5/6 md:h:3/4'>

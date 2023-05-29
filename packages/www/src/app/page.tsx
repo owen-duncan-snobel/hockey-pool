@@ -5,7 +5,6 @@ import MainMenu from '@/components/menu'
 import Image from 'next/image'
 import { DeviceFrameset } from 'react-device-frameset'
 import './devices.min.css'
-import { useUser } from '@clerk/nextjs'
 
 
 export default function Home() {
@@ -15,12 +14,10 @@ export default function Home() {
   if (isLoading) return <div>Loading...</div>
   if (!brackets) return <div></div>
 
-  const { user } = useUser()
-
   return (
     <div className='h-screen relative overflow-hidden'>
       <div className='sticky top-2 float-right px-2 z-10'>
-        <MainMenu user={user} />
+        <MainMenu />
       </div>
 
       <div className='h-10' />

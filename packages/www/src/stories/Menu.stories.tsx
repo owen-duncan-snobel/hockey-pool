@@ -12,7 +12,7 @@ export const Menu = {
   title: "Menu",
   render: () => (
     <div className='flex float-right'>
-      <MainMenu user={null} />
+      <MainMenu />
     </div>
   ),
 }

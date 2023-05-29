@@ -2,7 +2,6 @@
 import NHLBrackets from '@/libs/react-flow/flow'
 import { useBrackets } from '@/hooks/hooks'
 import MainMenu from '@/components/menu'
-import { useUser } from '@clerk/nextjs'
 
 export default function Brackets() {
   const { brackets, error, isLoading } = useBrackets()
@@ -11,12 +10,10 @@ export default function Brackets() {
   if (isLoading) return <div>Loading...</div>
   if (!brackets) return <div></div>
 
-   const { user } = useUser()
-
   return (
     <div>
       <div className='sticky top-2 float-right px-2 z-10'>
-        <MainMenu user={user} />
+        <MainMenu />
       </div>
 
       <div className='h-10' />

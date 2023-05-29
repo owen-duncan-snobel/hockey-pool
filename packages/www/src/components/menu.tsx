@@ -11,8 +11,8 @@ const USER_PROFILE = process.env.NEXT_PUBLIC_CLERK_USER_PROFILE_URL
 type UseUser = typeof useUser
 type User = ReturnType<UseUser>['user']
 
-export default function MainMenu({user}: { user: User}) {
-  //const { user } = useUser()
+export default function MainMenu() {
+  const { user } = useUser()
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div className='flex gap-x-1 px-2 items-center'>
