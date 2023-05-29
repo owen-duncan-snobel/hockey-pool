@@ -92,6 +92,17 @@ Every night the application will fetch the latest NHL tournament games and updat
    ```
 9. Open [http://localhost:3000](http://localhost:3000) with your browser to see the client result.
 
+10. Optional: Start the /packages/www storybook server
+   ```sh
+   pnpm run storybook
+   ``` 
+   and open [http://localhost:6006](http://localhost:6006) with your browser to see the storybook stories.
+
+11. Run the tests
+   ```sh
+   pnpm run test
+   ```
+
 More detailed instructions for the server can be viewed in the [server README](packages/server/README.md).
 
 ## Roadmap
