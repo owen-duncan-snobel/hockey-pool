@@ -1,7 +1,7 @@
 "use client"
 import MainMenu from '@/components/menu'
 import { Response } from '@/hooks/hooks'
-import { useAuth, useUser } from '@clerk/nextjs'
+import { useAuth } from '@clerk/nextjs'
 import { API_URL } from '@/constants'
 import { IPlayoffUserStanding } from '@backend/types/playoffs'
 import useSWR from 'swr'
@@ -34,13 +34,11 @@ export default function Standings() {
   if (error) return <p>There is an error.</p>
   if (isLoading) return <div>Loading...</div>
   if (!standings) return <div></div>
-
-   const { user } = useUser()
    
   return (
     <div>
       <div className='sticky top-2 float-right px-2 z-10'>
-        <MainMenu user={user} />
+        <MainMenu />
       </div>
 
       <div>
