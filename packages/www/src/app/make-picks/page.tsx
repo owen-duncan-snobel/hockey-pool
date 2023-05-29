@@ -3,7 +3,7 @@ import MainMenu from '@/components/menu'
 import { useActiveSeries } from '@/hooks/hooks'
 import Image from 'next/image'
 import useSWR from 'swr'
-import { useAuth } from '@clerk/nextjs'
+import { useAuth, useUser } from '@clerk/nextjs'
 import { API_URL } from '@/constants'
 import { Response } from '@/hooks/hooks'
 import { PrismaNhlBracketPick, PrismaNhlSeries, PrismaNhlTeam, PrismaNhlTeamInSeries } from '@backend/types/playoffs'
@@ -49,12 +49,14 @@ export default function MakePicks() {
   if (picksLoading) return <div>Loading...</div>
   if (!picks) return <div></div>
 
+   const { user } = useUser()
+
   const seriesStartTime = series[0].gameTime as unknown as string
   
   return (
     <div>
       <div className='sticky top-2 float-right px-2 z-10'>
-        <MainMenu />
+        <MainMenu user={user} />
       </div>
 
       <div>
@@ -102,7 +104,7 @@ export default function MakePicks() {
   )
 }
 
-function SeriesGroup({seriesStarted, series }: {
+export function SeriesGroup({seriesStarted, series }: {
   seriesStarted: boolean, 
   series: (PrismaNhlSeries & {
     teams: {
@@ -201,7 +203,7 @@ function SeriesGroup({seriesStarted, series }: {
   )
 }
 
-function SeriesStartedButton({seriesStarted}:{seriesStarted: boolean}){
+export function SeriesStartedButton({seriesStarted}:{seriesStarted: boolean}){
   return (
     <div className='flex justify-center'>
       <button 

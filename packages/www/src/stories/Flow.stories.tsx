@@ -20,31 +20,3 @@ export const NHLBracketsStory = {
   title: "NHL Brackets",
   render: () => <Flow />,
 }
-
-export const NHLTeamNodeStory = {
-  title: "NHL Team Node",
-  render: () => <SeriesNode data={{
-    conference: {
-      id: 1,
-      name: 'Eastern',
-      link: '/api/v1/conferences/6',
-    },
-    round: {
-      number: 1,
-    },
-    currentGame: {
-      seriesSummary: { 
-      }
-    },
-    matchupTeams: [],
-    names: {
-      matchupName: 'TBA',
-      matchupShortName: 'TBA',
-      seriesSlug: 'TBA',
-      teamAbbreviationA: 'TBA',
-      teamAbbreviationB: 'TBA',
-    },
-    seriesNumber: 1,
-    seriesCode: 'A'
-  }} />,
-}

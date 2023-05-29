@@ -1,7 +1,7 @@
 "use client"
 import MainMenu from '@/components/menu'
 import { Response } from '@/hooks/hooks'
-import { useAuth } from '@clerk/nextjs'
+import { useAuth, useUser } from '@clerk/nextjs'
 import { API_URL } from '@/constants'
 import { IPlayoffUserStanding } from '@backend/types/playoffs'
 import useSWR from 'swr'
@@ -35,10 +35,12 @@ export default function Standings() {
   if (isLoading) return <div>Loading...</div>
   if (!standings) return <div></div>
 
+   const { user } = useUser()
+   
   return (
     <div>
       <div className='sticky top-2 float-right px-2 z-10'>
-        <MainMenu />
+        <MainMenu user={user} />
       </div>
 
       <div>
@@ -56,7 +58,7 @@ export default function Standings() {
   )
 }
 
-function StandingsTable({standings}: {standings: IPlayoffUserStanding[]}) {
+export function StandingsTable({standings}: {standings: IPlayoffUserStanding[]}) {
   let [openDialog, setOpenDialog] = useState({
     isOpen: false,
     standingsIndex: 0
@@ -121,7 +123,7 @@ function StandingsTable({standings}: {standings: IPlayoffUserStanding[]}) {
   )
 }
 
-function StandingsTableRow({
+export function StandingsTableRow({
   user, 
   index, 
   setOpenDialog 
@@ -155,7 +157,7 @@ function StandingsTableRow({
   )
 }
 
-function TableLayout ({thead, tbody}: {thead: React.ReactElement, tbody: React.ReactElement}) {
+export function TableLayout ({thead, tbody}: {thead: React.ReactElement, tbody: React.ReactElement}) {
   return (
     <div className="overflow-x-auto rounded-md border shadow-lg">
       <table className="min-w-full divide-y-2 bg-white text-sm">
@@ -171,7 +173,7 @@ function TableLayout ({thead, tbody}: {thead: React.ReactElement, tbody: React.R
   )
 }
 
-function StandingsTableBodySkeleton(){
+export function StandingsTableBodySkeleton(){
   return (
     <>
       <tr>
@@ -203,7 +205,7 @@ function StandingsTableBodySkeleton(){
   )
 }
 
-function StandingsDialog({
+export function StandingsDialog({
   openDialog,
   setOpenDialog,
   standings
@@ -305,5 +307,4 @@ function StandingsDialog({
       </div>
     </Dialog>
   )
-
 }

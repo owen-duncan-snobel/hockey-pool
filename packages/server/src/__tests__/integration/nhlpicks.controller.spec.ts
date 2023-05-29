@@ -32,7 +32,6 @@ describe('nhlpicks controller', () => {
       expect(response.status).toBe(200)
       expect(response.body).toBeDefined()
       expect(response.body).toHaveProperty('data')
-      console.log('BODY: ',response.body)
       expect(response.body.data).toHaveProperty('picks')
       expect(response.body.data.picks[0].season).toBe('20222023')
     })
