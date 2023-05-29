@@ -1,10 +1,15 @@
 import type { Meta } from '@storybook/react'
-import { SeriesGroup, SeriesStartedButton } from '@/components/picks'
+// import { SeriesGroup, SeriesStartedButton } from '@/app/make-picks/page'
 
 const meta: Meta = {
   title: "Picks",
-  component: SeriesGroup,
+  component: () => <div></div>,
 }
+
+// const meta: Meta = {
+//   title: "Picks",
+//   component: SeriesGroup,
+// }
 
 
 export const SeriesGroupStartedStory = {
@@ -12,10 +17,10 @@ export const SeriesGroupStartedStory = {
   render: () => (
     <div className='flex justify-center h-5/6 md:h:3/4'>
       <div className=''> 
-        <SeriesGroup 
+        {/* <SeriesGroup 
           seriesStarted={true}
           series={[]}
-        />
+        /> */}
       </div>
     </div>
   )
@@ -26,10 +31,10 @@ export const SeriesGroupNotStartedStory = {
   render: () => (
     <div className='flex justify-center h-5/6 md:h:3/4'>
       <div className=''> 
-        <SeriesGroup 
+        {/* <SeriesGroup 
           seriesStarted={false}
           series={[]}
-        />
+        /> */}
       </div>
     </div>
   )

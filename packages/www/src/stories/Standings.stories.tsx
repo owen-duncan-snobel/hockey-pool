@@ -4,7 +4,7 @@ import {
   StandingsTable,
   StandingsTableRow,
   TableLayout
-} from '@/app/standings/page'
+} from '@/components/standings'
 
 const meta: Meta = {
   title: "User Standings",
