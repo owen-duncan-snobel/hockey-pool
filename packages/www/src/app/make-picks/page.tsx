@@ -11,7 +11,25 @@ import { useState } from 'react'
 import { RadioGroup } from '@headlessui/react'
 import Error from 'next/error'
 import { LockClosedIcon, LockOpenIcon } from '@heroicons/react/20/solid'
-import { format } from 'date-fns'
+import { format, set } from 'date-fns'
+import { Albert_Sans } from 'next/font/google'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
+const albert_sans = Albert_Sans({ 
+  subsets: ['latin'],
+  weight: [
+    '100', 
+    '200', 
+    '300',
+    '400', 
+    '500', 
+    '600', 
+    '700', 
+    '800', 
+    '900'
+  ]
+})
  
 function useUserPicks(url: string) {
   const { getToken } = useAuth();
@@ -118,6 +136,7 @@ function SeriesGroup({seriesStarted, series }: {
     }
   }))
   const [errors, setErrors] = useState<string[]>([])
+  const [disableSubmit, setDisableSubmit] = useState<boolean>(false)
   const { getToken, isLoaded, userId } = useAuth()
   if (!isLoaded || !userId) { // this is required to ensure that the user is logged in and can get a token
     return null;
@@ -151,10 +170,15 @@ function SeriesGroup({seriesStarted, series }: {
       })
     })
     if (!response.ok){
-      // TODO: handle error message 
+      toast.error('There was an error submitting your picks. Please try again.')
+      return
     }
+
+    setDisableSubmit(true)
+    toast.success('picks have been submitted!')
   }
 
+  console.log(disableSubmit)
   return (
     <form onSubmit={handleSubmit}>
       {
@@ -196,17 +220,30 @@ function SeriesGroup({seriesStarted, series }: {
           )
         })
       }
-      <SeriesStartedButton seriesStarted={seriesStarted} />
+      <SeriesStartedButton 
+        seriesStarted={seriesStarted} 
+        disableSubmit={disableSubmit}
+      />
+
+      <ToastContainer 
+        className={`${albert_sans.className} text-sm font-medium uppercase`}
+      />
     </form>
   )
 }
 
-function SeriesStartedButton({seriesStarted}:{seriesStarted: boolean}){
+function SeriesStartedButton({
+  seriesStarted,
+  disableSubmit
+}:{
+  seriesStarted: boolean,
+  disableSubmit: boolean
+}){
   return (
     <div className='flex justify-center'>
-      <button 
+      <button
         type='submit'
-        disabled={seriesStarted}
+        disabled={seriesStarted || disableSubmit}
         className={
           seriesStarted ?
             'border rounded-md shadow-md px-2 py-3 bg-gray-900 text-white' :
@@ -221,7 +258,10 @@ function SeriesStartedButton({seriesStarted}:{seriesStarted: boolean}){
             </div>) :
             (<div className='flex items-center gap-x-2'>
               SUBMIT PICKS
-              <LockOpenIcon height={20}/> 
+              {disableSubmit 
+                ? <LockClosedIcon height={20}/> 
+                : <LockOpenIcon height={20}/>
+              }
             </div>)
         }
       </button>
