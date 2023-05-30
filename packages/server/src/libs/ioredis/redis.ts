@@ -3,7 +3,7 @@ import Redis from 'ioredis'
 const { REDIS_URL } = process.env
 
 const client = new Redis(REDIS_URL!, {
-  maxRetriesPerRequest: null
+  maxRetriesPerRequest: null,
 })
 
 client.on('error', (err) => {

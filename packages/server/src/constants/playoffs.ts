@@ -12,5 +12,5 @@ export const NHL_BRACKET_VALUES = {
   1: 5,
   2: 10,
   3: 15,
-  4: 25
+  4: 25,
 }

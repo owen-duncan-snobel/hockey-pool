@@ -1,8 +1,8 @@
-import { IPlayoffUserStanding } from "../../types/playoffs"
-import { 
-  getCurrentSeasonPlayoffStandingsForAllUsers 
-} from "../../v1/services/nhlstandings.service"
-import { prismaMock } from "../singleton"
+import { IPlayoffUserStanding } from '../../types/playoffs'
+import {
+  getCurrentSeasonPlayoffStandingsForAllUsers,
+} from '../../v1/services/nhlstandings.service'
+import { prismaMock } from '../singleton'
 
 describe('nhlstandings services', () => {
   describe('getCurrentSeasonPlayoffStandingsForAllUsers', () => {
@@ -17,15 +17,15 @@ describe('nhlstandings services', () => {
                 seriesWins: 4,
                 team: {
                   teamName: 'team1',
-                  logo: 'logo1'
+                  logo: 'logo1',
                 },
                 season: '20222023',
-                round: 2 
+                round: 2,
               },
-            }
+            },
           ],
           points: 10,
-          username: 'user1'
+          username: 'user1',
         },
         {
           id: 2,
@@ -36,11 +36,11 @@ describe('nhlstandings services', () => {
                 seriesWins: 4,
                 team: {
                   teamName: 'team1',
-                  logo: 'logo1'
+                  logo: 'logo1',
                 },
                 season: '20222023',
-                round: 1 
-              }     
+                round: 1,
+              },
             },
             {
               value: 10,
@@ -48,17 +48,17 @@ describe('nhlstandings services', () => {
                 seriesWins: 4,
                 team: {
                   teamName: 'team1',
-                  logo: 'logo1'
+                  logo: 'logo1',
                 },
                 season: '20222023',
-                round: 2 
-              }     
-            }
+                round: 2,
+              },
+            },
           ],
           points: 15,
-          username: 'user2'
-        }
-      ] 
+          username: 'user2',
+        },
+      ]
 
       type PrismaMockStandingsUser = {
         id: number
@@ -86,12 +86,12 @@ describe('nhlstandings services', () => {
                 seriesWins: 4,
                 team: {
                   teamName: 'team1',
-                  logo: 'logo1'
+                  logo: 'logo1',
                 },
                 season: '20222023',
-                round: 2 
-            }
-          }]
+                round: 2,
+              },
+            }],
         },
         {
           id: 2,
@@ -103,30 +103,30 @@ describe('nhlstandings services', () => {
                 seriesWins: 4,
                 team: {
                   teamName: 'team1',
-                  logo: 'logo1'
+                  logo: 'logo1',
                 },
                 season: '20222023',
-                round: 1 
-            }
-          },
-          {
+                round: 1,
+              },
+            },
+            {
               value: 10,
               pick: {
                 seriesWins: 4,
                 team: {
                   teamName: 'team1',
-                  logo: 'logo1'
+                  logo: 'logo1',
                 },
                 season: '20222023',
-                round: 2
-            }
-          }
-        ]
-        }
+                round: 2,
+              },
+            },
+          ],
+        },
       ] as unknown as any)
 
       const data = await getCurrentSeasonPlayoffStandingsForAllUsers()
-      expect(data).toEqual(standings.sort((a,b) => b.points - a.points))
+      expect(data).toEqual(standings.sort((a, b) => b.points - a.points))
     })
   })
 })

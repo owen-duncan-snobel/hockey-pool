@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express'
-import * as series from '../services/nhlseries.service'
 import { StatusCodes, getReasonPhrase } from 'http-status-codes'
+import * as series from '../services/nhlseries.service'
 import { NhlSeriesQuerySchema } from '../schemas/nhlseries.schema'
 import { playoffSeriesHaveNotStarted } from '../../utils/playoffs'
 
@@ -19,7 +19,6 @@ export async function getSeries(req: Request, res: Response, next: NextFunction)
     })
   } catch (err) {
     next(err)
-    return
   }
 }
 
@@ -29,7 +28,7 @@ export async function getActiveSeries(_req: Request, res: Response, next: NextFu
     const currentRound = await series.getActiveRound(currentSeason?.season)
     const activeSeries = await series.getActiveSeries({
       round: currentRound?.round || 1,
-      season: currentSeason?.season || '20222023'
+      season: currentSeason?.season || '20222023',
     })
     const seriesNotStarted = playoffSeriesHaveNotStarted(activeSeries)
     return res.status(StatusCodes.OK).json({
@@ -37,11 +36,10 @@ export async function getActiveSeries(_req: Request, res: Response, next: NextFu
       status: StatusCodes.OK,
       data: {
         series: activeSeries,
-        seriesStarted: !seriesNotStarted
-      }
+        seriesStarted: !seriesNotStarted,
+      },
     })
-  } catch(err){
+  } catch (err) {
     next(err)
-    return
   }
-} 
+}

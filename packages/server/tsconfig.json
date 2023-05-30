@@ -19,7 +19,7 @@
 
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noImplicitReturns": true,
+    "noImplicitReturns": false,
     "noFallthroughCasesInSwitch": true,
     "typeRoots": ["./node_modules/@types", "./src/types/*", "./src/types"],
     "types": ["node", "jest", "@types/jest"]

@@ -128,17 +128,17 @@ export interface IPlayoffUserStanding {
   id: number,
   username: string | null,
   picks: {
-        value: number;
-        pick: {
-          team: { 
-            teamName: string, 
-            logo: string | null
-          } | null,
-          seriesWins: number,
-          season: string,
-          round: number
-        }
-    }[]
+    value: number;
+    pick: {
+      team: {
+        teamName: string,
+        logo: string | null
+      } | null,
+      seriesWins: number,
+      season: string,
+      round: number
+    }
+  }[]
   points: number
 }
 
@@ -217,10 +217,10 @@ export interface NHLTeam {
 }
 
 export type NHLBracketPicksDto = {
-    teamId: number;
-    round: number;
-    season: string;
-    seriesCode: string;
-}[]   //z.infer<typeof NHLBracketPicksSchema>
+  teamId: number;
+  round: number;
+  season: string;
+  seriesCode: string;
+}[] // z.infer<typeof NHLBracketPicksSchema>
 
-export type NHLSeason = string //z.infer<typeof NHLSeasonSchema>
+export type NHLSeason = string // z.infer<typeof NHLSeasonSchema>

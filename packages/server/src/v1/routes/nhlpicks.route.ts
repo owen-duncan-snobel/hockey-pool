@@ -1,6 +1,7 @@
 import express from 'express'
 import * as controller from '../controllers/nhlpicks.controller'
 import { clerkClient } from '../../libs/clerk/clerk'
+
 const router = express.Router()
 
 /**
@@ -15,7 +16,7 @@ router.get('/', clerkClient.expressWithAuth(), controller.getNhlBracketPicks)
  * @route POST /api/v1/NHLPicks
  * @description Create new picks
  * @access Private
- * @returns {Object} 201 
+ * @returns {Object} 201
  */
 router.post('/', clerkClient.expressWithAuth(), controller.createNhlBracketPicks)
 

@@ -1,11 +1,11 @@
 import axios from 'axios'
 
+import { Prisma, PrismaClient } from '@prisma/client'
 import {
   NHL_BRACKET_VALUES,
   NHL_CONFERENCES_URL, NHL_DIVISIONS_URL, NHL_FRANCHISES_URL, NHL_TEAMS_URL, NHL_TEAM_LOGOS_URL,
 } from '../constants/playoffs'
 import { NHLDivision } from '../types/playoffs'
-import { Prisma, PrismaClient } from '@prisma/client'
 import prisma from '../libs/prisma/prisma'
 import { createOrUpdateSeries, syncPlayoffSeriesWithTeams } from '../v1/services/nhlseries.service'
 
@@ -75,12 +75,12 @@ export const handleTeams = async () => {
     name: t.name,
     officialSiteUrl: t.officialSiteUrl,
     teamName: t.teamName,
-    logo: t.name ? `${NHL_TEAM_LOGOS_URL}/${encodeURIComponent(t.name)}.png` : ''
+    logo: t.name ? `${NHL_TEAM_LOGOS_URL}/${encodeURIComponent(t.name)}.png` : '',
   }))
   return teamsCreateInput
 }
 
-async function setup(prismaClient: PrismaClient){
+async function setup(prismaClient: PrismaClient) {
   const conferences = await handleConferences()
   const divisions = await handleDivisions()
   const franchises = await handleFranchises()

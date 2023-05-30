@@ -9,17 +9,17 @@ describe('Playoffs utils', () => {
           teamId: 1,
           round: 1,
           season: '20202021',
-          seriesCode: 'A'
+          seriesCode: 'A',
         },
         {
           teamId: 2,
           round: 1,
           season: '20202021',
-          seriesCode: 'B'
+          seriesCode: 'B',
         },
       ]
       const round = 1
-      const valid = playoffs.validPlayoffRounds({picksDto, round})
+      const valid = playoffs.validPlayoffRounds({ picksDto, round })
       expect(valid).toBe(true)
     })
     it('should return the invalid playoff rounds', () => {
@@ -28,42 +28,42 @@ describe('Playoffs utils', () => {
           teamId: 1,
           round: 1,
           season: '20202021',
-          seriesCode: 'A'
+          seriesCode: 'A',
         },
         {
           teamId: 2,
           round: 2,
           season: '20202021',
-          seriesCode: 'B'
+          seriesCode: 'B',
         },
       ]
       const round = 1
-      const valid = playoffs.validPlayoffRounds({picksDto, round})
+      const valid = playoffs.validPlayoffRounds({ picksDto, round })
       expect(valid).toBe(false)
     })
-    it ('should return the invalid playoff rounds for undefined round', () => {
+    it('should return the invalid playoff rounds for undefined round', () => {
       const picksDto = [
         {
           teamId: 1,
           round: 1,
           season: '20202021',
-          seriesCode: 'A'
+          seriesCode: 'A',
         },
         {
           teamId: 2,
           round: 2,
           season: '20202021',
-          seriesCode: 'B'
+          seriesCode: 'B',
         },
       ]
       const round = undefined
-      const valid = playoffs.validPlayoffRounds({picksDto, round})
+      const valid = playoffs.validPlayoffRounds({ picksDto, round })
       expect(valid).toBe(false)
     })
     it('should return the valid playoff rounds for empty array', () => {
       const picksDto = []
       const round = 1
-      const valid = playoffs.validPlayoffRounds({picksDto, round})
+      const valid = playoffs.validPlayoffRounds({ picksDto, round })
       expect(valid).toBe(true)
     })
   })
@@ -75,17 +75,17 @@ describe('Playoffs utils', () => {
           teamId: 1,
           round: 1,
           season: '20202021',
-          seriesCode: 'A'
+          seriesCode: 'A',
         },
         {
           teamId: 2,
           round: 1,
           season: '20202021',
-          seriesCode: 'B'
+          seriesCode: 'B',
         },
       ]
       const season = '20202021'
-      const valid = playoffs.validPlayoffSeasons({picksDto, season})
+      const valid = playoffs.validPlayoffSeasons({ picksDto, season })
       expect(valid).toBe(true)
     })
 
@@ -95,17 +95,17 @@ describe('Playoffs utils', () => {
           teamId: 1,
           round: 1,
           season: '20202021',
-          seriesCode: 'A'
+          seriesCode: 'A',
         },
         {
           teamId: 2,
           round: 1,
           season: '20212022',
-          seriesCode: 'B'
+          seriesCode: 'B',
         },
       ]
       const season = '20202021'
-      const valid = playoffs.validPlayoffSeasons({picksDto, season})
+      const valid = playoffs.validPlayoffSeasons({ picksDto, season })
       expect(valid).toBe(false)
     })
 
@@ -115,24 +115,24 @@ describe('Playoffs utils', () => {
           teamId: 1,
           round: 1,
           season: '20202021',
-          seriesCode: 'A'
+          seriesCode: 'A',
         },
         {
           teamId: 2,
           round: 1,
           season: '20212022',
-          seriesCode: 'B'
+          seriesCode: 'B',
         },
       ]
       const season = undefined
-      const valid = playoffs.validPlayoffSeasons({picksDto, season})
+      const valid = playoffs.validPlayoffSeasons({ picksDto, season })
       expect(valid).toBe(false)
     })
 
     it('should return the valid playoff seasons for empty array', () => {
       const picksDto = []
       const season = '20202021'
-      const valid = playoffs.validPlayoffSeasons({picksDto, season})
+      const valid = playoffs.validPlayoffSeasons({ picksDto, season })
       expect(valid).toBe(true)
     })
   })
@@ -171,17 +171,17 @@ describe('Playoffs utils', () => {
                 divisionId: 1,
                 logo: '',
                 active: true,
-              }
-            }
-          ]
-        }
+              },
+            },
+          ],
+        },
       ]
       const valid = playoffs.playoffSeriesHaveNotStarted(series)
       expect(valid).toBe(true)
     })
 
     it('should return false if series gameTime < Date.now()', () => {
-      const series: (NhlSeries & { 
+      const series: (NhlSeries & {
         teams: {
           team: NhlTeam | null;
         }[]
@@ -213,17 +213,17 @@ describe('Playoffs utils', () => {
                 divisionId: 1,
                 logo: '',
                 active: true,
-              }
-            }
-          ]
-        }
+              },
+            },
+          ],
+        },
       ]
       const valid = playoffs.playoffSeriesHaveNotStarted(series)
       expect(valid).toBe(false)
     })
 
     it('should return false if series gameNumber !== 1', () => {
-       const series: (NhlSeries & { 
+      const series: (NhlSeries & {
         teams: {
           team: NhlTeam | null;
         }[]
@@ -255,10 +255,10 @@ describe('Playoffs utils', () => {
                 divisionId: 1,
                 logo: '',
                 active: true,
-              }
-            }
-          ]
-        }
+              },
+            },
+          ],
+        },
       ]
 
       const valid = playoffs.playoffSeriesHaveNotStarted(series)

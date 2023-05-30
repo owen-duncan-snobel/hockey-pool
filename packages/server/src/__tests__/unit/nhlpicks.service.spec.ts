@@ -1,5 +1,5 @@
-import { createNhlBracketPicks } from "../../v1/services/nhlpicks.service"
-import { prismaMock } from "../singleton"
+import { createNhlBracketPicks } from '../../v1/services/nhlpicks.service'
+import { prismaMock } from '../singleton'
 
 describe('nhlpicks services', () => {
   describe('createNhlBracketPicks', () => {
@@ -21,10 +21,10 @@ describe('nhlpicks services', () => {
           createdAt: new Date(),
           updatedAt: new Date(),
           active: true,
-        }
+        },
       ])
 
-      const data = await createNhlBracketPicks([ pick ], 1)
+      const data = await createNhlBracketPicks([pick], 1)
       expect(data[0]).toEqual(expect.objectContaining({
         round: 1,
         season: '20202021',
@@ -35,7 +35,7 @@ describe('nhlpicks services', () => {
       }))
     })
   })
-    
+
   describe('activateNhlBracketPicks', () => {
     it('should set all picks to active', () => {
       // need to mock prisma

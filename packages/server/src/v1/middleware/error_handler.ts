@@ -4,8 +4,8 @@ import {
   PrismaClientKnownRequestError,
   PrismaClientValidationError,
 } from '@prisma/client/runtime/library'
-import HttpException from '../../exceptions/http-exception'
 import { z } from 'zod'
+import HttpException from '../../exceptions/http-exception'
 
 const ErrorHandler = (
   err: Error,
@@ -17,9 +17,9 @@ const ErrorHandler = (
     return res.status(StatusCodes.BAD_REQUEST).json({
       message: getReasonPhrase(StatusCodes.BAD_REQUEST),
       status: StatusCodes.BAD_REQUEST,
-      errors: err.issues.map((e) => ({ path: e.path[0], message: e.message }))
+      errors: err.issues.map((e) => ({ path: e.path[0], message: e.message })),
     })
-  } else if (err instanceof PrismaClientKnownRequestError) {
+  } if (err instanceof PrismaClientKnownRequestError) {
     switch (err.code) {
       case 'P2002':
       case 'P2003':

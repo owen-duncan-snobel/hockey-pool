@@ -49,11 +49,11 @@ export const createOrUpdateSeries = async () => {
         currentGameId: s.currentGame.seriesSummary.gamePk,
         gameLabel: s.currentGame.seriesSummary.gameLabel,
         gameNumber: s.currentGame.seriesSummary.gameNumber,
-        gameTime: s.currentGame.seriesSummary.gameTime 
-          ? new Date(s.currentGame.seriesSummary.gameTime) 
+        gameTime: s.currentGame.seriesSummary.gameTime
+          ? new Date(s.currentGame.seriesSummary.gameTime)
           : undefined,
         seriesStatus: s.currentGame.seriesSummary.seriesStatus,
-        seriesStatusShort: s.currentGame.seriesSummary.seriesStatusShort
+        seriesStatusShort: s.currentGame.seriesSummary.seriesStatusShort,
       },
       create: {
         season,
@@ -62,11 +62,11 @@ export const createOrUpdateSeries = async () => {
         currentGameId: s.currentGame.seriesSummary.gamePk,
         gameLabel: s.currentGame.seriesSummary.gameLabel,
         gameNumber: s.currentGame.seriesSummary.gameNumber,
-        gameTime: s.currentGame.seriesSummary.gameTime 
-          ? new Date(s.currentGame.seriesSummary.gameTime) 
+        gameTime: s.currentGame.seriesSummary.gameTime
+          ? new Date(s.currentGame.seriesSummary.gameTime)
           : undefined,
         seriesStatus: s.currentGame.seriesSummary.seriesStatus,
-        seriesStatusShort: s.currentGame.seriesSummary.seriesStatusShort
+        seriesStatusShort: s.currentGame.seriesSummary.seriesStatusShort,
       },
     })),
   )
@@ -81,7 +81,7 @@ export const syncPlayoffSeriesWithTeams = async () => {
     })
   }
 
-  const { data }: {data: IPlayoff} = response
+  const { data }: { data: IPlayoff } = response
   const series: IPlayoffSeriesWithSeasonAndTeams[] = []
   const { rounds, season } = data
   rounds.forEach((round) => {
@@ -103,30 +103,30 @@ export const syncPlayoffSeriesWithTeams = async () => {
           round: s.round.number,
           season: s.season,
           seriesCode: s.seriesCode,
-          teamId: s.team.team.id
-        }
+          teamId: s.team.team.id,
+        },
       },
       update: {
         seriesWins: s.team.seriesRecord.wins,
-        seriesLosses: s.team.seriesRecord.losses
+        seriesLosses: s.team.seriesRecord.losses,
       },
-      create: { 
+      create: {
         team: {
           connect: {
-            id: s.team.team.id
-          }
+            id: s.team.team.id,
+          },
         },
         series: {
           connect: {
             season_round_seriesCode: {
               season: s.season,
               round: s.round.number,
-              seriesCode: s.seriesCode
-            }
-          }
-        }
-      }
-    }))
+              seriesCode: s.seriesCode,
+            },
+          },
+        },
+      },
+    })),
   )
 
   console.log('synced: ', synced.length)
@@ -159,14 +159,14 @@ export const syncPlayoffSeriesWithTeams = async () => {
 
 export const getSeries = async ({
   season,
-  round
+  round,
 } : {
   season?: string,
   round?: number
-}) => await prisma.nhlSeries.findMany({
+}) => prisma.nhlSeries.findMany({
   where: {
-    season: season,
-    round: round
+    season,
+    round,
   },
   include: {
     teams: {
@@ -177,49 +177,49 @@ export const getSeries = async ({
   },
 })
 
-export const getActiveSeason = async () => await prisma.nhlSeries.findFirst({
+export const getActiveSeason = async () => prisma.nhlSeries.findFirst({
   orderBy: {
-    season: 'desc'
+    season: 'desc',
   },
   select: {
-    season: true
-  }
-}) 
+    season: true,
+  },
+})
 
-export const getActiveRound = async (season?: string) => await prisma.nhlSeries.findFirst({
+export const getActiveRound = async (season?: string) => prisma.nhlSeries.findFirst({
   where: {
     season,
     currentGameId: {
-      not: null
-    }
+      not: null,
+    },
   },
   orderBy: {
-    round: 'desc'
-  }, 
+    round: 'desc',
+  },
   select: {
-    round: true
-  }
+    round: true,
+  },
 })
 
 export const getActiveSeries = async ({
   round,
-  season
+  season,
 }: {
   round: number
   season: string
-}) => await prisma.nhlSeries.findMany({
+}) => prisma.nhlSeries.findMany({
   where: {
     round,
-    season
-  }, 
+    season,
+  },
   include: {
     teams: {
       select: {
-        team: true
-      }
-    }
+        team: true,
+      },
+    },
   },
   orderBy: {
-    gameTime: 'asc'
-  }
+    gameTime: 'asc',
+  },
 })

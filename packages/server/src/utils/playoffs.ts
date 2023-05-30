@@ -1,6 +1,6 @@
-import { NhlSeries, NhlTeam } from "@prisma/client"
+import { NhlSeries, NhlTeam } from '@prisma/client'
 
-export const validPlayoffRounds = ({picksDto, round} : {
+export const validPlayoffRounds = ({ picksDto, round } : {
   picksDto: {
     teamId: number,
     round: number,
@@ -10,10 +10,10 @@ export const validPlayoffRounds = ({picksDto, round} : {
   round: number | undefined
 }) => {
   if (!round) return false
-  return picksDto.every(pick => pick.round === round)
+  return picksDto.every((pick) => pick.round === round)
 }
 
-export const validPlayoffSeasons = ({picksDto, season} : {
+export const validPlayoffSeasons = ({ picksDto, season } : {
   picksDto: {
     teamId: number,
     round: number,
@@ -23,15 +23,13 @@ export const validPlayoffSeasons = ({picksDto, season} : {
   season: string | undefined
 }) => {
   if (!season) return false
-  return picksDto.every(pick => pick.season === season)
+  return picksDto.every((pick) => pick.season === season)
 }
 
 export const playoffSeriesHaveNotStarted = (series: (NhlSeries & {
   teams: {
     team: NhlTeam | null;
   }[]
-})[]) => {
-  return series.every(series => series.gameNumber === 1 
+})[]) => series.every((series) => series.gameNumber === 1
     && series.gameTime
     && series.gameTime > new Date())
-}

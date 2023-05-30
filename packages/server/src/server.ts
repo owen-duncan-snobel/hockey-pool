@@ -3,15 +3,15 @@ import helmet from 'helmet'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import { StatusCodes } from 'http-status-codes'
+import rateLimit from 'express-rate-limit'
 import webhooks from './v1/routes/webhooks'
 import v1 from './v1'
 import ErrorHandler from './v1/middleware/error_handler'
 import { errorLogger, logger } from './v1/middleware/logger'
 import { addJobs } from './queues/series.queue'
-import rateLimit from 'express-rate-limit'
 
-const PORT = process.env.NODE_ENV === 'test' 
-  ? 8005 
+const PORT = process.env.NODE_ENV === 'test'
+  ? 8005
   : process.env.PORT || 4000
 
 const app: Application = express()
@@ -27,7 +27,7 @@ app.use('/api', rateLimit({
   max: 1000, // limit each IP to 1000 requests per windowMs
   message: 'Too many requests from this IP, please try again later',
   standardHeaders: true,
-  legacyHeaders: false
+  legacyHeaders: false,
 }))
 
 app.use('/api/webhooks', webhooks)

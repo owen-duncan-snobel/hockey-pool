@@ -1,13 +1,13 @@
 import { Queue, Worker } from 'bullmq'
-import { 
+import {
   createOrUpdateSeries,
-  syncPlayoffSeriesWithTeams 
+  syncPlayoffSeriesWithTeams,
 } from '../v1/services/nhlseries.service'
 import { activateNhlBracketPicks } from '../v1/services/nhlpicks.service'
 import redisClient from '../libs/ioredis/redis'
 
 const queue = new Queue('series-queue', {
-  connection: redisClient
+  connection: redisClient,
 })
 
 const updateSeries = async () => {
@@ -15,7 +15,7 @@ const updateSeries = async () => {
     repeat: {
       pattern: '0 * * * *', // repeat every hour at the top of the hour
       tz: 'america/toronto',
-      limit: 1
+      limit: 1,
     },
   })
 }
@@ -25,8 +25,8 @@ const setPicksToActive = async () => {
     repeat: {
       pattern: '0 0 0 * * *', // repeat every day at midnight
       tz: 'america/toronto',
-      limit: 1
-    }
+      limit: 1,
+    },
   })
 }
 
@@ -42,7 +42,7 @@ const setPicksToActive = async () => {
 
 export const addJobs = async () => {
   const repeatableJobs = await queue.getRepeatableJobs()
-  repeatableJobs.forEach(async job => {
+  repeatableJobs.forEach(async (job) => {
     await queue.removeRepeatableByKey(job.key)
   })
   await updateSeries()
@@ -56,13 +56,12 @@ export const worker = new Worker('series-queue', async (job) => {
   if (job.name === 'series') {
     await createOrUpdateSeries()
     await syncPlayoffSeriesWithTeams()
-  } 
-  else if (job.name === 'activatePicks') {
+  } else if (job.name === 'activatePicks') {
     // if round has started set the picks to active so others can view them
     await activateNhlBracketPicks()
   }
 }, {
-  connection: redisClient
+  connection: redisClient,
 })
 
 worker.on('completed', (job) => {

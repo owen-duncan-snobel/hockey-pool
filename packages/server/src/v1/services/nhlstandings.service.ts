@@ -1,6 +1,6 @@
-import prisma from "../../libs/prisma/prisma"
-import { IPlayoffUserStanding } from "../../types/playoffs"
-import { getActiveSeason } from "./nhlseries.service"
+import prisma from '../../libs/prisma/prisma'
+import { IPlayoffUserStanding } from '../../types/playoffs'
+import { getActiveSeason } from './nhlseries.service'
 
 export const getCurrentSeasonPlayoffStandingsForAllUsers = async () => {
   const currentSeason = await getActiveSeason()
@@ -9,9 +9,9 @@ export const getCurrentSeasonPlayoffStandingsForAllUsers = async () => {
       nhlBracketPicks: {
         some: {
           season: currentSeason?.season,
-          active: true
-        }
-      }
+          active: true,
+        },
+      },
     },
     select: {
       id: true,
@@ -19,7 +19,7 @@ export const getCurrentSeasonPlayoffStandingsForAllUsers = async () => {
       nhlBracketPicks: {
         where: {
           active: true,
-          season: currentSeason?.season
+          season: currentSeason?.season,
         },
         select: {
           value: true,
@@ -29,28 +29,28 @@ export const getCurrentSeasonPlayoffStandingsForAllUsers = async () => {
               team: {
                 select: {
                   teamName: true,
-                  logo: true
+                  logo: true,
                 },
               },
               round: true,
               season: true,
-            }
-          }
-        }
-      }
+            },
+          },
+        },
+      },
     },
   })
   const standings: IPlayoffUserStanding[] = []
   users.forEach((user) => {
     const points = user.nhlBracketPicks
-      .filter(pick => pick.pick.seriesWins === 4)
+      .filter((pick) => pick.pick.seriesWins === 4)
       .reduce((acc, pick) => acc + pick.value, 0)
-      user
+    user
     const userStandings = {
       id: user.id,
       username: user.username,
       picks: user.nhlBracketPicks,
-      points
+      points,
     }
     standings.push(userStandings)
   })

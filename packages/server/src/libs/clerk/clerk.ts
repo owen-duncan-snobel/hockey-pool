@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
 import { Webhook, WebhookRequiredHeaders } from 'svix'
 import { IncomingHttpHeaders } from 'http'
-import prisma from '../prisma/prisma'
 import { createClerkClient } from '@clerk/clerk-sdk-node'
+import prisma from '../prisma/prisma'
 
 const CLERK_WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET || ''
 
@@ -48,6 +48,5 @@ const handleClerkWebhooks = async (req: Request, res: Response, next: NextFuncti
 }
 
 export default handleClerkWebhooks
-
 
 export const clerkClient = createClerkClient({ secretKey: process.env.CLERK_API_KEY || '' })

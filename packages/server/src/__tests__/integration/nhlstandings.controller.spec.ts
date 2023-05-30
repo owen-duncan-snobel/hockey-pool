@@ -1,6 +1,6 @@
+import supertest from 'supertest'
 import app from '../../server'
 import { getSessionToken } from '../helper'
-import supertest from 'supertest'
 import { worker } from '../../queues/series.queue'
 import redisClient from '../../libs/ioredis/redis'
 
@@ -21,7 +21,7 @@ describe('nhlstandings controller', () => {
       expect(response.status).toBe(200)
       expect(response.body).toBeDefined()
       expect(response.body).toHaveProperty('data')
-      expect(response.body.data).toHaveProperty('standings')  
+      expect(response.body.data).toHaveProperty('standings')
     })
 
     it('should return a 401 if no token is provided', async () => {

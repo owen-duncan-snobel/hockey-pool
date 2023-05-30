@@ -1,5 +1,5 @@
-import app from '../../server'
 import supertest from 'supertest'
+import app from '../../server'
 import { worker } from '../../queues/series.queue'
 
 afterAll(async () => {
@@ -10,12 +10,12 @@ const request = supertest(app)
 
 describe('nhlseries controller', () => {
   describe('GET /NHLSeries', () => {
-    it('should return the series', async () => {      
+    it('should return the series', async () => {
       const response = await request.get('/api/v1/NHLSeries')
       expect(response.status).toBe(200)
       expect(response.body).toBeDefined()
       expect(response.body).toHaveProperty('data')
-      expect(response.body.data).toHaveProperty('series')  
+      expect(response.body.data).toHaveProperty('series')
     })
 
     it('should return the series for a specific season', async () => {

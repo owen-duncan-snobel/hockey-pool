@@ -1,6 +1,6 @@
+import supertest from 'supertest'
 import app from '../../server'
 import { getSessionToken } from '../helper'
-import supertest from 'supertest'
 import { worker } from '../../queues/series.queue'
 
 // ! BUG this test fails for unknown reason
