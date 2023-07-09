@@ -1,0 +1,130 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-arm64-openssl-1.1.x", "linux-arm64-openssl-3.0.x", "debian-openssl-1.1.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                  Int @id @default(autoincrement())
+  clerk_id            String @unique()
+  username            String?
+  firstName           String?
+  lastName            String?
+  nhlBracketPicks     NhlBracketPick[]
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+}
+
+model NhlBracketPick {
+  user        User    @relation(fields: [userId], references: [id])
+  userId      Int
+  pick        NhlTeamInSeries @relation(fields: [teamId, round, season, seriesCode], references: [teamId, round, season, seriesCode], onUpdate: Cascade)
+  teamId      Int
+  round       Int
+  season      String
+  seriesCode  String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  active      Boolean @default(false)
+  value       Int
+  @@id([userId, round, season, seriesCode])
+}
+
+// NHL Models
+model NhlTeam {
+  id              Int @id
+  name            String
+  link            String
+  abbreviation    String
+  teamName        String
+  franchise       NhlFranchise?
+  conference      NhlConference? @relation(fields: [conferenceId], references: [id], onUpdate: Cascade)
+  conferenceId    Int?
+  division        NhlDivision?  @relation(fields: [divisionId], references: [id], onUpdate: Cascade)
+  divisionId      Int?
+  // venue           Venue @relation(fields: [venueId], references: [id])
+  // venueId        Int
+  locationName    String
+  firstYearOfPlay String
+  officialSiteUrl String
+  active          Boolean
+  playoffSeries   NhlTeamInSeries[]
+  logo            String?
+}
+
+model NhlConference {
+  id              Int @id
+  name            String
+  link            String
+  abbreviation    String
+  shortName       String
+  active          Boolean
+  division        NhlDivision[]
+  teams           NhlTeam[]
+}
+
+model NhlDivision { 
+  id              Int @id
+  name            String
+  nameShort       String
+  link            String
+  abbreviation    String
+  conference      NhlConference @relation(fields: [conferenceId], references: [id], onUpdate: Cascade)
+  conferenceId    Int
+  teams           NhlTeam[]
+}
+
+model NhlFranchise {
+  id                  Int @id
+  firstSeasonId       Int
+  lastSeasonId        Int?
+  team                NhlTeam? @relation(fields: [mostRecentTeamId], references: [id], onUpdate: Cascade)
+  mostRecentTeamId    Int @unique
+  link                String
+}
+
+model NhlSeries {
+  round           Int
+  season          String
+  seriesCode      String
+  teams           NhlTeamInSeries[]
+  currentGameId   Int?
+  gameNumber      Int?
+  gameLabel       String?
+  gameTime        DateTime?
+  seriesStatus    String?
+  seriesStatusShort String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  @@id([season, round, seriesCode])
+  @@unique([round, season, seriesCode])
+}
+
+model NhlTeamInSeries {
+  team          NhlTeam? @relation(fields: [teamId], references: [id])
+  teamId        Int
+  series        NhlSeries? @relation(fields: [round, season, seriesCode], references: [round, season, seriesCode], onUpdate: Cascade)
+  round         Int
+  season        String
+  seriesCode    String
+  picks         NhlBracketPick[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  seriesWins    Int @default(0)
+  seriesLosses  Int @default(0)
+  @@id([teamId, round, season, seriesCode])
+}
+
+// model Venue {
+//   id        Int @id
+//   name      String
+//   link      String
+//   teams     Team[]     
+// }
