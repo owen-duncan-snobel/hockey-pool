@@ -1,7 +1,27 @@
 import { API_URL } from '@/constants'
-import { IPlayoff, PrismaNhlBracketPick, PrismaNhlSeries, PrismaNhlTeam, PrismaNhlTeamInSeries } from '@backend/types/playoffs'
+import { IPlayoff, IPlayoffUserStanding, PrismaNhlBracketPick, PrismaNhlSeries, PrismaNhlTeam, PrismaNhlTeamInSeries } from '@backend/types/playoffs'
 import { useAuth } from '@clerk/nextjs'
 import useSWR from 'swr'
+
+
+function useUserStandings(url: string) {
+  const { getToken } = useAuth();
+  const fetcher = async (...args: [RequestInfo]) => {
+    return fetch(...args, {
+      headers: { Authorization: `Bearer ${await getToken()}` }
+    }).then(res => res.json());
+  };
+  const { data, error, isLoading } = useSWR<Response<{
+    standings: IPlayoffUserStanding[]
+  }>>(url, fetcher)
+
+  return {
+    standings: data ? data.data.standings : undefined,
+    error,
+    isLoading
+  }
+}
+
 
 export interface Response<T> {
   message: string
@@ -9,16 +29,22 @@ export interface Response<T> {
   data: T
 }
 
-const fetcher = (url: string) => fetch(url, {
-  method: 'GET',
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${null}` // WORKAROUND FOR NOW (CLERK MIDDLEWARE EXPECTS A AUTHORIZE HEADER EVEN IF NULL)
-  }
-}).then(r => r.json())
+// const fetcher = (url: string) => fetch(url, {
+//   method: 'GET',
+//   headers: {
+//     'Content-Type': 'application/json',
+//     'Authorization': `Bearer ${null}` // WORKAROUND FOR NOW (CLERK MIDDLEWARE EXPECTS A AUTHORIZE HEADER EVEN IF NULL)
+//   }
+// }).then(r => r.json())
 
 
 export function useBrackets () {
+  const { getToken } = useAuth()
+  const fetcher = async (...args: [RequestInfo]) => {
+		return fetch(...args, {
+			headers: { Authorization: `Bearer ${await getToken()}` },
+		}).then((res) => res.json())
+  }
   const { data, error, isLoading } = useSWR<Response<{brackets: IPlayoff}>>(`/api/NHLBrackets`, fetcher)
 
   return {
@@ -29,6 +55,12 @@ export function useBrackets () {
 }
 
 export function useActiveSeries () {
+  const { getToken } = useAuth()
+  const fetcher = async (...args: [RequestInfo]) => {
+		return fetch(...args, {
+			headers: { Authorization: `Bearer ${await getToken()}` },
+		}).then((res) => res.json())
+  }
   const { data, error, isLoading } = useSWR<Response<{
   series: (PrismaNhlSeries & {
     teams: {
@@ -47,6 +79,12 @@ export function useActiveSeries () {
 }
 
 export function useUserPicks() {
+  const { getToken } = useAuth()
+  const fetcher = async (...args: [RequestInfo]) => {
+		return fetch(...args, {
+			headers: { Authorization: `Bearer ${await getToken()}` },
+		}).then((res) => res.json())
+  }
   const { data, error, isLoading } = useSWR<Response<{
     picks: (PrismaNhlBracketPick & {
         pick: PrismaNhlTeamInSeries,
@@ -55,7 +93,7 @@ export function useUserPicks() {
             username: string | null;
         }
     })[]
-  }>>(`/NHLPicks`, fetcher)
+  }>>(`/api/NHLPicks`, fetcher)
   return {
     picks: data?.data.picks,
     isLoading,

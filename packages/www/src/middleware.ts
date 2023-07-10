@@ -1,26 +1,24 @@
-import { authMiddleware } from "@clerk/nextjs"
+import { authMiddleware, redirectToSignIn } from "@clerk/nextjs"
 
 export default authMiddleware({
 	publicRoutes: [
 		'/',
 		'/api/trigger',
 		'/api/webhooks/clerk',
-		'/api/NHLBrackets',
-
-    // ! Remove these after
-		'/api/NHLPicks',
-		'/api/NHLSeries',
-		'/api/NHLStandings',
 	],
-
-	apiRoutes: [
-		// '/api/NHLBrackets',
-		// '/api/NHLPicks',
-		// '/api/NHLSeries',
-		// '/api/NHLStandings'
-	],
+  afterAuth(auth, req, evt){
+    console.log('AFTER AUTH:', auth)
+    if (!auth.userId && !auth.isPublicRoute) {
+        return redirectToSignIn({ returnBackUrl: req.url })
+    }
+  }
 })
 
 export const config = {
-  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
+	matcher: [
+		'/((?!.*\\..*|_next).*)',
+		'/',
+		'/(api|trpc)(.*)',
+		'/(.*?trpc.*?|(?!static|.*\\..*|_next|favicon.ico).*)',
+	],
 }

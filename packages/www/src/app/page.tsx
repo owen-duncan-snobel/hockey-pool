@@ -8,12 +8,6 @@ import './devices.min.css'
 
 
 export default function Home() {
-  const { brackets, error, isLoading } = useBrackets()
-
-  if (error) return <p>There is an error.</p>
-  if (isLoading) return <div>Loading...</div>
-  if (!brackets) return <div></div>
-
   return (
     <div className='h-screen relative overflow-hidden'>
       <div className='sticky top-2 float-right px-2 z-10'>
@@ -51,7 +45,7 @@ export default function Home() {
             2023
           </h1>
         </div>
-        
+
         <div className='md:h-20' />
 
         <div className='flex justify-center p-5'>
@@ -61,19 +55,6 @@ export default function Home() {
             </div>
           </DeviceFrameset>
         </div>
-
-        {/* <div className='h-1/2 -z-10'>     
-          <NHLBrackets data={brackets} />
-        </div> */}
-
-
-
-
-        {/* <div className='grid grid-cols-1 md:grid-cols-3'>
-          <div className='bg-red-200'>works</div>
-          <div className='bg-red-200'>works</div>
-          <div className='bg-red-200'>works</div>
-        </div>  */}
       </div>
     </div>
   )
