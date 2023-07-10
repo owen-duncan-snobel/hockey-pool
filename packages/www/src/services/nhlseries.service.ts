@@ -3,6 +3,7 @@ import { TOURNAMENT_PLAYOFFS_URL } from '../constants/playoffs'
 import { IPlayoff, IPlayoffMatchupTeam, IPlayoffSeries } from '../types/playoffs'
 import prisma from '../libs/prisma/prisma'
 import HttpException from '../exceptions/http-exception'
+import { NhlSeries } from '@prisma/client'
 
 interface IPlayoffSeriesWithSeason extends IPlayoffSeries {
   season: string
@@ -12,64 +13,68 @@ interface IPlayoffSeriesWithSeasonAndTeams extends IPlayoffSeriesWithSeason {
   team: IPlayoffMatchupTeam
 }
 
-export const createOrUpdateSeries = async () => {
-  const response = await axios.get(TOURNAMENT_PLAYOFFS_URL)
-  if (response.status !== 200) {
-    throw new HttpException({
-      message: response.data,
-      status: response.status,
-    })
-  }
+export const createOrUpdateSeries = async (): Promise<NhlSeries[]> => {
+	const response = await axios.get(TOURNAMENT_PLAYOFFS_URL)
+	if (response.status !== 200) {
+		throw new HttpException({
+			message: response.data,
+			status: response.status,
+		})
+	}
 
-  const { data }: { data: IPlayoff } = response
-  const series: IPlayoffSeriesWithSeason[] = []
-  const { rounds, season } = data
-  rounds.forEach((round) => {
-    round.series.forEach((s) => {
-      const slot: IPlayoffSeriesWithSeason = {
-        ...s,
-        season,
-      }
-      series.push(slot)
-    })
-  })
+	const { data }: { data: IPlayoff } = response
+	const series: IPlayoffSeriesWithSeason[] = []
+	const { rounds, season } = data
+	rounds.forEach((round) => {
+		round.series.forEach((s) => {
+			const slot: IPlayoffSeriesWithSeason = {
+				...s,
+				season,
+			}
+			series.push(slot)
+		})
+	})
 
-  await prisma.$transaction(
-    series.map((s) => prisma.nhlSeries.upsert({
-      where: {
-        season_round_seriesCode: {
-          season,
-          round: s.round.number,
-          seriesCode: s.seriesCode,
-        },
-      },
-      update: {
-        round: s.round.number,
-        seriesCode: s.seriesCode,
-        currentGameId: s.currentGame.seriesSummary.gamePk,
-        gameLabel: s.currentGame.seriesSummary.gameLabel,
-        gameNumber: s.currentGame.seriesSummary.gameNumber,
-        gameTime: s.currentGame.seriesSummary.gameTime
-          ? new Date(s.currentGame.seriesSummary.gameTime)
-          : undefined,
-        seriesStatus: s.currentGame.seriesSummary.seriesStatus,
-        seriesStatusShort: s.currentGame.seriesSummary.seriesStatusShort,
-      },
-      create: {
-        season,
-        round: s.round.number,
-        seriesCode: s.seriesCode,
-        currentGameId: s.currentGame.seriesSummary.gamePk,
-        gameLabel: s.currentGame.seriesSummary.gameLabel,
-        gameNumber: s.currentGame.seriesSummary.gameNumber,
-        gameTime: s.currentGame.seriesSummary.gameTime
-          ? new Date(s.currentGame.seriesSummary.gameTime)
-          : undefined,
-        seriesStatus: s.currentGame.seriesSummary.seriesStatus,
-        seriesStatusShort: s.currentGame.seriesSummary.seriesStatusShort,
-      },
-    })),
-  )
+	return await prisma.$transaction(
+		series.map((s) =>
+			prisma.nhlSeries.upsert({
+				where: {
+					season_round_seriesCode: {
+						season,
+						round: s.round.number,
+						seriesCode: s.seriesCode,
+					},
+				},
+				update: {
+					round: s.round.number,
+					seriesCode: s.seriesCode,
+					currentGameId: s.currentGame.seriesSummary.gamePk,
+					gameLabel: s.currentGame.seriesSummary.gameLabel,
+					gameNumber: s.currentGame.seriesSummary.gameNumber,
+					gameTime: s.currentGame.seriesSummary.gameTime
+						? new Date(s.currentGame.seriesSummary.gameTime)
+						: undefined,
+					seriesStatus: s.currentGame.seriesSummary.seriesStatus,
+					seriesStatusShort:
+						s.currentGame.seriesSummary.seriesStatusShort,
+				},
+				create: {
+					season,
+					round: s.round.number,
+					seriesCode: s.seriesCode,
+					currentGameId: s.currentGame.seriesSummary.gamePk,
+					gameLabel: s.currentGame.seriesSummary.gameLabel,
+					gameNumber: s.currentGame.seriesSummary.gameNumber,
+					gameTime: s.currentGame.seriesSummary.gameTime
+						? new Date(s.currentGame.seriesSummary.gameTime)
+						: undefined,
+					seriesStatus: s.currentGame.seriesSummary.seriesStatus,
+					seriesStatusShort:
+						s.currentGame.seriesSummary.seriesStatusShort,
+				},
+			})
+		)
+	)
 }
 
 export const syncPlayoffSeriesWithTeams = async () => {
@@ -128,8 +133,8 @@ export const syncPlayoffSeriesWithTeams = async () => {
       },
     })),
   )
-
   console.log('synced: ', synced.length)
+  return synced
 
   // ! DEPRECATED
   // const synced = await prisma.nhlTeamInSeries.createMany({

@@ -85,8 +85,8 @@ export const activateNhlBracketPicks = async () => {
     season: currentSeason?.season,
   })
   const seriesNotStarted = playoffSeriesHaveNotStarted(activeSeries)
-  if (seriesNotStarted) return
-  await setNhlBracketPicksActive({
+  if (seriesNotStarted) return null
+  return await setNhlBracketPicksActive({
     season: currentSeason?.season,
     round: currentRound?.round,
   })
