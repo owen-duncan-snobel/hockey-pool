@@ -205,21 +205,24 @@ export const getActiveSeries = async ({
   round,
   season,
 }: {
-  round: number
-  season: string
-}) => prisma.nhlSeries.findMany({
-  where: {
-    round,
-    season,
-  },
-  include: {
-    teams: {
-      select: {
-        team: true,
+  round: number|undefined
+  season: string|undefined
+}) => {
+  if (!round || !season) throw new Error('Missing param: round or season')
+  return prisma.nhlSeries.findMany({
+    where: {
+      round,
+      season,
+    },
+    include: {
+      teams: {
+        select: {
+          team: true,
+        },
       },
     },
-  },
-  orderBy: {
-    gameTime: 'asc',
-  },
-})
+    orderBy: {
+      gameTime: 'asc',
+    },
+  })
+}

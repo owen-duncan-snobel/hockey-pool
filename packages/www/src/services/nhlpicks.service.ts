@@ -59,31 +59,35 @@ export const setNhlBracketPicksActive = async ({
   season,
   round,
 }: {
-  season: string,
-  round: number
-}) => prisma.nhlBracketPick.updateMany({
-  where: {
-    season,
-    round: {
-      lte: round,
+  season: string|undefined,
+  round: number|undefined
+}) =>
+{
+  if (!season || !round) throw new Error('Missing param: round or season')
+  return prisma.nhlBracketPick.updateMany({
+    where: {
+      season,
+      round: {
+        lte: round,
+      },
     },
-  },
-  data: {
-    active: true,
-  },
-})
+    data: {
+      active: true,
+    },
+  })
+}
 
 export const activateNhlBracketPicks = async () => {
   const currentSeason = await getActiveSeason()
   const currentRound = await getActiveRound(currentSeason?.season)
   const activeSeries = await getActiveSeries({
-    round: currentRound?.round || 1,
-    season: currentSeason?.season || 'undefined',
+    round: currentRound?.round,
+    season: currentSeason?.season,
   })
   const seriesNotStarted = playoffSeriesHaveNotStarted(activeSeries)
   if (seriesNotStarted) return
   await setNhlBracketPicksActive({
-    season: currentSeason?.season || 'undefined',
-    round: currentRound?.round || -1,
+    season: currentSeason?.season,
+    round: currentRound?.round,
   })
 }
