@@ -50,9 +50,13 @@ export async function GET(req: NextRequest){
       }
     )
   } catch (err: any){
+    console.log(err)
     return NextResponse.json({
       message: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR),
       status: StatusCodes.INTERNAL_SERVER_ERROR,
+    }, {
+      status: StatusCodes.INTERNAL_SERVER_ERROR,
+      statusText: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR)
     })
   }
 }
