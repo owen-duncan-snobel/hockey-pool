@@ -1,6 +1,22 @@
 import prisma from '../libs/prisma/prisma'
 import { IPlayoffUserStanding } from '../types/playoffs'
 import { getActiveSeason } from './nhlseries.service'
+interface UserPicks {
+  id: number;
+  username: string | null;
+  nhlBracketPicks: {
+      value: number;
+      pick: {
+          seriesWins: number;
+          team: {
+              teamName: string;
+              logo: string | null;
+          } | null;
+          round: number;
+          season: string;
+      }
+    }[]
+  }
 
 export const getCurrentSeasonPlayoffStandingsForAllUsers = async () => {
   const currentSeason = await getActiveSeason()
@@ -41,7 +57,7 @@ export const getCurrentSeasonPlayoffStandingsForAllUsers = async () => {
     },
   })
   const standings: IPlayoffUserStanding[] = []
-  users.forEach((user) => {
+  users.forEach((user: UserPicks) => {
     const points = user.nhlBracketPicks
       .filter((pick) => pick.pick.seriesWins === 4)
       .reduce((acc, pick) => acc + pick.value, 0)

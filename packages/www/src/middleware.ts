@@ -7,7 +7,6 @@ export default authMiddleware({
 		'/api/webhooks/clerk',
 	],
   afterAuth(auth, req, evt){
-    console.log('AFTER AUTH:', auth)
     if (!auth.userId && !auth.isPublicRoute) {
         return redirectToSignIn({ returnBackUrl: req.url })
     }
