@@ -8,7 +8,9 @@ export const NHL_FRANCHISES_URL = `${NHL_API_URL}/api/v1/franchises`
 export const NHL_SEASONS_URL = `${NHL_API_URL}/api/v1/seasons`
 export const NHL_TEAM_LOGOS_URL = 'https://hockey-pool.nyc3.digitaloceanspaces.com/nhl-logos'
 
-export const NHL_BRACKET_VALUES = {
+export const NHL_BRACKET_VALUES: {
+  [key: number]: number
+} = {
   1: 5,
   2: 10,
   3: 15,

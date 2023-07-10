@@ -41,7 +41,7 @@ Every night the application will fetch the latest NHL tournament games and updat
 
 ## Getting Started
 
-### Prerequisites 
+### Prerequisites
 
 - [Node.js](https://nodejs.org/en/)
 - [PostgreSQL](https://www.postgresql.org/)
@@ -62,7 +62,7 @@ Every night the application will fetch the latest NHL tournament games and updat
    ```sh
    cd packages/server/ && pnpm install
    ```
-   and 
+   and
 
    ```sh
    cd packages/www && pnpm install
@@ -85,7 +85,7 @@ Every night the application will fetch the latest NHL tournament games and updat
     npx prisma migrate dev
     ```
 7. Seed the database
-  
+
 8. Start the /packages/www client
    ```sh
    pnpm run dev
@@ -95,13 +95,21 @@ Every night the application will fetch the latest NHL tournament games and updat
 10. Optional: Start the /packages/www storybook server
    ```sh
    pnpm run storybook
-   ``` 
+   ```
    and open [http://localhost:6006](http://localhost:6006) with your browser to see the storybook stories.
 
 11. Run the tests
    ```sh
    pnpm run test
    ```
+
+## Load DB Dump
+
+1. **Optional**: Backup hockeypool db
+2. Run ```psql``` then, ```drop database hockeypool```
+3. Next run, ```create database hockeypool```
+4. Exit psql and from cli run ```psql -d hockeypool -a -f hockey_pool.sql``` to load the db dump
+5. verify that the dump has loaded correctly
 
 More detailed instructions for the server can be viewed in the [server README](packages/server/README.md).
 
@@ -111,7 +119,7 @@ More detailed instructions for the server can be viewed in the [server README](p
 - Load users picks from Excel from previous years
 - Add Chat features
 - Add User Dashboard to view all past picks and results
-- Email remainders 
+- Email remainders
 - Stripe Integration
 - 2024 Playoff Launch
 

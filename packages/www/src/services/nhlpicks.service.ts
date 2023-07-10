@@ -1,7 +1,7 @@
-import { NHL_BRACKET_VALUES } from '../../constants/playoffs'
-import prisma from '../../libs/prisma/prisma'
-import { NHLBracketPicksDto } from '../../types/playoffs'
-import { playoffSeriesHaveNotStarted } from '../../utils/playoffs'
+import { NHL_BRACKET_VALUES } from '../constants/playoffs'
+import prisma from '../libs/prisma/prisma'
+import { NHLBracketPicksDto } from '../types/playoffs'
+import { playoffSeriesHaveNotStarted } from '../utils/playoffs'
 import { NHLPicksQuery } from '../schemas/nhlpicks.schema'
 import { getActiveRound, getActiveSeason, getActiveSeries } from './nhlseries.service'
 

@@ -2,6 +2,7 @@ import { Node, XYPosition } from 'reactflow'
 import { v4 as uuid } from 'uuid'
 import { IPlayoff, IPlayoffMatchupTeam } from '@backend/types/playoffs'
 import PlayoffBrackets from '../config/playoff_brackets.json'
+import { NhlTeam, NhlSeries } from '@prisma/client'
 
 type NHL_PLAYOFF_ROUND = 1 | 2 | 3 | 4 | 5
 
@@ -82,8 +83,54 @@ export function NHLSeriesNodes({
 
   return [
     ...round1SeriesNodes,
-    ...round2SeriesNodes, 
+    ...round2SeriesNodes,
     ...round3SeriesNodes,
     ...round4SeriesNodes,
   ]
 }
+
+export const validPlayoffRounds = ({
+	picksDto,
+	round,
+}: {
+	picksDto: {
+		teamId: number
+		round: number
+		season: string
+		seriesCode: string
+	}[]
+	round: number | undefined
+}) => {
+	if (!round) return false
+	return picksDto.every((pick) => pick.round === round)
+}
+
+export const validPlayoffSeasons = ({
+	picksDto,
+	season,
+}: {
+	picksDto: {
+		teamId: number
+		round: number
+		season: string
+		seriesCode: string
+	}[]
+	season: string | undefined
+}) => {
+	if (!season) return false
+	return picksDto.every((pick) => pick.season === season)
+}
+
+export const playoffSeriesHaveNotStarted = (
+	series: (NhlSeries & {
+		teams: {
+			team: NhlTeam | null
+		}[]
+	})[]
+) =>
+	series.every(
+		(series) =>
+			series.gameNumber === 1 &&
+			series.gameTime &&
+			series.gameTime > new Date()
+	)

@@ -1,8 +1,8 @@
 import axios from 'axios'
-import { TOURNAMENT_PLAYOFFS_URL } from '../../constants/playoffs'
-import { IPlayoff, IPlayoffMatchupTeam, IPlayoffSeries } from '../../types/playoffs'
-import prisma from '../../libs/prisma/prisma'
-import HttpException from '../../exceptions/http-exception'
+import { TOURNAMENT_PLAYOFFS_URL } from '../constants/playoffs'
+import { IPlayoff, IPlayoffMatchupTeam, IPlayoffSeries } from '../types/playoffs'
+import prisma from '../libs/prisma/prisma'
+import HttpException from '../exceptions/http-exception'
 
 interface IPlayoffSeriesWithSeason extends IPlayoffSeries {
   season: string

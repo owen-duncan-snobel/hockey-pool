@@ -6,6 +6,7 @@ import {
 } from '../constants/playoffs'
 import { NHLDivision } from '../types/playoffs'
 import prisma from '../libs/prisma/prisma'
+import { createOrUpdateSeries, syncPlayoffSeriesWithTeams } from '../services/nhlseries.service'
 // import { createOrUpdateSeries, syncPlayoffSeriesWithTeams } from '../v1/services/nhlseries.service'
 
 export const getData = async ({ url }: { url: string }) => {
@@ -79,6 +80,7 @@ export const handleTeams = async () => {
   return teamsCreateInput
 }
 
+// TODO These should all be updated to be upserts
 async function setup(prismaClient: PrismaClient) {
   const conferences = await handleConferences()
   const divisions = await handleDivisions()
@@ -92,9 +94,18 @@ async function setup(prismaClient: PrismaClient) {
     data: divisions,
     skipDuplicates: true,
   })
+
   await prismaClient.$transaction(
-    teams.map((t) => prismaClient.nhlTeam.create({ data: t })),
+		teams.map((t) => prismaClient.nhlTeam.upsert({
+      create: t,
+      update: t,
+      where: {
+        id: t.id
+      }
+     }
+    ))
   )
+
   await prismaClient.$transaction(
     franchises.map((f) => prismaClient.nhlFranchise.create({
       data: {
@@ -124,9 +135,9 @@ async function setup(prismaClient: PrismaClient) {
   )
 
   // populates the most current year's playoff series
-  // await createOrUpdateSeries()
+  await createOrUpdateSeries()
   // // populates the playoff series with teams
-  // await syncPlayoffSeriesWithTeams()
+  await syncPlayoffSeriesWithTeams()
 }
 
 export default setup

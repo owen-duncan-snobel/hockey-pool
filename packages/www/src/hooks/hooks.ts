@@ -19,7 +19,7 @@ const fetcher = (url: string) => fetch(url, {
 
 
 export function useBrackets () {
-  const { data, error, isLoading } = useSWR<Response<{brackets: IPlayoff}>>(`${API_URL}/NHLBrackets`, fetcher)
+  const { data, error, isLoading } = useSWR<Response<{brackets: IPlayoff}>>(`/api/NHLBrackets`, fetcher)
 
   return {
     brackets: data?.data.brackets,
@@ -37,7 +37,7 @@ export function useActiveSeries () {
   })[],
   seriesStarted: boolean
 }>>(`${API_URL}/NHLSeries/active`, fetcher)
-  
+
   return {
     series: data?.data.series,
     seriesStarted: data?.data.seriesStarted,

@@ -1,31 +1,33 @@
 import './globals.css'
+import type { Metadata } from 'next'
 import { Albert_Sans } from 'next/font/google'
 import { ClerkProvider } from '@clerk/nextjs'
+import { ReactNode } from 'react'
 
-const albert_sans = Albert_Sans({ 
+const albert_sans = Albert_Sans({
   subsets: ['latin'],
   weight: [
-    '100', 
-    '200', 
+    '100',
+    '200',
     '300',
-    '400', 
-    '500', 
-    '600', 
-    '700', 
-    '800', 
+    '400',
+    '500',
+    '600',
+    '700',
+    '800',
     '900'
   ]
 })
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Hockey pool',
   description: 'Annual doherty hockey pool',
 }
 
 export default function RootLayout({
-  children,
+  children
 }: {
-  children: React.ReactNode
+  children: ReactNode
 }) {
   return (
     <ClerkProvider>
