@@ -1,5 +1,5 @@
-import prisma from '../../libs/prisma/prisma'
-import { IPlayoffUserStanding } from '../../types/playoffs'
+import prisma from '../libs/prisma/prisma'
+import { IPlayoffUserStanding } from '../types/playoffs'
 import { getActiveSeason } from './nhlseries.service'
 
 export const getCurrentSeasonPlayoffStandingsForAllUsers = async () => {

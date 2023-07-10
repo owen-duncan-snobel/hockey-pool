@@ -12,8 +12,6 @@ export const NHLRoundSchema = z.coerce.number({
   .max(4, 'Round must be greater than or equal to 1 and less than or equal to 4')
 
 export const NhlSeriesQuerySchema = z.object({
-  query: z.object({
-    season: NHLSeasonSchema.optional(),
-    round: NHLRoundSchema.optional(),
-  }),
+  season: NHLSeasonSchema.optional(),
+  round: NHLRoundSchema.optional(),
 })

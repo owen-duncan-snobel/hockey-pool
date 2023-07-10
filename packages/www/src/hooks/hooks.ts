@@ -36,7 +36,7 @@ export function useActiveSeries () {
     }[],
   })[],
   seriesStarted: boolean
-}>>(`${API_URL}/NHLSeries/active`, fetcher)
+}>>(`/api/NHLSeries/active`, fetcher)
 
   return {
     series: data?.data.series,
@@ -55,7 +55,7 @@ export function useUserPicks() {
             username: string | null;
         }
     })[]
-  }>>(`${API_URL}/NHLPicks`, fetcher)
+  }>>(`/NHLPicks`, fetcher)
   return {
     picks: data?.data.picks,
     isLoading,

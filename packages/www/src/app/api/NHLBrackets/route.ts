@@ -19,17 +19,19 @@ export async function GET(){
     }
 
     const data = await services.getNhlBrackets()
-    NextResponse.json({
-      message: getReasonPhrase(StatusCodes.OK),
-      status: StatusCodes.OK,
-      data: {
-        brackets: data,
+    await redis.set('brackets', JSON.stringify(data), 'EX', 60 * 60)
+    return NextResponse.json(
+      {
+        message: getReasonPhrase(StatusCodes.OK),
+        status: StatusCodes.OK,
+        data: {
+          brackets: data,
+        },
       },
-    }, {
-      status: StatusCodes.OK
-    })
-
-    return await redis.set('brackets', JSON.stringify(data), 'EX', 60 * 60)
+      {
+        status: StatusCodes.OK,
+      }
+    )
   } catch (err: any){
     return NextResponse.json({
       message: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR),

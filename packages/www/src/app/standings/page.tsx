@@ -30,12 +30,12 @@ function useUserStandings(url: string) {
 }
 
 export default function Standings() {
-  const { standings, error, isLoading } = useUserStandings(`${API_URL}/NHLStandings`)
+  const { standings, error, isLoading } = useUserStandings(`/api/NHLStandings`)
 
   if (error) return <p>There is an error.</p>
   if (isLoading) return <div>Loading...</div>
   if (!standings) return <div></div>
-   
+
   return (
     <div>
       <div className='sticky top-2 float-right px-2 z-10'>
@@ -46,7 +46,7 @@ export default function Standings() {
         <div className='flex w-full justify-center px-10'>
           <h1 className='text-4xl font-medium uppercase text-center'>
             Standings
-          </h1> 
+          </h1>
         </div>
       </div>
 

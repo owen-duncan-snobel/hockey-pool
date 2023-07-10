@@ -16,21 +16,21 @@ import { Albert_Sans } from 'next/font/google'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-const albert_sans = Albert_Sans({ 
+const albert_sans = Albert_Sans({
   subsets: ['latin'],
   weight: [
-    '100', 
-    '200', 
+    '100',
+    '200',
     '300',
-    '400', 
-    '500', 
-    '600', 
-    '700', 
-    '800', 
+    '400',
+    '500',
+    '600',
+    '700',
+    '800',
     '900'
   ]
 })
- 
+
 function useUserPicks(url: string) {
   const { getToken } = useAuth();
   const fetcher = async (...args: [RequestInfo]) => {
@@ -57,7 +57,7 @@ function useUserPicks(url: string) {
 
 export default function MakePicks() {
   const { series, seriesStarted, error: seriesError, isLoading: seriesIsLoading } = useActiveSeries()
-  const { picks, error: picksError, isLoading: picksLoading } = useUserPicks(`${API_URL}/NHLPicks`)
+  const { picks, error: picksError, isLoading: picksLoading } = useUserPicks(`/api/NHLPicks`)
 
   if (seriesError) return <Error statusCode={500} title='There is an error.' />
   if (seriesIsLoading) return <div>Loading...</div>
@@ -68,7 +68,7 @@ export default function MakePicks() {
   if (!picks) return <div></div>
 
   const seriesStartTime = series[0].gameTime as unknown as string
-  
+
   return (
     <div>
       <div className='sticky top-2 float-right px-2 z-10'>
@@ -79,7 +79,7 @@ export default function MakePicks() {
         <div className='flex flex-col gap-y-1 w-full px-10'>
           <h1 className='text-4xl font-medium uppercase text-center'>
             Picks
-          </h1> 
+          </h1>
           <h1 className='text-2xl font-medium uppercase text-center underline underline-offset-4'>
             Round {series[0].round}
           </h1>
@@ -110,10 +110,10 @@ export default function MakePicks() {
 
       </div>
         <div className='h-10' />
-          <div className='flex justify-center h-5/6 md:h:3/4'>   
+          <div className='flex justify-center h-5/6 md:h:3/4'>
             <div className=''>
               <SeriesGroup series={series} seriesStarted={seriesStarted!}  />
-          </div>  
+          </div>
         </div>
       </div>
     </div>
@@ -121,7 +121,7 @@ export default function MakePicks() {
 }
 
 function SeriesGroup({seriesStarted, series }: {
-  seriesStarted: boolean, 
+  seriesStarted: boolean,
   series: (PrismaNhlSeries & {
     teams: {
         team: PrismaNhlTeam | null;
@@ -186,9 +186,9 @@ function SeriesGroup({seriesStarted, series }: {
           return (
             <div key={s.seriesCode}>
               {errors[i] && <div className='text-red-500 uppercase font-medium text-center'>{errors[i]}</div>}
-            <RadioGroup 
-              value={allPicks[i].teamId} 
-              onChange={(teamId) => handleInputChange(i, teamId)} 
+            <RadioGroup
+              value={allPicks[i].teamId}
+              onChange={(teamId) => handleInputChange(i, teamId)}
               className='mb-5 border rounded-md shadow-lg text-gray-900'
             >
               {
@@ -198,7 +198,7 @@ function SeriesGroup({seriesStarted, series }: {
                       {({ checked }) => (
                           <div className='flex'>
                             <div className={`${checked ? ' text-gray-900' : ''} ${i % 2 === 0 ? 'border-b' : ''}
-                              flex gap-x-5 items-center px-2 py-3 text-xl font-normal w-full pr-10`} 
+                              flex gap-x-5 items-center px-2 py-3 text-xl font-normal w-full pr-10`}
                             key={i}>
                               <Image src={t.team!.logo || ''} alt='' width={30} height={30} />
                               <span className=' cursor-pointer'>
@@ -220,12 +220,12 @@ function SeriesGroup({seriesStarted, series }: {
           )
         })
       }
-      <SeriesStartedButton 
-        seriesStarted={seriesStarted} 
+      <SeriesStartedButton
+        seriesStarted={seriesStarted}
         disableSubmit={disableSubmit}
       />
 
-      <ToastContainer 
+      <ToastContainer
         className={`${albert_sans.className} text-sm font-medium uppercase`}
       />
     </form>
@@ -253,18 +253,18 @@ function SeriesStartedButton({
         {
           seriesStarted ?
             (<div className='flex items-center gap-x-2'>
-              SERIES STARTED 
-              <LockClosedIcon height={20}/> 
+              SERIES STARTED
+              <LockClosedIcon height={20}/>
             </div>) :
             (<div className='flex items-center gap-x-2'>
               SUBMIT PICKS
-              {disableSubmit 
-                ? <LockClosedIcon height={20}/> 
+              {disableSubmit
+                ? <LockClosedIcon height={20}/>
                 : <LockOpenIcon height={20}/>
               }
             </div>)
         }
       </button>
-    </div>  
+    </div>
   )
 }

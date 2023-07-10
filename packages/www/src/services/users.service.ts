@@ -1,4 +1,4 @@
-import prisma from '../../libs/prisma/prisma'
+import prisma from '../libs/prisma/prisma'
 
 export const getUser = async (clerk_id: string) => prisma.user.findUnique({
   where: {
