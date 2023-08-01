@@ -4,23 +4,23 @@ import { useAuth } from '@clerk/nextjs'
 import useSWR from 'swr'
 
 
-function useUserStandings(url: string) {
-  const { getToken } = useAuth();
-  const fetcher = async (...args: [RequestInfo]) => {
-    return fetch(...args, {
-      headers: { Authorization: `Bearer ${await getToken()}` }
-    }).then(res => res.json());
-  };
-  const { data, error, isLoading } = useSWR<Response<{
-    standings: IPlayoffUserStanding[]
-  }>>(url, fetcher)
+// function useUserStandings(url: string) {
+//   const { getToken } = useAuth();
+//   const fetcher = async (...args: [RequestInfo]) => {
+//     return fetch(...args, {
+//       headers: { Authorization: `Bearer ${await getToken()}` }
+//     }).then(res => res.json());
+//   };
+//   const { data, error, isLoading } = useSWR<Response<{
+//     standings: IPlayoffUserStanding[]
+//   }>>(url, fetcher)
 
-  return {
-    standings: data ? data.data.standings : undefined,
-    error,
-    isLoading
-  }
-}
+//   return {
+//     standings: data ? data.data.standings : undefined,
+//     error,
+//     isLoading
+//   }
+// }
 
 
 export interface Response<T> {
@@ -28,15 +28,6 @@ export interface Response<T> {
   status: number
   data: T
 }
-
-// const fetcher = (url: string) => fetch(url, {
-//   method: 'GET',
-//   headers: {
-//     'Content-Type': 'application/json',
-//     'Authorization': `Bearer ${null}` // WORKAROUND FOR NOW (CLERK MIDDLEWARE EXPECTS A AUTHORIZE HEADER EVEN IF NULL)
-//   }
-// }).then(r => r.json())
-
 
 export function useBrackets () {
   const { getToken } = useAuth()
@@ -98,23 +89,5 @@ export function useUserPicks() {
     picks: data?.data.picks,
     isLoading,
     error: error
-  }
-}
-
-// THIS IS USED INSIDE OF THE .tsx FILES
-function useClerkSWR<T>(url: string) {
-  const { getToken } = useAuth();
-  const fetcher = async (...args: [RequestInfo]) => {
-    return fetch(...args, {
-      headers: { Authorization: `Bearer ${await getToken()}` }
-    }).then(res => res.json());
-  };
-
-  const { data, error, isLoading } = useSWR<T>(url, fetcher)
-
-  return {
-    data,
-    error,
-    isLoading
   }
 }

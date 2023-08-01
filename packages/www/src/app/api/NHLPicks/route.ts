@@ -28,7 +28,7 @@ export async function GET(req: NextRequest){
     })
   } catch(err: any){
     if (err instanceof ZodError) {
-		return NextResponse.json(
+		  return NextResponse.json(
 			{
 				message: getReasonPhrase(StatusCodes.BAD_REQUEST),
 				status: StatusCodes.BAD_REQUEST,
